@@ -24,15 +24,15 @@ export default function ModalAdd({
     setValue,
     getValues
 }: props) {
-    const { updateProducts } = useProducts();
+
 
     const navigate = useNavigate();
-    const continueAdding = () => {
-        const { image, id, ...rest } = getValues();
+    const continueAdding = async () => {
 
-        reset();
-        updateProducts(id, { ...rest });
+
+
         closeModal();
+        reset();
     };
 
     const cancelAdding = () => {

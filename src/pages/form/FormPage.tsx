@@ -12,6 +12,7 @@ import ModalAdd from "../../components/modal/AddModal";
 import setupWidget from "../../util/configWidget";
 import Spinner from "../../components/spinner/Spinner";
 import FormComponent from "../../components/FormComponent/FormComponent";
+import { toast } from "react-toastify";
 
 const FormPage = () => {
   const {
@@ -39,11 +40,14 @@ const FormPage = () => {
 
   const { createProduct, products, loading, setLoading, user } = useProducts();
   const oncloseWdiget = (result) => {
-    console.log("se cerro", getValues("image"));
+
     if (result.event === "close" && getValues("image").length > 0) {
       console.log("info close", result.info);
       createProduct(getValues());
       openModal();
+    } else {
+
+      alert('no agregaste imagenes')
     }
   };
 
@@ -58,7 +62,7 @@ const FormPage = () => {
     setLoading(false);
   };
 
-  const onSubmit = (form) => {
+  const onSubmit = () => {
     if (!isDirty) return;
     setLoading(true);
     myWidget(
@@ -71,7 +75,7 @@ const FormPage = () => {
         onloadWdiget
       )
     );
-    console.log(form);
+
   };
 
 

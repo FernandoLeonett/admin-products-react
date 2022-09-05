@@ -58,7 +58,7 @@ export default function ReplaceImageModal({
     });
     setValue("image", updateImgs);
 
-    updateProducts(getValues("id").toString(), {
+    updateProducts(getValues("id"), {
       image: updateImgs,
     });
     setupdateImage(true);
@@ -87,7 +87,7 @@ export default function ReplaceImageModal({
     await deleteImage(imgId);
 
     updateProducts(
-      getValues("id").toString(),
+      getValues("id"),
 
       {
         image: getValues("image").filter((i) => i !== imgId),
