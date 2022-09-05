@@ -4,7 +4,7 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import { Image } from "cloudinary-react";
 import "./Edit.css";
-import { CLOUD_NAME } from "../../util/util";
+import { CLOUD_NAME, MAX_FILES } from "../../util/util";
 
 import { Path, PathValue, useForm } from "react-hook-form";
 import routes from "../../routers/routes";
@@ -14,6 +14,8 @@ import useModal from "../../hooks/useModal";
 import { WidgetLoader } from "../../components/cloudinary";
 import Spinner from "../../components/spinner/Spinner";
 import FormComponent from "../../components/FormComponent/FormComponent";
+import UploadWidget from "../../components/cloudinary/components/UploadWidget";
+import setupWidget from "../../util/configWidget";
 
 interface ParamProduct {
   state: { product: Product };
@@ -27,7 +29,7 @@ const EditPage = () => {
     return <Navigate to={routes.home} />;
   }
 
-  const { updateProducts, products, loading } = useProducts();
+  const { updateProducts, products, loading, setLoading, user } = useProducts();
   const [imageMode, setImageMode] = useState(false);
 
   const {

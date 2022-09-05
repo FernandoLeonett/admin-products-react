@@ -39,8 +39,8 @@ const FormPage = () => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
   const { createProduct, products, loading, setLoading, user } = useProducts();
-  const oncloseWdiget = (result) => {
 
+  const oncloseWdiget = (result) => {
     if (Boolean(getValues("image").length)) {
       console.log("info close", result.info);
 
@@ -50,7 +50,6 @@ const FormPage = () => {
     } else {
       alert("no agregaste imagenes");
     }
-
   };
 
   const onSuccess = (result) => {
