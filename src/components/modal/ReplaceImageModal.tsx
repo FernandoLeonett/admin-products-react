@@ -84,15 +84,17 @@ export default function ReplaceImageModal({
   const deleteImageModal = async () => {
     closeModal();
     setLoading(true);
+    const localImg = getValues("image").filter((i) => i !== imgId)
     await deleteImage(imgId);
 
     updateProducts(
       getValues("id"),
 
       {
-        image: getValues("image").filter((i) => i !== imgId),
+        image: localImg,
       }
     );
+    setValue('image', localImg);
 
     setLoading(false);
   };

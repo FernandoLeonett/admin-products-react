@@ -102,14 +102,15 @@ export const ProductContextProvider = ({ children }) => {
 
       const { error, data } = await supabase.from("products").insert({
         ...product,
-        user: user.id,
+        userId: user.id,
       });
 
-      // setProducts([...products, ...data]);
+      setProducts([...products, ...data]);
 
       if (error) {
         throw error;
       }
+      console.log('data create', data)
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
@@ -127,7 +128,7 @@ export const ProductContextProvider = ({ children }) => {
         .from("products")
         .select("id, title,description,price,category, image, boost")
 
-        .eq("user", user.id);
+        .eq("userId", user.id);
 
       // .order("id", { ascending: false });
 
@@ -151,13 +152,14 @@ export const ProductContextProvider = ({ children }) => {
       const { error, data } = await supabase
         .from("products")
         .update(updatedFields)
-        .eq("user", user.id)
+        .eq("userId", user.id)
         .eq("id", id);
       if (error) {
         throw error;
       }
-
-      setProducts(products.filter((Product) => Product.id !== data[0].id));
+      console.log("update", data)
+      // setProducts([...products, ...data]);
+      // setProducts(products.filter((Product) => Product.id !== data[0].id));
     } catch (error) {
       alert(error.error_description || error.message);
     }
@@ -171,7 +173,7 @@ export const ProductContextProvider = ({ children }) => {
       const { error, data } = await supabase
         .from("products")
         .delete()
-        .eq("user", user.id)
+        .eq("userId", user.id)
         .eq("id", product.id);
 
       if (error) {
