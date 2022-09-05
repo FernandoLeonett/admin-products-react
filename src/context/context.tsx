@@ -105,7 +105,7 @@ export const ProductContextProvider = ({ children }) => {
         userId: user.id,
       });
 
-      // setProducts([...products, ...data]);
+      setProducts([...products, ...data]);
 
       if (error) {
         throw error;
@@ -158,8 +158,8 @@ export const ProductContextProvider = ({ children }) => {
         throw error;
       }
       console.log("update", data)
-
-      setProducts(products.filter((Product) => Product.id !== data[0].id));
+      // setProducts([...products, ...data]);
+      // setProducts(products.filter((Product) => Product.id !== data[0].id));
     } catch (error) {
       alert(error.error_description || error.message);
     }

@@ -14,11 +14,11 @@ const HomePage = () => {
   useEffect(() => {
     console.log(user)
 
-    getProducts()
+    // getProducts()
 
 
 
-  }, [])
+  }, [products])
 
 
 
