@@ -8,22 +8,19 @@ import { supabase } from "../../client/supabaase";
 const HomePage = () => {
   const { getProducts, loading, products, user } = useProducts();
 
-
-
-
   useEffect(() => {
-    console.log(user)
+    console.log(user);
 
 
+    // }, [products])
 
-
-  }, [products])
-
-
+    getProducts();
+  }, []);
 
   return (
     <div className="container">
-      <div className="row my-5">
+      <div className="row d-flex justify-content-center">
+        {/* my-5 */}
         {loading ? (
           <Spinner />
         ) : Boolean(products.length) ? (
@@ -33,13 +30,14 @@ const HomePage = () => {
             ))}
           </>
         ) : (
-          <div className="container">
-            <div className="row">
-              <div className="col-12 mt-5 d-flex justify-content-center align-items-center">
-                <h1>No tienes productos en tu tienda 😬</h1>
-              </div>
-            </div>
+          // <div className="container">
+          //   <div className="row">
+          <div className="col-12 mt-5">
+            {/* <div className="col-12 mt-5 d-flex justify-content-center align-items-center"> */}
+            <h1>No tienes productos en tu tienda 😬</h1>
           </div>
+          //</div>
+          //</div>
         )}
       </div>
     </div>
@@ -47,4 +45,4 @@ const HomePage = () => {
 };
 
 // export default memo(HomePage);
-export default (HomePage);
+export default HomePage;

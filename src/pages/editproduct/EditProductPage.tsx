@@ -44,11 +44,11 @@ const EditPage = () => {
   const onSubmit = async () => {
     if (!isDirty) return;
 
-
-    await updateProducts(getValues("id"),
+    await updateProducts(
+      getValues("id"),
 
       getValues()
-    )
+    );
     setImageMode(true);
   };
 
@@ -67,7 +67,7 @@ const EditPage = () => {
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
           register={register}
-          title={"Edita El Producto"}
+          title={"Editar Producto"}
           products={products}
           errors={errors}
           isDirty={isDirty}
@@ -123,14 +123,9 @@ const EditPage = () => {
                 </div>
                 <div className="row d-flex justify-content-center">
                   <div className="col-xs-12   text-center pb-3">
-                    {Boolean(getValues('image').length) ?
-
-
+                    {Boolean(getValues("image").length) ? (
                       getValues("image").map((i, k) => (
                         <Fragment key={k}>
-
-
-
                           <Image
                             onClick={openModal}
                             publicId={i}
@@ -152,7 +147,9 @@ const EditPage = () => {
                           />
                         </Fragment>
                       ))
-                      : <img src="/logo.png" />}
+                    ) : (
+                      <h3>Este producto no tiene fotos aún 📷</h3>
+                    )}
                   </div>
                 </div>
               </div>

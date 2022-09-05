@@ -14,7 +14,7 @@ interface props {
 }
 
 const Card = ({ product }: props) => {
-  const { title, description, price, image } = product;
+  const { title, description, price, image, category } = product;
   const { deleteProduct } = useProducts();
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
@@ -48,28 +48,33 @@ const Card = ({ product }: props) => {
         product={product}
       />
       <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div className="card border-secondary h-100">
+        <div className="card border-secondary ">
           {/* <div className="row no-gutters"> */}
           {/* <div style={{ width: "100%", height: "auto" }}> */}
 
-
           <>
-            {
-
-              Boolean(product.image.length) ? <Image
+            {Boolean(product.image.length) ? (
+              <Image
                 publicId={image[img]}
                 cloudName={CLOUD_NAME}
                 className="card-img-top img-fluid"
                 style={{
-                  height: "40%",
+                  height: 128,
                   // width: "fit-content",
                   objectFit: "cover",
                   // objectPosition: "center center",
                 }}
-              /> : <img src="/logo.png" />
-            }
-
-
+              />
+            ) : (
+              <img
+                src="/noImg.png"
+                className="card-img-top img-fluid"
+                style={{
+                  height: 128,
+                  objectFit: "cover",
+                }}
+              />
+            )}
           </>
 
           {/* </div> */}
@@ -80,10 +85,13 @@ const Card = ({ product }: props) => {
             <p className="card-text">
               <small className="text-muted">{price}</small>
             </p>
+            <p className="card-text">
+              <small className="text-muted">{category}</small>
+            </p>
             <p
               className="card-text"
               style={{
-                height: 100,
+                height: 70,
                 overflow: "auto",
               }}
             >
