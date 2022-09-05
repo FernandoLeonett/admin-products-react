@@ -15,7 +15,8 @@ interface props {
   products: Product[];
   title: string;
   isDirty: boolean;
-  reset: UseFormReset<Product>;
+  reset?: UseFormReset<Product>;
+  modoEdit?: boolean
 }
 
 const FormComponent = ({
@@ -26,7 +27,8 @@ const FormComponent = ({
   products,
   errors,
   isDirty,
-  reset,
+  modoEdit = false
+
 }: props) => {
   // useEffect(() => {
   //   return () => {
@@ -137,7 +139,7 @@ const FormComponent = ({
             <input
               type="submit"
               className="btn btn-dark mb-3"
-              value="Agregar"
+              value={modoEdit ? "Actualizar" : "Agregar"}
               onClick={handleSubmit(onSubmit)}
               disabled={!isDirty}
 

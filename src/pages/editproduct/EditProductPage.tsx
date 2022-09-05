@@ -73,7 +73,7 @@ const EditPage = () => {
           products={products}
           errors={errors}
           isDirty={isDirty}
-          reset={reset}
+          modoEdit={true}
         />
       ) : (
         <>

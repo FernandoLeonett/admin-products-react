@@ -11,7 +11,6 @@ const HomePage = () => {
   useEffect(() => {
     console.log(user);
 
-    // getProducts()
 
     // }, [products])
 
