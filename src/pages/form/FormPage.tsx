@@ -41,14 +41,16 @@ const FormPage = () => {
   const { createProduct, products, loading, setLoading, user } = useProducts();
   const oncloseWdiget = (result) => {
 
-    if (result.event === "close" && getValues("image").length > 0) {
+    if (Boolean(getValues("image").length)) {
       console.log("info close", result.info);
+
+      console.log("product", getValues());
       createProduct(getValues());
       openModal();
     } else {
-
-      alert('no agregaste imagenes')
+      alert("no agregaste imagenes");
     }
+
   };
 
   const onSuccess = (result) => {
@@ -64,6 +66,8 @@ const FormPage = () => {
 
   const onSubmit = () => {
     if (!isDirty) return;
+
+    console.log("onSubmit", getValues());
     setLoading(true);
     myWidget(
       setupWidget(
@@ -75,10 +79,7 @@ const FormPage = () => {
         onloadWdiget
       )
     );
-
   };
-
-
 
   return (
     <>
@@ -100,7 +101,9 @@ const FormPage = () => {
             title={"Agregar Producto"}
             products={products}
             errors={errors}
-            isDirty={isDirty} reset={reset} />
+            isDirty={isDirty}
+            reset={reset}
+          />
         </>
       ) : (
         <Spinner />

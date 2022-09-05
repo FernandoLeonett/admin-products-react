@@ -41,8 +41,14 @@ const EditPage = () => {
     defaultValues: param.state.product,
   });
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (!isDirty) return;
+
+
+    await updateProducts(getValues("id"),
+
+      getValues()
+    )
     setImageMode(true);
   };
 
@@ -115,29 +121,36 @@ const EditPage = () => {
                 </div>
                 <div className="row d-flex justify-content-center">
                   <div className="col-xs-12   text-center pb-3">
-                    {getValues("image").map((i, k) => (
-                      <Fragment key={k}>
-                        <Image
-                          onClick={openModal}
-                          publicId={i}
-                          cloudName={CLOUD_NAME}
-                          className="imagen-datos-producto"
-                          style={{
-                            height: "160px",
-                            aspectRatio: "1",
-                            padding: "0.5rem",
-                            cursor: "pointer",
-                          }}
-                        />
-                        <ReplaceImageModal
-                          closeModal={closeModal}
-                          isOpenModal={isOpenModal}
-                          imgId={i}
-                          getValues={getValues}
-                          setValue={setValue}
-                        />
-                      </Fragment>
-                    ))}
+                    {Boolean(getValues('image').length) ?
+
+
+                      getValues("image").map((i, k) => (
+                        <Fragment key={k}>
+
+
+
+                          <Image
+                            onClick={openModal}
+                            publicId={i}
+                            cloudName={CLOUD_NAME}
+                            className="imagen-datos-producto"
+                            style={{
+                              height: "160px",
+                              aspectRatio: "1",
+                              padding: "0.5rem",
+                              cursor: "pointer",
+                            }}
+                          />
+                          <ReplaceImageModal
+                            closeModal={closeModal}
+                            isOpenModal={isOpenModal}
+                            imgId={i}
+                            getValues={getValues}
+                            setValue={setValue}
+                          />
+                        </Fragment>
+                      ))
+                      : <img src="/logo.png" />}
                   </div>
                 </div>
               </div>

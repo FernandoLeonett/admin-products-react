@@ -28,11 +28,11 @@ const FormComponent = ({
   isDirty,
   reset,
 }: props) => {
-  useEffect(() => {
-    return () => {
-      reset();
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     reset();
+  //   };
+  // }, []);
   return (
     <div className="container-fluid">
       <div className="row form">
@@ -105,7 +105,13 @@ const FormComponent = ({
             {/* Descripción */}
             <div className="form-group">
               <label htmlFor="txtDescripcion">Descripción</label>
-              <textarea className="form-control" rows={3}></textarea>
+              <textarea className="form-control" rows={3}
+
+                {...register("description")}
+
+              ></textarea>
+
+
             </div>
             {/* Precio */}
             <div className="form-group">
