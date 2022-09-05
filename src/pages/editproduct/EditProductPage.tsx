@@ -148,7 +148,7 @@ const EditPage = () => {
                         </Fragment>
                       ))
                     ) : (
-                      <img src="/logo.png" />
+                      <h3>Este producto no tiene fotos aún 📷</h3>
                     )}
                   </div>
                 </div>
