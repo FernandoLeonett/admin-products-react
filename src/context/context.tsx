@@ -20,7 +20,7 @@ interface ProductContext {
   products: Product[];
   getProducts: () => Promise<void>;
   createProduct: (product: Product) => Promise<void>;
-  updateProducts: (id: string, updatedFields: Product) => Promise<void>;
+  updateProducts: (id: number, updatedFields: Product) => Promise<void>;
   deleteProduct: (product: Product) => Promise<void>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;

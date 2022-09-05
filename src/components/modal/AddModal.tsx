@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import useModal from "../../hooks/useModal";
@@ -12,23 +13,25 @@ interface props {
     isOpenModal: () => void;
 
     reset: any;
-    product: Product;
+    getValues: UseFormGetValues<Product>;
+    setValue: UseFormSetValue<Product>;
 }
 
 export default function ModalAdd({
     closeModal,
     isOpenModal,
     reset,
-    product,
+    setValue,
+    getValues
 }: props) {
     const { updateProducts } = useProducts();
 
     const navigate = useNavigate();
     const continueAdding = () => {
-        const { image, ...rest } = product;
+        const { image, id, ...rest } = getValues();
 
         reset();
-        updateProducts(product.id.toString(), { ...rest });
+        updateProducts(id, { ...rest });
         closeModal();
     };
 
