@@ -1,0 +1,37 @@
+.logIn {
+  margin-top: 2rem;
+}
+
+.encabezadoLogin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000000;
+  margin-bottom: 1rem;
+}
+
+label {
+  color: #000000;
+}
+
+img {
+  width: 100%;
+  max-width: 9rem;
+}
+
+h1 {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.form-control:focus {
+  border-color: rgb(206, 212, 218);
+  box-shadow: 0 0 5px rgba(52, 58, 64, 1) !important;
+}
+
+.btn {
+  width: 100%;
+  margin-top: 1rem;
+}

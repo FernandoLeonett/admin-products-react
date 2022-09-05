@@ -1,0 +1,9 @@
+.footer {
+  height: 5rem;
+  background-color: #000000 !important;
+}
+
+.iconFooter {
+  color: #ffffff;
+  cursor: pointer;
+}

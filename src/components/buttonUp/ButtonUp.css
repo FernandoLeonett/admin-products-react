@@ -1,0 +1,7 @@
+.buttonUp {
+  z-index: 5;
+  position: fixed;
+  bottom: 4rem;
+  right: 2rem;
+  cursor: pointer;
+}

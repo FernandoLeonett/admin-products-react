@@ -1,0 +1,43 @@
+.form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  font-size: 3rem;
+  letter-spacing: 0.3rem;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+}
+
+::-webkit-file-upload-button {
+  padding: 0.5rem;
+  color: #ffffff;
+  border: thin;
+  background-color: #343a40;
+  outline: none;
+  cursor: pointer;
+}
+
+.form-control:focus {
+  border-color: rgb(206, 212, 218);
+  box-shadow: 0 0 5px rgba(52, 58, 64, 1) !important;
+}
+
+label {
+  margin-bottom: 0rem;
+  color: #000000;
+  font-weight: bold;
+}
+
+.btn {
+  width: 100%;
+}
+
+/* .form-check-input {
+  width: 5em;
+  margin-left: 1rem;
+} */

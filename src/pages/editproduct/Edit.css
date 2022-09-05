@@ -1,0 +1,88 @@
+.form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  letter-spacing: 0.3rem;
+  color: #000000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.caja-input {
+  width: 100%;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  color: #343a40;
+  background-color: #ffffff;
+  box-shadow: 5px 5px 10px #ced4da;
+  outline: none;
+}
+
+::-webkit-file-upload-button {
+  padding: 0.5rem;
+  color: #ffffff;
+  border: thin;
+  background-color: #343a40;
+  outline: none;
+  cursor: pointer;
+}
+
+.form-control:focus {
+  border-color: rgb(206, 212, 218);
+  box-shadow: 0 0 5px rgba(52, 58, 64, 1) !important;
+}
+
+label {
+  font-weight: bold;
+  color: #000000;
+}
+
+.btn {
+  width: 100%;
+}
+
+.border-title{
+border-bottom: 1px solid #03FA6E
+}
+
+.td-estilos{
+  font-weight: bold;
+}
+
+/* .containerImagenes {
+    display: grid;
+    grid-template-areas:
+        "Imagen1 Imagen2"
+        "Imagen3 Imagen4";
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    row-gap: 0.5rem;
+    column-gap: 0rem;
+  }
+
+Imagen1{
+  grid-area: Imagen1;
+}
+
+Imagen2{
+  grid-area: Imagen2;
+}
+
+Imagen3{
+  grid-area: Imagen3;
+}
+
+Imagen4{
+  grid-area: Imagen4;
+}
+*/
+/* .imagen-datos-producto { 
+  padding: 0rem 0.5rem;
+  width: 100%;
+  
+} */

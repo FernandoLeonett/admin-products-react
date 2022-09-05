@@ -1,25 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "./App.css";
+import { ProductContextProvider, useProducts } from "./context/context";
+import AppRouter from "./routers/AppRouter";
+import "react-toastify/dist/ReactToastify.min.css";
+import { useEffect } from "react";
+import { supabase } from "./client/supabaase";
+import Layout from "./components/layout/Layout";
 
 function App() {
+  const navigate = useNavigate();
+  // const { setUser } = useProducts()
+  // useEffect(() => {
+  //   supabase.auth.onAuthStateChange((_event, session) => {
+  //     if (!session) {
+  //       navigate("/login");
+  //       // setUser(null)
+  //     } else {
+  //       navigate("/");
+  //     }
+  //   });
+  // }, [navigate]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+
+    <ProductContextProvider>
+      <Layout>
+        <AppRouter />
+        <ToastContainer />
+      </Layout>
+    </ProductContextProvider>
+
+
+
+
   );
 }
 

@@ -1,0 +1,8 @@
+.whatsapp {
+  z-index: 5;
+  position: fixed;
+  bottom: 8rem;
+  right: 2rem;
+  color: #25d366 !important;
+  cursor: pointer;
+}
