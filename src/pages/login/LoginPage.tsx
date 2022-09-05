@@ -113,7 +113,7 @@ const Login = () => {
                 }  spinner-border-sm" role="status" aria-hidden="true`}
               >
                 {loading
-                  ? "Cargando"
+                  ? "⌛Enviando..."
                   : sending
                   ? "Se ha enviado un enlace al correo que ingresaste"
                   : "Escribe tu email "}
