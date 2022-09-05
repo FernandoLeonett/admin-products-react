@@ -70,7 +70,9 @@ const EditPage = () => {
           title={"Edita El Producto"}
           products={products}
           errors={errors}
-          isDirty={isDirty} reset={reset} />
+          isDirty={isDirty}
+          modoEdit={true}
+        />
       ) : (
         <>
           <WidgetLoader />

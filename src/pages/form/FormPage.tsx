@@ -13,6 +13,7 @@ import setupWidget from "../../util/configWidget";
 import Spinner from "../../components/spinner/Spinner";
 import FormComponent from "../../components/FormComponent/FormComponent";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const FormPage = () => {
   const {
@@ -42,13 +43,19 @@ const FormPage = () => {
   const oncloseWdiget = (result) => {
 
     if (Boolean(getValues("image").length)) {
-      console.log("info close", result.info);
 
-      console.log("product", getValues());
       createProduct(getValues());
       openModal();
     } else {
-      alert("no agregaste imagenes");
+      Swal.fire({
+        text: "tu producto debe tener al menos una imagen",
+        icon: "error",
+        confirmButtonText: "OK",
+        buttonsStyling: false,
+        customClass: {
+          confirmButton: "btn btn-dark",
+        },
+      });
     }
 
   };
@@ -102,8 +109,7 @@ const FormPage = () => {
             products={products}
             errors={errors}
             isDirty={isDirty}
-            reset={reset}
-          />
+            reset={reset} />
         </>
       ) : (
         <Spinner />

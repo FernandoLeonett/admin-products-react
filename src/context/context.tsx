@@ -1,8 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-} from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,11 +8,7 @@ import Product from "../interfaces/Product";
 import User from "../interfaces/User";
 import routes from "../routers/routes";
 
-
-
 interface ProductContext {
-
-
   products: Product[];
   getProducts: () => Promise<void>;
   createProduct: (product: Product) => Promise<void>;
@@ -27,7 +19,7 @@ interface ProductContext {
 
   loginWithMagicLink: (email: string) => Promise<boolean>;
   logout: () => Promise<void>;
-  productSelected: Product | undefined
+  productSelected: Product | undefined;
   setProductSelected: Dispatch<SetStateAction<Product>>;
   user: User;
   setUser: Dispatch<SetStateAction<User>>;
@@ -43,20 +35,20 @@ export const useProducts = () => {
 };
 
 export const ProductContextProvider = ({ children }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
   // const [user, setUser] = useState(null)
-  const [productSelected, setProductSelected] = useState(null)
+  const [productSelected, setProductSelected] = useState(null);
 
-  // 
+  //
   const [user, setUser] = useState<User>();
 
   const loginWithMagicLink = async (email: string) => {
     // aca nunca deberiaa llegar si esta logueado
     setLoading(true);
-    let ok = false
+    let ok = false;
 
     try {
       const { error, user } = await supabase.auth.signIn({ email });
@@ -64,16 +56,16 @@ export const ProductContextProvider = ({ children }) => {
       if (error) {
         throw error;
       }
-      ok = true
+      ok = true;
     } catch (error: any) {
     } finally {
       setLoading(false);
     }
-    return ok
+    return ok;
   };
 
   const logout = async () => {
-    console.log(user)
+    console.log(user);
 
     setLoading(true);
 
@@ -83,8 +75,8 @@ export const ProductContextProvider = ({ children }) => {
         throw error;
       }
 
-      console.log("sesion cerrada")
-      navigate(routes.login)
+      console.log("sesion cerrada");
+      navigate(routes.login);
 
       setUser(null);
     } catch (error) {
@@ -110,7 +102,7 @@ export const ProductContextProvider = ({ children }) => {
       if (error) {
         throw error;
       }
-      console.log('data create', data)
+      console.log("data create", data);
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
@@ -137,7 +129,6 @@ export const ProductContextProvider = ({ children }) => {
       }
       console.log("data: ", data);
 
-
       setProducts(data);
     } catch (error) {
       alert(error.error_description || error.message);
@@ -157,18 +148,25 @@ export const ProductContextProvider = ({ children }) => {
       if (error) {
         throw error;
       }
-      console.log("update", data)
-      // setProducts([...products, ...data]);
-      // setProducts(products.filter((Product) => Product.id !== data[0].id));
+
+      let pos = products.findIndex((p) => p.id === id);
+
+      const newList = [...products];
+
+      newList[pos] = data[0];
+
+      setProducts(() => newList);
     } catch (error) {
       alert(error.error_description || error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteProduct = async (product: Product) => {
     try {
       const user = supabase.auth.user();
-      setLoading(true)
+      setLoading(true);
 
       const { error, data } = await supabase
         .from("products")
@@ -179,13 +177,12 @@ export const ProductContextProvider = ({ children }) => {
       if (error) {
         throw error;
       }
-      product.image.forEach(i => {
-        deleteImage(i)
-      })
+      product.image.forEach((i) => {
+        deleteImage(i);
+      });
 
       setProducts(products.filter((Product) => Product.id !== data[0].id));
     } catch (error) {
-
     } finally {
       setLoading(false);
     }
@@ -203,33 +200,35 @@ export const ProductContextProvider = ({ children }) => {
   // }, [user?.id]);
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(async () => checkUser())
+    const { data: authListener } = supabase.auth.onAuthStateChange(async () =>
+      checkUser()
+    );
 
     const checkUser = async () => {
-      const user = supabase.auth.user()
+      const user = supabase.auth.user();
 
       if (user) {
         setUser({
           email: user.email,
-          id: user.id
-
-        })
-        navigate('/', { replace: true })
+          id: user.id,
+        });
+        navigate("/", { replace: true });
       } else {
-        navigate('/login', { replace: true })
+        navigate("/login", { replace: true });
       }
-
-    }
-    checkUser()
+    };
+    checkUser();
 
     return () => {
-      authListener?.unsubscribe()
+      authListener?.unsubscribe();
+    };
+  }, []);
+  useEffect(() => {
+    if (user?.id) {
+      getProducts();
+      console.log("me ejecute");
     }
-  }, [])
-  // useEffect(() => {
-  //   if (user)
-  //     getProducts().then(console.log);
-  // }, []);
+  }, [user?.id]);
 
   return (
     <ProductContext.Provider

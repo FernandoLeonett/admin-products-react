@@ -80,6 +80,16 @@ export default function ReplaceImageModal({
     );
 
     closeModal();
+
+    toast.success("✨ Imagen remplazada", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
   const deleteImageModal = async () => {
     closeModal();
@@ -98,6 +108,16 @@ export default function ReplaceImageModal({
 
     setLoading(false);
   };
+
+  toast.success("✨ Imagen Eliminada", {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
 
   const cancelReplaceImage = () => {
     closeModal();

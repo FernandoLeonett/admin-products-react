@@ -20,10 +20,7 @@ interface props {
 export default function ModalAdd({
     closeModal,
     isOpenModal,
-    reset,
-    setValue,
-    getValues
-}: props) {
+    reset }: props) {
 
 
     const navigate = useNavigate();
