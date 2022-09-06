@@ -11,7 +11,6 @@ const HomePage = () => {
   useEffect(() => {
     console.log(user);
 
-
     // }, [products])
 
     getProducts();
@@ -19,8 +18,7 @@ const HomePage = () => {
 
   return (
     <div className="container">
-      <div className="row d-flex justify-content-center">
-        {/* my-5 */}
+      <div className="row d-flex justify-content-center mt-4">
         {loading ? (
           <Spinner />
         ) : Boolean(products.length) ? (
@@ -32,7 +30,7 @@ const HomePage = () => {
         ) : (
           // <div className="container">
           //   <div className="row">
-          <div className="col-12 mt-5">
+          <div className="col-12">
             {/* <div className="col-12 mt-5 d-flex justify-content-center align-items-center"> */}
             <h1>No tienes productos en tu tienda 😬</h1>
           </div>

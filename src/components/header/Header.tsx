@@ -9,7 +9,6 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   const navigateBetwenHomeForm = () =>
     location.pathname == routes.home
       ? navigate(routes.form)
@@ -23,9 +22,8 @@ const Header = () => {
             <img src="/logo.png" className="rounded-circle" />
           </a>
         </div>
-        {user &&
+        {user && (
           <>
-
             <button
               className="navbar-toggler"
               type="button"
@@ -36,6 +34,19 @@ const Header = () => {
             </button>
             <div className="collapse navbar-collapse" id="collapsibleNavbar">
               <ul className="navbar-nav">
+                <li className="nav-item">
+                  <a
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    // onClick={() => logout()}
+                    className="nav-link"
+                    // id="btnCerrarSesion"
+                  >
+                    Descargar Aplicación
+                  </a>
+                </li>
+
                 <li className="nav-item">
                   <a
                     onClick={navigateBetwenHomeForm}
@@ -63,12 +74,10 @@ const Header = () => {
                     Cerrar Sesión
                   </a>
                 </li>
-
               </ul>
             </div>
-
           </>
-        }
+        )}
       </nav>
     </header>
   );
