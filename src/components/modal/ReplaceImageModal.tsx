@@ -107,17 +107,19 @@ export default function ReplaceImageModal({
     setValue('image', localImg);
 
     setLoading(false);
+
+
+    toast.success("✨ Imagen Eliminada", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
-  toast.success("✨ Imagen Eliminada", {
-    position: "top-center",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  });
 
   const cancelReplaceImage = () => {
     closeModal();

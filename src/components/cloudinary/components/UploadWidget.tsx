@@ -3,6 +3,7 @@ import myWidget from "../MyWidget"
 import spanish from "../../../util/spanish"
 import WidgetButton from "./WidgetButton"
 import WidgetProps from "../../../interfaces/WidgetProps"
+import { useProducts } from "../../../context/context"
 
 const UploadWidget = ({
   sources = [],
@@ -38,11 +39,17 @@ const UploadWidget = ({
   btnClassName,
   text = spanish,
   onCloseWidget,
+
   onloadWdiget
 }: WidgetProps) => {
+
+
   // * put all new variables at the end
-  const myWidgetFunction = () =>
-    myWidget(
+  const myWidgetFunction = () => {
+
+
+
+    return myWidget(
       {
         sources,
 
@@ -79,7 +86,9 @@ const UploadWidget = ({
 
 
       }
+
     )
+  }
 
   return (
     <WidgetButton
@@ -87,6 +96,7 @@ const UploadWidget = ({
       buttonText={buttonText}
       buttonType={buttonType}
       style={style}
+
 
       btnClassName={btnClassName}
     />

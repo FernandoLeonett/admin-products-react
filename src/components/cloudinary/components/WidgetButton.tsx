@@ -3,6 +3,7 @@
 const WidgetButton = ({ myWidgetFunction, style, buttonText, buttonType, btnClassName }) => (
   <>
     <button
+
       type={buttonType}
       className={btnClassName}
       id='cloudinary_upload_button'

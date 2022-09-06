@@ -1,21 +1,22 @@
 import { Fragment, useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import { Image } from "cloudinary-react";
 import "./Edit.css";
-import { CLOUD_NAME, MAX_FILES } from "../../util/util";
+import { CLOUD_NAME } from "../../util/util";
+import myWidget from "../../components/cloudinary/MyWidget";
 
-import { Path, PathValue, useForm } from "react-hook-form";
+
+import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
-import Card from "../../components/card/Card";
 import ReplaceImageModal from "../../components/modal/ReplaceImageModal";
 import useModal from "../../hooks/useModal";
 import { WidgetLoader } from "../../components/cloudinary";
 import Spinner from "../../components/spinner/Spinner";
 import FormComponent from "../../components/FormComponent/FormComponent";
-import UploadWidget from "../../components/cloudinary/components/UploadWidget";
 import setupWidget from "../../util/configWidget";
+import { toast } from "react-toastify";
 
 interface ParamProduct {
   state: { product: Product };
@@ -32,16 +33,77 @@ const EditPage = () => {
   const { updateProducts, products, loading, setLoading, user } = useProducts();
   const [imageMode, setImageMode] = useState(false);
 
+  const [updateImg, setUpdateimg] = useState(false)
+  const onloadWidget = () => {
+    setLoading(false);
+  };
   const {
     register,
     getValues,
     handleSubmit,
     formState: { errors, dirtyFields },
-    reset,
+
     setValue,
   } = useForm<Product>({
     defaultValues: param.state.product,
   });
+  const onSuccess = (result) => {
+
+    console.log('true', true)
+
+    const { public_id } = result.info;
+
+    setValue("image", [...getValues("image"), public_id]);
+
+  };
+
+  const oncloseWdiget = async (result) => {
+    if (updateImg) {
+
+      console.log("oncloseWdiget", "hubo cambios")
+
+      await updateProducts(getValues('id'),
+        {
+          image: getValues('image'),
+        })
+
+      toast.success("✨ Imagen Agregada", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+
+
+    }
+    setUpdateimg(false)
+    console.log("entro a close")
+  };
+
+  const addImageEdit = () => {
+    setLoading(true);
+    myWidget(
+      setupWidget(
+        user.email,
+        getValues("title"),
+        4 - getValues("image").length,
+        onSuccess,
+        oncloseWdiget,
+        onloadWidget
+      )
+    );
+
+  }
+
+
+
+
+
+
 
   const onSubmit = async () => {
     if (!isDirty) return;
@@ -58,9 +120,29 @@ const EditPage = () => {
 
   // const { boost, category, description, image, price, title, id } = formProduct;
 
+
+
+  useEffect(() => {
+
+    setImageMode(true)
+
+
+
+
+
+  }, [getValues('image').length])
+
+
   useEffect(() => {
     return () => (param.state = null);
   }, []);
+
+
+
+  // useEffect(() => {
+
+  // }, [getValues("image").length])
+
 
   return (
     <>
@@ -83,6 +165,7 @@ const EditPage = () => {
             {loading ? (
               <Spinner />
             ) : (
+
               <div className="container">
                 <h2 className="border-title">{getValues("title")}</h2>
                 <div className="row">
@@ -123,7 +206,10 @@ const EditPage = () => {
                     </table>
                   </div>
                 </div>
+                <p>Actualiza tus imagenes</p>
+                <input disabled={getValues('image').length >= 4} onClick={addImageEdit} type="button" value="Agregar Imagenes" />
                 <div className="row d-flex justify-content-center">
+
                   <div className="col-xs-12   text-center pb-3">
                     {Boolean(getValues("image").length) ? (
                       getValues("image").map((i, k) => (
