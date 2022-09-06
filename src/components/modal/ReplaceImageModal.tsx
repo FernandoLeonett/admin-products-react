@@ -27,14 +27,13 @@ export default function ReplaceImageModal({
   setValue,
 }: props) {
   const { updateProducts, setLoading, user } = useProducts();
-  const [updateImage, setupdateImage] = useState(false);
 
   const onloadWdiget = () => {
     setLoading(false);
   };
-
+  let updateImageField = false
   const oncloseWidget = () => {
-    if (updateImage) {
+    if (updateImageField) {
       toast.success("✨ Imagen Actualizada", {
         position: "top-center",
         autoClose: 5000,
@@ -61,7 +60,7 @@ export default function ReplaceImageModal({
     updateProducts(getValues("id"), {
       image: updateImgs,
     });
-    setupdateImage(true);
+    updateImageField = true
   };
 
   const replaceImg = async () => {
@@ -81,15 +80,15 @@ export default function ReplaceImageModal({
 
     closeModal();
 
-    toast.success("✨ Imagen remplazada", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    // toast.success("✨ Imagen remplazada", {
+    //   position: "top-center",
+    //   autoClose: 5000,
+    //   hideProgressBar: false,
+    //   closeOnClick: true,
+    //   pauseOnHover: true,
+    //   draggable: true,
+    //   progress: undefined,
+    // });
   };
   const deleteImageModal = async () => {
     closeModal();
@@ -97,7 +96,7 @@ export default function ReplaceImageModal({
     const localImg = getValues("image").filter((i) => i !== imgId)
     await deleteImage(imgId);
 
-    updateProducts(
+    await updateProducts(
       getValues("id"),
 
       {
