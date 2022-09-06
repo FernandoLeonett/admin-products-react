@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
@@ -6,7 +6,6 @@ import { Image } from "cloudinary-react";
 import "./Edit.css";
 import { CLOUD_NAME } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
-
 
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
@@ -23,17 +22,17 @@ interface ParamProduct {
 }
 
 const EditPage = () => {
-  const [isOpenModal, openModal, closeModal] = useModal(false);
 
   const param = useLocation() as ParamProduct;
   if (!param.state) {
     return <Navigate to={routes.home} />;
   }
+  const [isOpenModal, openModal, closeModal] = useModal(false);
 
   const { updateProducts, products, loading, setLoading, user } = useProducts();
   const [imageMode, setImageMode] = useState(false);
+  // const [updatedImage, setUpdatedImage] = useState(false);
 
-  const [updateImg, setUpdateimg] = useState(false)
   const onloadWidget = () => {
     setLoading(false);
   };
@@ -47,25 +46,25 @@ const EditPage = () => {
   } = useForm<Product>({
     defaultValues: param.state.product,
   });
-  const onSuccess = (result) => {
+  let updateImageField = false
 
-    console.log('true', true)
+  const isDirty = !!Object.keys(dirtyFields).length;
+  const onSuccess = (result) => {
+    updateImageField = (true);
 
     const { public_id } = result.info;
 
     setValue("image", [...getValues("image"), public_id]);
-
   };
 
   const oncloseWdiget = async (result) => {
-    if (updateImg) {
+    if (updateImageField) {
+      updateImageField = false
+      console.log("oncloseWdiget", "hubo cambios");
 
-      console.log("oncloseWdiget", "hubo cambios")
-
-      await updateProducts(getValues('id'),
-        {
-          image: getValues('image'),
-        })
+      await updateProducts(getValues("id"), {
+        image: getValues("image"),
+      });
 
       toast.success("✨ Imagen Agregada", {
         position: "top-center",
@@ -76,12 +75,9 @@ const EditPage = () => {
         draggable: true,
         progress: undefined,
       });
-
-
-
     }
-    setUpdateimg(false)
-    console.log("entro a close")
+
+    console.log("entro a close");
   };
 
   const addImageEdit = () => {
@@ -96,53 +92,40 @@ const EditPage = () => {
         onloadWidget
       )
     );
-
-  }
-
-
-
-
-
-
+  };
 
   const onSubmit = async () => {
     if (!isDirty) return;
-
-    await updateProducts(
-      getValues("id"),
-
-      getValues()
-    );
     setImageMode(true);
+    const { id, title, description, category, boost, price } = getValues();
+
+    await updateProducts(id, {
+      title,
+      description,
+      category,
+      boost,
+      price,
+    });
   };
 
-  const isDirty = !!Object.keys(dirtyFields).length;
+  // useEffect(() => {
+  //   setUpdatedImage(true)
+
+  // }, [onSuccess])
 
   // const { boost, category, description, image, price, title, id } = formProduct;
 
-
-
   useEffect(() => {
-
-    setImageMode(true)
-
-
-
-
-
-  }, [getValues('image').length])
-
+    return () => setImageMode(false);
+  }, []);
 
   useEffect(() => {
     return () => (param.state = null);
   }, []);
 
-
-
   // useEffect(() => {
 
   // }, [getValues("image").length])
-
 
   return (
     <>
@@ -165,7 +148,6 @@ const EditPage = () => {
             {loading ? (
               <Spinner />
             ) : (
-
               <div className="container">
                 <h2 className="border-title">{getValues("title")}</h2>
                 <div className="row">
@@ -207,9 +189,13 @@ const EditPage = () => {
                   </div>
                 </div>
                 <p>Actualiza tus imagenes</p>
-                <input disabled={getValues('image').length >= 4} onClick={addImageEdit} type="button" value="Agregar Imagenes" />
+                <input
+                  disabled={getValues("image").length >= 4}
+                  onClick={addImageEdit}
+                  type="button"
+                  value="Agregar Imagenes"
+                />
                 <div className="row d-flex justify-content-center">
-
                   <div className="col-xs-12   text-center pb-3">
                     {Boolean(getValues("image").length) ? (
                       getValues("image").map((i, k) => (
