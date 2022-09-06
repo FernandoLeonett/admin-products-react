@@ -9,7 +9,6 @@ declare global {
 }
 
 const Layout = ({ children }) => {
-
   const [isReadyForInstall, setIsReadyForInstall] = useState(false);
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (event) => {
@@ -46,10 +45,10 @@ const Layout = ({ children }) => {
     <>
       <Header />
 
-      {
+      {/* {
         setIsReadyForInstall &&
         <button onClick={downloadApp}> Descargasdasda </button>
-      }
+      } */}
       <main>{children}</main>
       <Footer />
     </>
