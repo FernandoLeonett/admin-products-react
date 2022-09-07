@@ -97,7 +97,7 @@ export default function ReplaceImageModal({
 
     setLoading(false);
 
-    toast.warn("✨ Imagen Eliminada", {
+    toast.warn("🗑 Imagen Eliminada", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,

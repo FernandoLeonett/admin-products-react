@@ -60,6 +60,7 @@ const FormPage = () => {
 
   const onSuccess = (result) => {
     console.log("success");
+    console.log("M", getValues());
     const { public_id } = result.info;
 
     setValue("image", [...getValues("image"), public_id]);
@@ -94,7 +95,6 @@ const FormPage = () => {
             isOpenModal={isOpenModal}
             closeModal={closeModal}
             reset={reset}
-
           />
 
           {isDirty && <WidgetLoader />}
