@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useProducts } from "../../context/context";
 import useModal from "../../hooks/useModal";
 import ModalProps from "../../interfaces/ModalProps";
@@ -24,6 +25,15 @@ export default function DeLeteProductModal({
 
   const deleteProductFn = () => {
     deleteProduct(product);
+    toast.warn("🗑 Producto eliminado", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const cancelFun = () => {
@@ -42,6 +52,7 @@ export default function DeLeteProductModal({
       isOpenModal={isOpenModal}
       cancelFun={cancelFun}
       acceptFun={deleteProductFn}
+      btnClassNameAccept={"btn btn-outline-danger"}
       btnClassNameCancel={"btn btn-outline-secondary"}
       title={"El producto será eliminado"}
       acceptValue={"Eliminar Producto"}

@@ -9,43 +9,33 @@ import routes from "../../routers/routes";
 import Modal from "./Modal";
 
 interface props {
-    closeModal: () => void;
-    isOpenModal: () => void;
+  closeModal: () => void;
+  isOpenModal: () => void;
 
-    reset: any;
-    // getValues: UseFormGetValues<Product>;
-    // setValue: UseFormSetValue<Product>;
+  reset: any;
+  // getValues: UseFormGetValues<Product>;
+  // setValue: UseFormSetValue<Product>;
 }
 
-export default function ModalAdd({
-    closeModal,
-    isOpenModal,
-    reset }: props) {
+export default function ModalAdd({ closeModal, isOpenModal, reset }: props) {
+  const navigate = useNavigate();
+  const continueAdding = async () => {
+    closeModal();
+    reset();
+  };
 
+  const cancelAdding = () => {
+    closeModal();
+    navigate(routes.home);
+  };
 
-    const navigate = useNavigate();
-    const continueAdding = async () => {
-
-
-
-        closeModal();
-
-    };
-
-    const cancelAdding = () => {
-        closeModal();
-        navigate(routes.home);
-    };
-
-    return (
-
-        <Modal
-            isOpenModal={isOpenModal}
-            cancelFun={cancelAdding}
-            acceptFun={continueAdding}
-            acceptValue={"Seguir Agregando"}
-            cancelValue={"Ir a la lista"}
-        />
-
-    );
+  return (
+    <Modal
+      isOpenModal={isOpenModal}
+      cancelFun={cancelAdding}
+      acceptFun={continueAdding}
+      acceptValue={"Seguir Agregando"}
+      cancelValue={"Ir a la lista"}
+    />
+  );
 }

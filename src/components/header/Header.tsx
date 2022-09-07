@@ -61,7 +61,7 @@ const Header = () => {
             <img src="/logo.png" className="rounded-circle" />
           </a>
         </div>
-        {user &&
+        {user && (
           <>
             <button
               className="navbar-toggler"
@@ -121,15 +121,12 @@ const Header = () => {
                     </a>
                   </li>
                 </>
-
               </ul>
             </div>
           </>
-        }
+        )}
       </nav>
     </header>
-
-
   );
 };
 export default Header;

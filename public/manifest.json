@@ -2,11 +2,11 @@
   "name": "Simple Shop",
   "short_name": "Simple Shop",
   "theme_color": "#03FA6E",
-  "background_color": "#0000000",
-  "display": "browser",
-  "orientation": "",
+  "background_color": "#ffffff",
+  "display": "standalone",
+
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/login",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",

@@ -8,8 +8,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "./client/supabaase";
 import Layout from "./components/layout/Layout";
 
-
-
 // interface IBeforeInstallPromptEvent extends Event {
 //   readonly platforms: string[];
 //   readonly userChoice: Promise<{
@@ -24,8 +22,6 @@ import Layout from "./components/layout/Layout";
 //   window.matchMedia("(display-mode: standalone)").matches;
 
 // function useAddToHomeScreenPrompt() {
-
-
 
 //   const [prompt, setPrompt] = useState<IBeforeInstallPromptEvent | null>(null);
 //   const [isReady, setIsReady] = useState(false);
@@ -91,9 +87,7 @@ import Layout from "./components/layout/Layout";
 
 // }
 
-
 function App() {
-
   // const { isReady, promptToInstall, hasFinishedInstallation } =
   //   useAddToHomeScreenPrompt();
 
@@ -105,10 +99,6 @@ function App() {
         <ToastContainer />
       </Layout>
     </ProductContextProvider>
-
-
-
-
   );
 }
 
