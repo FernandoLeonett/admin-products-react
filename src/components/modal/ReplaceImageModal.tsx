@@ -27,15 +27,27 @@ export default function ReplaceImageModal({
   setValue,
 }: props) {
   const { updateProducts, setLoading, user } = useProducts();
-  const [updateImage, setupdateImage] = useState(false);
 
-  const onloadWdiget = () => {
+  let updateImageField = false;
+  const onLoadWidget = () => {
     setLoading(false);
   };
+  const onSuccess = (result) => {
+    updateImageField = true;
+    const { public_id } = result.info;
+    setValue("image", [...getValues("image"), public_id]);
+  };
 
-  const oncloseWidget = () => {
-    if (updateImage) {
-      toast.success("✨ Imagen Actualizada", {
+  const onCloseWidget = async (result) => {
+    if (updateImageField) {
+      updateImageField = false;
+      console.log("onCloseWidget", "hubo cambios");
+
+      await updateProducts(getValues("id"), {
+        image: getValues("image"),
+      });
+
+      toast.success("✨ Imagen Agregada", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -45,37 +57,23 @@ export default function ReplaceImageModal({
         progress: undefined,
       });
     }
-  };
 
-  const onSuccess = (result) => {
-    const { public_id } = result.info;
-    const updateImgs = getValues("image").map((i) => {
-      if (i === imgId) {
-        return public_id;
-      }
-
-      return i;
-    });
-    setValue("image", updateImgs);
-
-    updateProducts(getValues("id"), {
-      image: updateImgs,
-    });
-    setupdateImage(true);
+    console.log("entro a close");
   };
 
   const replaceImg = async () => {
     setLoading(true);
     await deleteImage(imgId);
 
+    setLoading(true);
     myWidget(
       setupWidget(
         user.email,
         getValues("title"),
         1,
         onSuccess,
-        oncloseWidget,
-        onloadWdiget
+        onCloseWidget,
+        onLoadWidget
       )
     );
 

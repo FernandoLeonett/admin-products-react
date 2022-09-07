@@ -64,64 +64,64 @@ const Header = () => {
         </div>
 
         <>
-          {
-            user && <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapsibleNavbar"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-          }
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsibleNavbar"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
           <div className="collapse navbar-collapse" id="collapsibleNavbar">
             <ul className="navbar-nav">
-              {
-                setIsReadyForInstall && <li className="nav-item">
-                  <a
-                    onClick={downloadApp}
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    // onClick={() => logout()}
-                    className="nav-link"
-                  // id="btnCerrarSesion"
-                  >
-                    Descargar Aplicación
-                  </a>
-                </li>
+
+              {setIsReadyForInstall && <li className="nav-item">
+                <a
+                  onClick={downloadApp}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                  // onClick={() => logout()}
+                  className="nav-link"
+                // id="btnCerrarSesion"
+                >
+                  Descargar Aplicación
+                </a>
+              </li>
               }
 
-              {
-                user && <li className="nav-item">
-                  <a
-                    onClick={navigateBetwenHomeForm}
-                    className="nav-link"
-                    id="btnTop"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  >
-                    {location.pathname == routes.home
-                      ? "Agregar Producto"
-                      : "Ver listado"}
-                  </a>
-                </li>
-              }
+              {user &&
+                <>
+                  <li className="nav-item">
+                    <a
+                      onClick={navigateBetwenHomeForm}
+                      className="nav-link"
+                      id="btnTop"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      {location.pathname == routes.home
+                        ? "Agregar Producto"
+                        : "Ver listado"}
+                    </a>
+                  </li>
 
-              {
-                user && <li className="nav-item">
-                  <a
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() => logout()}
-                    className="nav-link"
-                    id="btnCerrarSesion"
-                  >
-                    Cerrar Sesión
-                  </a>
-                </li>
+                  <li className="nav-item">
+                    <a
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => logout()}
+                      className="nav-link"
+                      id="btnCerrarSesion"
+                    >
+                      Cerrar Sesión
+                    </a>
+                  </li>
+
+                </>
               }
             </ul>
           </div>
