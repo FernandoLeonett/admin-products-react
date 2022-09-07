@@ -61,27 +61,27 @@ export default function ReplaceImageModal({
     console.log("entro a close");
   };
 
-  const replaceImg = async () => {
-    setLoading(true);
+  // const replaceImg = async () => {
+  //   setLoading(true);
 
-    await deleteImage(imgId);
-    const localImg = getValues("image").filter((i) => i !== imgId);
-    setValue("image", localImg);
-    myWidget(
-      setupWidget(
-        user.email,
-        getValues("title"),
-        1,
-        onSuccess,
-        onCloseWidget,
-        onLoadWidget
-      )
-    )
+  //   await deleteImage(imgId);
+  //   const localImg = getValues("image").filter((i) => i !== imgId);
+  //   setValue("image", localImg);
+  //   myWidget(
+  //     setupWidget(
+  //       user.email,
+  //       getValues("title"),
+  //       1,
+  //       onSuccess,
+  //       onCloseWidget,
+  //       onLoadWidget
+  //     )
+  //   )
 
-    closeModal();
+  //   closeModal();
 
 
-  };
+  // };
   const deleteImageModal = async () => {
     closeModal();
     setLoading(true);
@@ -118,19 +118,19 @@ export default function ReplaceImageModal({
     <Modal
       isOpenModal={isOpenModal}
       cancelFun={cancelReplaceImage}
-      acceptFun={replaceImg}
+      acceptFun={deleteImageModal}
       btnClassNameCancel={"btn btn-outline-secondary"}
       title={"Editar Imagen"}
       question={"Elija la opción que desea"}
-      acceptValue={"Reemplazar imagen"}
-      extraButton={
-        <input
-          className={"btn btn-outline-danger"}
-          type="button"
-          onClick={deleteImageModal}
-          value={"Eliminar imagen"}
-        />
-      }
+      acceptValue={"Eliminar imagen"}
+    // extraButton={
+    //   <input
+    //     className={"btn btn-outline-danger"}
+    //     type="button"
+    //     onClick={deleteImageModal}
+    //     value={"Eliminar imagen"}
+    //   />
+    // }
     />
   );
 }
