@@ -21,8 +21,9 @@ const Header = () => {
       : navigate(routes.home);
 
 
-  const [isReadyForInstall, setIsReadyForInstall] = useState(false);
+  const [isReadyForInstall, setIsReadyForInstall] = useState(true);
   useEffect(() => {
+
     window.addEventListener("beforeinstallprompt", (event) => {
       // Prevent the mini-infobar from appearing on mobile.
       event.preventDefault();
@@ -30,7 +31,7 @@ const Header = () => {
       // Stash the event so it can be triggered later.
       window.deferredPrompt = event;
       // Remove the 'hidden' class from the install button container.
-      setIsReadyForInstall(true);
+      setIsReadyForInstall(false);
     });
   }, []);
 
@@ -76,19 +77,20 @@ const Header = () => {
           <div className="collapse navbar-collapse" id="collapsibleNavbar">
             <ul className="navbar-nav">
 
-              {setIsReadyForInstall && <li className="nav-item">
-                <a
-                  onClick={downloadApp}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                  // onClick={() => logout()}
-                  className="nav-link"
-                // id="btnCerrarSesion"
-                >
-                  Descargar Aplicación
-                </a>
-              </li>
+              {isReadyForInstall &&
+                <li className="nav-item">
+                  <a
+                    onClick={downloadApp}
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    // onClick={() => logout()}
+                    className="nav-link"
+                  // id="btnCerrarSesion"
+                  >
+                    Descargar Aplicación
+                  </a>
+                </li>
               }
 
               {user &&
