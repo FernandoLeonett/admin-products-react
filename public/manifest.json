@@ -2,7 +2,7 @@
   "name": "Simple Shop",
   "short_name": "Simple Shop",
   "theme_color": "#03FA6E",
-  "background_color": "#ffffff",
+  "background_color": "#000000",
   "display": "standalone",
 
   "scope": "/",
