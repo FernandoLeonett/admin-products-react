@@ -94,8 +94,7 @@ const FormPage = () => {
             isOpenModal={isOpenModal}
             closeModal={closeModal}
             reset={reset}
-            getValues={getValues}
-            setValue={setValue}
+
           />
 
           {isDirty && <WidgetLoader />}

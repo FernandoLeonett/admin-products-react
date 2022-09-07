@@ -13,8 +13,8 @@ interface props {
     isOpenModal: () => void;
 
     reset: any;
-    getValues: UseFormGetValues<Product>;
-    setValue: UseFormSetValue<Product>;
+    // getValues: UseFormGetValues<Product>;
+    // setValue: UseFormSetValue<Product>;
 }
 
 export default function ModalAdd({
