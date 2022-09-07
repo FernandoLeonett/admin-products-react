@@ -61,21 +61,21 @@ const Header = () => {
             <img src="/logo.png" className="rounded-circle" />
           </a>
         </div>
+        {user && (
+          <>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapsibleNavbar"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
 
-        <>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapsibleNavbar"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul className="navbar-nav">
-              <>
-                {/* {isReadyForInstall && (
+            <div className="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul className="navbar-nav">
+                <>
+                  {/* {isReadyForInstall && (
                   <li className="nav-item">
                     <a
                       onClick={downloadApp}
@@ -90,8 +90,8 @@ const Header = () => {
                     </a>
                   </li>
                 )} */}
-              </>
-              {user && (
+                </>
+
                 <>
                   <li className="nav-item">
                     <a
@@ -121,10 +121,10 @@ const Header = () => {
                     </a>
                   </li>
                 </>
-              )}
-            </ul>
-          </div>
-        </>
+              </ul>
+            </div>
+          </>
+        )}
       </nav>
     </header>
   );

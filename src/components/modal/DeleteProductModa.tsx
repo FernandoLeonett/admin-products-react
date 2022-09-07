@@ -42,6 +42,7 @@ export default function DeLeteProductModal({
       isOpenModal={isOpenModal}
       cancelFun={cancelFun}
       acceptFun={deleteProductFn}
+      btnClassNameAccept={"btn btn-outline-danger"}
       btnClassNameCancel={"btn btn-outline-secondary"}
       title={"El producto será eliminado"}
       acceptValue={"Eliminar Producto"}

@@ -37,7 +37,6 @@ export default function ReplaceImageModal({
     setValue("image", [...getValues("image"), public_id]);
   };
 
-
   const onCloseWidget = async (result) => {
     if (updateImageField) {
       updateImageField = false;
@@ -80,7 +79,6 @@ export default function ReplaceImageModal({
 
   //   closeModal();
 
-
   // };
   const deleteImageModal = async () => {
     closeModal();
@@ -119,18 +117,20 @@ export default function ReplaceImageModal({
       isOpenModal={isOpenModal}
       cancelFun={cancelReplaceImage}
       acceptFun={deleteImageModal}
+      btnClassNameAccept={"btn btn-outline-danger"}
       btnClassNameCancel={"btn btn-outline-secondary"}
-      title={"Editar Imagen"}
-      question={"Elija la opción que desea"}
+      title={"La imagen será eliminada"}
+      question={"Confirme que  desea eliminar la imagen de forma permanente"}
       acceptValue={"Eliminar imagen"}
-    // extraButton={
-    //   <input
-    //     className={"btn btn-outline-danger"}
-    //     type="button"
-    //     onClick={deleteImageModal}
-    //     value={"Eliminar imagen"}
-    //   />
-    // }
+
+      // extraButton={
+      //   <input
+      //     className={"btn btn-outline-danger"}
+      //     type="button"
+      //     onClick={deleteImageModal}
+      //     value={"Eliminar imagen"}
+      //   />
+      // }
     />
   );
 }
