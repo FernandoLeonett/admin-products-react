@@ -5,7 +5,6 @@ import myWidget from "../cloudinary/MyWidget";
 import { deleteImage } from "../cloudinary/Service";
 import Modal from "./Modal";
 
-import { useState } from "react";
 import { toast } from "react-toastify";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 
@@ -38,6 +37,7 @@ export default function ReplaceImageModal({
     setValue("image", [...getValues("image"), public_id]);
   };
 
+
   const onCloseWidget = async (result) => {
     if (updateImageField) {
       updateImageField = false;
@@ -47,7 +47,7 @@ export default function ReplaceImageModal({
         image: getValues("image"),
       });
 
-      toast.success("✨ Imagen Agregada", {
+      toast.success("✨ Imagen Actualizada", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -63,9 +63,10 @@ export default function ReplaceImageModal({
 
   const replaceImg = async () => {
     setLoading(true);
-    await deleteImage(imgId);
 
-    setLoading(true);
+    await deleteImage(imgId);
+    const localImg = getValues("image").filter((i) => i !== imgId);
+    setValue("image", localImg);
     myWidget(
       setupWidget(
         user.email,
@@ -75,19 +76,11 @@ export default function ReplaceImageModal({
         onCloseWidget,
         onLoadWidget
       )
-    );
+    )
 
     closeModal();
 
-    toast.success("✨ Imagen remplazada", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+
   };
   const deleteImageModal = async () => {
     closeModal();
@@ -106,7 +99,7 @@ export default function ReplaceImageModal({
 
     setLoading(false);
 
-    toast.success("✨ Imagen Eliminada", {
+    toast.warn("✨ Imagen Eliminada", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,

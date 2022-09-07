@@ -88,7 +88,8 @@ const EditPage = () => {
         4 - getValues("image").length,
         onSuccess,
         onCloseWidget,
-        onLoadWidget
+        onLoadWidget,
+
       )
     );
   };

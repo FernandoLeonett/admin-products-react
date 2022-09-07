@@ -51,7 +51,7 @@ const Header = () => {
     // prompt() can only be called once.
     window.deferredPrompt = null;
     // Hide the install button.
-    setIsReadyForInstall(false);
+    setIsReadyForInstall(true);
   }
 
   return (
