@@ -29,7 +29,7 @@ export default function ModalAdd({
 
 
         closeModal();
-        reset();
+
     };
 
     const cancelAdding = () => {
