@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
@@ -15,7 +15,6 @@ import Spinner from "../../components/spinner/Spinner";
 import FormComponent from "../../components/FormComponent/FormComponent";
 import setupWidget from "../../util/configWidget";
 import { toast } from "react-toastify";
-import { readBuilderProgram } from "typescript";
 
 interface ParamProduct {
   state: { product: Product };
