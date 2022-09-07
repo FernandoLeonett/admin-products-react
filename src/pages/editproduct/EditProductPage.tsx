@@ -59,6 +59,7 @@ const EditPage = () => {
   const onCloseWidget = async (result) => {
     if (updateImageField) {
       updateImageField = false;
+      console.log("valores a actualizar", getValues())
       console.log("onCloseWidget", "hubo cambios");
 
       await updateProducts(getValues("id"), {
