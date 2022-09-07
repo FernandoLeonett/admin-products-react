@@ -218,6 +218,7 @@ export const ProductContextProvider = ({ children }) => {
       }
     };
     checkUser();
+    console.log('user', user)
 
     return () => {
       authListener?.unsubscribe();
@@ -226,9 +227,17 @@ export const ProductContextProvider = ({ children }) => {
   useEffect(() => {
     if (user?.id) {
       getProducts();
-      console.log("me ejecute");
+
     }
-  }, []);
+
+
+
+    console.log("me ejecute");
+
+
+
+
+  }, [user?.id]);
 
   return (
     <ProductContext.Provider

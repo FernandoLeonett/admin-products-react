@@ -32,7 +32,7 @@ const EditPage = () => {
   const [imageMode, setImageMode] = useState(false);
   // const [updatedImage, setUpdatedImage] = useState(false);
 
-  const onloadWidget = () => {
+  const onLoadWidget = () => {
     setLoading(false);
   };
 
@@ -56,10 +56,10 @@ const EditPage = () => {
     setValue("image", [...getValues("image"), public_id]);
   };
 
-  const oncloseWdiget = async (result) => {
+  const onCloseWidget = async (result) => {
     if (updateImageField) {
       updateImageField = false;
-      console.log("oncloseWdiget", "hubo cambios");
+      console.log("onCloseWidget", "hubo cambios");
 
       await updateProducts(getValues("id"), {
         image: getValues("image"),
@@ -87,8 +87,9 @@ const EditPage = () => {
         getValues("title"),
         4 - getValues("image").length,
         onSuccess,
-        oncloseWdiget,
-        onloadWidget
+        onCloseWidget,
+        onLoadWidget,
+
       )
     );
   };

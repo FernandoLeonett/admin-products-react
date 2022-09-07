@@ -5,7 +5,6 @@ import myWidget from "../cloudinary/MyWidget";
 import { deleteImage } from "../cloudinary/Service";
 import Modal from "./Modal";
 
-import { useState } from "react";
 import { toast } from "react-toastify";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 
@@ -27,14 +26,27 @@ export default function ReplaceImageModal({
   setValue,
 }: props) {
   const { updateProducts, setLoading, user } = useProducts();
-  const [updateImage, setupdateImage] = useState(false);
 
-  const onloadWdiget = () => {
+  let updateImageField = false;
+  const onLoadWidget = () => {
     setLoading(false);
   };
+  const onSuccess = (result) => {
+    updateImageField = true;
+    const { public_id } = result.info;
+    setValue("image", [...getValues("image"), public_id]);
+  };
 
-  const oncloseWidget = () => {
-    if (updateImage) {
+
+  const onCloseWidget = async (result) => {
+    if (updateImageField) {
+      updateImageField = false;
+      console.log("onCloseWidget", "hubo cambios");
+
+      await updateProducts(getValues("id"), {
+        image: getValues("image"),
+      });
+
       toast.success("✨ Imagen Actualizada", {
         position: "top-center",
         autoClose: 5000,
@@ -45,51 +57,30 @@ export default function ReplaceImageModal({
         progress: undefined,
       });
     }
-  };
 
-  const onSuccess = (result) => {
-    const { public_id } = result.info;
-    const updateImgs = getValues("image").map((i) => {
-      if (i === imgId) {
-        return public_id;
-      }
-
-      return i;
-    });
-    setValue("image", updateImgs);
-
-    updateProducts(getValues("id"), {
-      image: updateImgs,
-    });
-    setupdateImage(true);
+    console.log("entro a close");
   };
 
   const replaceImg = async () => {
     setLoading(true);
-    await deleteImage(imgId);
 
+    await deleteImage(imgId);
+    const localImg = getValues("image").filter((i) => i !== imgId);
+    setValue("image", localImg);
     myWidget(
       setupWidget(
         user.email,
         getValues("title"),
         1,
         onSuccess,
-        oncloseWidget,
-        onloadWdiget
+        onCloseWidget,
+        onLoadWidget
       )
-    );
+    )
 
     closeModal();
 
-    toast.success("✨ Imagen remplazada", {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+
   };
   const deleteImageModal = async () => {
     closeModal();
@@ -108,7 +99,7 @@ export default function ReplaceImageModal({
 
     setLoading(false);
 
-    toast.success("✨ Imagen Eliminada", {
+    toast.warn("✨ Imagen Eliminada", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,

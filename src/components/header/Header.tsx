@@ -21,8 +21,9 @@ const Header = () => {
       : navigate(routes.home);
 
 
-  const [isReadyForInstall, setIsReadyForInstall] = useState(false);
+  const [isReadyForInstall, setIsReadyForInstall] = useState(true);
   useEffect(() => {
+
     window.addEventListener("beforeinstallprompt", (event) => {
       // Prevent the mini-infobar from appearing on mobile.
       event.preventDefault();
@@ -30,7 +31,7 @@ const Header = () => {
       // Stash the event so it can be triggered later.
       window.deferredPrompt = event;
       // Remove the 'hidden' class from the install button container.
-      setIsReadyForInstall(true);
+      setIsReadyForInstall(false);
     });
   }, []);
 
@@ -51,7 +52,7 @@ const Header = () => {
     // prompt() can only be called once.
     window.deferredPrompt = null;
     // Hide the install button.
-    setIsReadyForInstall(false);
+    setIsReadyForInstall(true);
   }
 
   return (
@@ -64,20 +65,20 @@ const Header = () => {
         </div>
 
         <>
-          {
-            user && <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapsibleNavbar"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-          }
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapsibleNavbar"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
           <div className="collapse navbar-collapse" id="collapsibleNavbar">
             <ul className="navbar-nav">
-              {
-                setIsReadyForInstall && <li className="nav-item">
+
+              {isReadyForInstall &&
+                <li className="nav-item">
                   <a
                     onClick={downloadApp}
                     style={{
@@ -92,36 +93,37 @@ const Header = () => {
                 </li>
               }
 
-              {
-                user && <li className="nav-item">
-                  <a
-                    onClick={navigateBetwenHomeForm}
-                    className="nav-link"
-                    id="btnTop"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  >
-                    {location.pathname == routes.home
-                      ? "Agregar Producto"
-                      : "Ver listado"}
-                  </a>
-                </li>
-              }
+              {user &&
+                <>
+                  <li className="nav-item">
+                    <a
+                      onClick={navigateBetwenHomeForm}
+                      className="nav-link"
+                      id="btnTop"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      {location.pathname == routes.home
+                        ? "Agregar Producto"
+                        : "Ver listado"}
+                    </a>
+                  </li>
 
-              {
-                user && <li className="nav-item">
-                  <a
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() => logout()}
-                    className="nav-link"
-                    id="btnCerrarSesion"
-                  >
-                    Cerrar Sesión
-                  </a>
-                </li>
+                  <li className="nav-item">
+                    <a
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => logout()}
+                      className="nav-link"
+                      id="btnCerrarSesion"
+                    >
+                      Cerrar Sesión
+                    </a>
+                  </li>
+
+                </>
               }
             </ul>
           </div>
