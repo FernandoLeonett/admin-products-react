@@ -60,7 +60,7 @@ const EditPage = () => {
   const oncloseWdiget = async (result) => {
     if (updateImageField) {
       updateImageField = false
-
+      console.log("oncloseWdiget", "hubo cambios");
 
       await updateProducts(getValues("id"), {
         image: getValues("image"),
@@ -77,6 +77,7 @@ const EditPage = () => {
       });
     }
 
+    console.log("entro a close");
   };
 
   const addImageEdit = () => {

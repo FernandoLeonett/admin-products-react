@@ -228,7 +228,7 @@ export const ProductContextProvider = ({ children }) => {
       getProducts();
       console.log("me ejecute");
     }
-  }, [user?.id]);
+  }, []);
 
   return (
     <ProductContext.Provider

@@ -8,13 +8,13 @@ import { supabase } from "../../client/supabaase";
 const HomePage = () => {
   const { getProducts, loading, products, user } = useProducts();
 
-  // useEffect(() => {
-  //   console.log(user);
+  useEffect(() => {
+    console.log(user);
 
-  //   // }, [products])
+    // }, [products])
 
-  //   getProducts();
-  // }, []);
+    getProducts();
+  }, []);
 
   return (
     <div className="container">
