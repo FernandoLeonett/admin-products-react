@@ -94,7 +94,7 @@ export default function ReplaceImageModal({
   const deleteImageModal = async () => {
     closeModal();
     setLoading(true);
-    const localImg = getValues("image").filter((i) => i !== imgId)
+    const localImg = getValues("image").filter((i) => i !== imgId);
     await deleteImage(imgId);
 
     updateProducts(
@@ -104,10 +104,9 @@ export default function ReplaceImageModal({
         image: localImg,
       }
     );
-    setValue('image', localImg);
+    setValue("image", localImg);
 
     setLoading(false);
-
 
     toast.success("✨ Imagen Eliminada", {
       position: "top-center",
@@ -120,7 +119,6 @@ export default function ReplaceImageModal({
     });
   };
 
-
   const cancelReplaceImage = () => {
     closeModal();
   };
@@ -131,8 +129,8 @@ export default function ReplaceImageModal({
       cancelFun={cancelReplaceImage}
       acceptFun={replaceImg}
       btnClassNameCancel={"btn btn-outline-secondary"}
-      title={"Remplazar Imagen"}
-      question={"¿Está seguro que desea reemplazar la imagen?"}
+      title={"Editar Imagen"}
+      question={"Elija la opción que desea"}
       acceptValue={"Reemplazar imagen"}
       extraButton={
         <input

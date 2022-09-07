@@ -47,42 +47,13 @@ label {
 }
 
 .border-title{
-border-bottom: 1px solid #03FA6E
+  border-bottom: 1px solid #03FA6E
 }
 
 .td-estilos{
   font-weight: bold;
 }
 
-/* .containerImagenes {
-    display: grid;
-    grid-template-areas:
-        "Imagen1 Imagen2"
-        "Imagen3 Imagen4";
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
-    row-gap: 0.5rem;
-    column-gap: 0rem;
-  }
-
-Imagen1{
-  grid-area: Imagen1;
+.imagen-datos-producto:hover{
+ background-color: #ccc;
 }
-
-Imagen2{
-  grid-area: Imagen2;
-}
-
-Imagen3{
-  grid-area: Imagen3;
-}
-
-Imagen4{
-  grid-area: Imagen4;
-}
-*/
-/* .imagen-datos-producto { 
-  padding: 0rem 0.5rem;
-  width: 100%;
-  
-} */

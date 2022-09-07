@@ -43,12 +43,11 @@ const FormPage = () => {
 
   const oncloseWdiget = (result) => {
     if (Boolean(getValues("image").length)) {
-
       createProduct(getValues());
       openModal();
     } else {
       Swal.fire({
-        text: "tu producto debe tener al menos una imagen",
+        text: "El producto debe tener al menos una imagen",
         icon: "error",
         confirmButtonText: "OK",
         buttonsStyling: false,
@@ -108,7 +107,8 @@ const FormPage = () => {
             products={products}
             errors={errors}
             isDirty={isDirty}
-            reset={reset} />
+            reset={reset}
+          />
         </>
       ) : (
         <Spinner />

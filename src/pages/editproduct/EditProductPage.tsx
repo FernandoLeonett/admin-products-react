@@ -6,7 +6,6 @@ import { Image } from "cloudinary-react";
 import "./Edit.css";
 import { CLOUD_NAME } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
-
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
 import ReplaceImageModal from "../../components/modal/ReplaceImageModal";
@@ -16,13 +15,13 @@ import Spinner from "../../components/spinner/Spinner";
 import FormComponent from "../../components/FormComponent/FormComponent";
 import setupWidget from "../../util/configWidget";
 import { toast } from "react-toastify";
+import { readBuilderProgram } from "typescript";
 
 interface ParamProduct {
   state: { product: Product };
 }
 
 const EditPage = () => {
-
   const param = useLocation() as ParamProduct;
   if (!param.state) {
     return <Navigate to={routes.home} />;
@@ -36,6 +35,7 @@ const EditPage = () => {
   const onloadWidget = () => {
     setLoading(false);
   };
+
   const {
     register,
     getValues,
@@ -46,20 +46,19 @@ const EditPage = () => {
   } = useForm<Product>({
     defaultValues: param.state.product,
   });
-  let updateImageField = false
+  let updateImageField = false;
 
   const isDirty = !!Object.keys(dirtyFields).length;
+
   const onSuccess = (result) => {
-    updateImageField = (true);
-
+    updateImageField = true;
     const { public_id } = result.info;
-
     setValue("image", [...getValues("image"), public_id]);
   };
 
   const oncloseWdiget = async (result) => {
     if (updateImageField) {
-      updateImageField = false
+      updateImageField = false;
       console.log("oncloseWdiget", "hubo cambios");
 
       await updateProducts(getValues("id"), {
@@ -188,12 +187,18 @@ const EditPage = () => {
                     </table>
                   </div>
                 </div>
-                <p>Actualiza tus imagenes</p>
+                <p className="m-0" style={{ fontWeight: "bold" }}>
+                  Actualiza tus imágenes
+                </p>
+                <p className="m-0" style={{ fontSize: 12, color: "#ccc" }}>
+                  clickea sobre la imágen para ver más opciones
+                </p>
                 <input
                   disabled={getValues("image").length >= 4}
                   onClick={addImageEdit}
                   type="button"
-                  value="Agregar Imagenes"
+                  className="btn btn-outline-primary w-auto "
+                  value="Agregar Imágenes"
                 />
                 <div className="row d-flex justify-content-center">
                   <div className="col-xs-12   text-center pb-3">

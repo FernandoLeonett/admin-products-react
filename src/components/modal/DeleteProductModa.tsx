@@ -45,9 +45,7 @@ export default function DeLeteProductModal({
       btnClassNameCancel={"btn btn-outline-secondary"}
       title={"El producto será eliminado"}
       acceptValue={"Eliminar Producto"}
-      question={
-        "Confirme que  desea eliminar elminar el producto de forma permanente"
-      }
+      question={"Confirme que  desea eliminar el producto de forma permanente"}
     />
     // </div>
   );
