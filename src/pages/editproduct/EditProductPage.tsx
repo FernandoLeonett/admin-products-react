@@ -84,7 +84,7 @@ const EditPage = () => {
     myWidget(
       setupWidget(
         user.email,
-        getValues("title"),
+
         4 - getValues("image").length,
         onSuccess,
         onCloseWidget,

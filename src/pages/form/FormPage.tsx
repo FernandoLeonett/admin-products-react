@@ -78,7 +78,7 @@ const FormPage = () => {
     myWidget(
       setupWidget(
         user.email,
-        getValues("title"),
+
         MAX_FILES,
         onSuccess,
         oncloseWdiget,
