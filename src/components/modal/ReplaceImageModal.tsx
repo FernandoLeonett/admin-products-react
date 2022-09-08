@@ -60,26 +60,26 @@ export default function ReplaceImageModal({
     console.log("entro a close");
   };
 
-  // const replaceImg = async () => {
-  //   setLoading(true);
+  const replaceImg = async () => {
+    setLoading(true);
 
-  //   await deleteImage(imgId);
-  //   const localImg = getValues("image").filter((i) => i !== imgId);
-  //   setValue("image", localImg);
-  //   myWidget(
-  //     setupWidget(
-  //       user.email,
-  //       getValues("title"),
-  //       1,
-  //       onSuccess,
-  //       onCloseWidget,
-  //       onLoadWidget
-  //     )
-  //   )
+    await deleteImage(imgId);
+    const localImg = getValues("image").filter((i) => i !== imgId);
+    setValue("image", localImg);
+    myWidget(
+      setupWidget(
+        user.email,
 
-  //   closeModal();
+        1,
+        onSuccess,
+        onCloseWidget,
+        onLoadWidget
+      )
+    )
 
-  // };
+    closeModal();
+
+  };
   const deleteImageModal = async () => {
     closeModal();
     setLoading(true);
@@ -123,14 +123,14 @@ export default function ReplaceImageModal({
       question={"Confirme que  desea eliminar la imagen de forma permanente"}
       acceptValue={"Eliminar imagen"}
 
-      // extraButton={
-      //   <input
-      //     className={"btn btn-outline-danger"}
-      //     type="button"
-      //     onClick={deleteImageModal}
-      //     value={"Eliminar imagen"}
-      //   />
-      // }
+    // extraButton={
+    //   <input
+    //     className={"btn btn-outline-danger"}
+    //     type="button"
+    //     onClick={replaceImg}
+    //     value={"Remplazar imagen"}
+    //   />}
+
     />
   );
 }
