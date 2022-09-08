@@ -79,7 +79,7 @@ const Header = () => {
         <>
           <>
             {
-              (!isReadyForInstall || user) && <button
+              (isReadyForInstall || user) && <button
                 className="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
