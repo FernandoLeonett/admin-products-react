@@ -64,14 +64,19 @@ const Header = () => {
         </div>
 
         <>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapsibleNavbar"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+          <>
+            {
+              (!isReadyForInstall || user) && <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapsibleNavbar"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+            }
+
+          </>
 
           <div className="collapse navbar-collapse" id="collapsibleNavbar">
             <ul className="navbar-nav">
