@@ -19,6 +19,14 @@ export const getPublicIdImage = (url: string) => {
   return pid;
 };
 
+export const getPublicId = (url) => {
+  const publicId = url.substring(
+    url.lastIndexOf("/") + 1,
+    url.lastIndexOf(".")
+  );
+  return publicId;
+};
+
 export const validateEmail = (email) => {
   return String(email)
     .toLowerCase()

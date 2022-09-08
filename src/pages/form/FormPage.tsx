@@ -61,9 +61,9 @@ const FormPage = () => {
   const onSuccess = (result) => {
     console.log("success");
     console.log("M", getValues());
-    const { public_id } = result.info;
+    const { secure_url } = result.info;
 
-    setValue("image", [...getValues("image"), public_id]);
+    setValue("image", [...getValues("image"), secure_url]);
   };
 
   const onloadWdiget = () => {

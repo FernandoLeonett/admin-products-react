@@ -27,59 +27,59 @@ export default function ReplaceImageModal({
 }: props) {
   const { updateProducts, setLoading, user } = useProducts();
 
-  let updateImageField = false;
-  const onLoadWidget = () => {
-    setLoading(false);
-  };
-  const onSuccess = (result) => {
-    updateImageField = true;
-    const { public_id } = result.info;
-    setValue("image", [...getValues("image"), public_id]);
-  };
+  // let updateImageField = false;
+  // const onLoadWidget = () => {
+  //   setLoading(false);
+  // };
+  // const onSuccess = (result) => {
+  //   updateImageField = true;
+  //   const { secure_url } = result.info;
+  //   setValue("image", [...getValues("image"), secure_url]);
+  // };
 
-  const onCloseWidget = async (result) => {
-    if (updateImageField) {
-      updateImageField = false;
-      console.log("onCloseWidget", "hubo cambios");
+  // const onCloseWidget = async (result) => {
+  //   if (updateImageField) {
+  //     updateImageField = false;
+  //     console.log("onCloseWidget", "hubo cambios");
 
-      await updateProducts(getValues("id"), {
-        image: getValues("image"),
-      });
+  //     await updateProducts(getValues("id"), {
+  //       image: getValues("image"),
+  //     });
 
-      toast.success("✨ Imagen Actualizada", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
+  //     toast.success("✨ Imagen Actualizada", {
+  //       position: "top-center",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //     });
+  //   }
 
-    console.log("entro a close");
-  };
+  //   console.log("entro a close");
+  // };
 
-  const replaceImg = async () => {
-    setLoading(true);
+  // const replaceImg = async () => {
+  //   setLoading(true);
 
-    await deleteImage(imgId);
-    const localImg = getValues("image").filter((i) => i !== imgId);
-    setValue("image", localImg);
-    myWidget(
-      setupWidget(
-        user.email,
+  //   await deleteImage(imgId);
+  //   const localImg = getValues("image").filter((i) => i !== imgId);
+  //   setValue("image", localImg);
+  //   myWidget(
+  //     setupWidget(
+  //       user.email,
 
-        1,
-        onSuccess,
-        onCloseWidget,
-        onLoadWidget
-      )
-    )
+  //       1,
+  //       onSuccess,
+  //       onCloseWidget,
+  //       onLoadWidget
+  //     )
+  //   )
 
-    closeModal();
+  //   closeModal();
 
-  };
+  // };
   const deleteImageModal = async () => {
     closeModal();
     setLoading(true);
