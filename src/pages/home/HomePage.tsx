@@ -20,7 +20,7 @@ const HomePage = () => {
   return (
     <div className="container">
       <p className="saludo text-right text-secondary mt-1">
-        👾Bienvenido matiascabralmendez@gmail.com{" "}
+        😎Bienvenido {user.email}
       </p>
       <div className="row d-flex justify-content-center mt-4">
         {loading ? (

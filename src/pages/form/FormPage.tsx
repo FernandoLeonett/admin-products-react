@@ -70,13 +70,11 @@ const FormPage = () => {
     setLoading(false);
   };
 
-
   const onSubmit = () => {
     if (!isDirty) return;
 
-
-    if (products.find((p) => p.title === getValues('title'))) {
-      toast.error('🛑 Ya tienes un producto con este titulo!', {
+    if (products.find((p) => p.title.trim() === getValues("title").trim())) {
+      toast.error("Ya tienes un producto con este título!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -85,9 +83,7 @@ const FormPage = () => {
         draggable: true,
         progress: undefined,
       });
-      return
-
-
+      return;
     }
 
     console.log("onSubmit", getValues());
