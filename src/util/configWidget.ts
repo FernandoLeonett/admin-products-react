@@ -1,10 +1,10 @@
 import WidgetProps from "../interfaces/WidgetProps";
 import spanish from "./spanish";
-import { CLOUD_NAME, UPLOAD_PRESET, API_KEY, FOLDER_IMAGE } from "./util";
+import { CLOUD_NAME, UPLOAD_PRESET, API_KEY } from "./util";
 
 const setupWidget = (
   folderImage,
- 
+
   maxFiles: number,
   onSuccess: (result) => void,
   oncloseWdiget: (result) => void,
