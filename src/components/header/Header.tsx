@@ -22,18 +22,16 @@ const Header = () => {
 
   const [isReadyForInstall, setIsReadyForInstall] = useState(false);
 
-
   useEffect(() => {
-    window.addEventListener('appinstalled', () => {
+    window.addEventListener("appinstalled", () => {
       // Esconder la promoción de instalación de la PWA
       // hideInstallPromotion();
       // Limpiar el defferedPrompt para que pueda ser eliminado por el recolector de basura
       // deferredPrompt = null;
       // De manera opcional, enviar el evento de analíticos para indicar una instalación exitosa
-      alert('PWA was installed');
+      alert("PWA was installed");
     });
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (event) => {
@@ -75,11 +73,10 @@ const Header = () => {
             <img src="/logo.png" className="rounded-circle" />
           </a>
         </div>
-
         <>
           <>
-            {
-              (isReadyForInstall || user) && <button
+            {(isReadyForInstall || user) && (
+              <button
                 className="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
@@ -87,8 +84,7 @@ const Header = () => {
               >
                 <span className="navbar-toggler-icon"></span>
               </button>
-            }
-
+            )}
           </>
 
           <div className="collapse navbar-collapse" id="collapsibleNavbar">
@@ -103,14 +99,14 @@ const Header = () => {
                       }}
                       // onClick={() => logout()}
                       className="nav-link"
-                    // id="btnCerrarSesion"
+                      // id="btnCerrarSesion"
                     >
                       Descargar App
                     </a>
                   </li>
                 )}
               </>
-              {user &&
+              {user && (
                 <>
                   <li className="nav-item">
                     <a
@@ -140,11 +136,10 @@ const Header = () => {
                     </a>
                   </li>
                 </>
-              }
+              )}
             </ul>
           </div>
         </>
-
       </nav>
     </header>
   );

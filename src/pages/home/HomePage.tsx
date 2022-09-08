@@ -19,6 +19,9 @@ const HomePage = () => {
 
   return (
     <div className="container">
+      <p className="saludo text-right text-secondary mt-1">
+        👾Bienvenido matiascabralmendez@gmail.com{" "}
+      </p>
       <div className="row d-flex justify-content-center mt-4">
         {loading ? (
           <Spinner />

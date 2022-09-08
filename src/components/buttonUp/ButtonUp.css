@@ -1,7 +1,7 @@
 .buttonUp {
   z-index: 5;
   position: fixed;
-  bottom: 4rem;
+  bottom: 5rem;
   right: 2rem;
   cursor: pointer;
 }
