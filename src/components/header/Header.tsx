@@ -92,36 +92,37 @@ const Header = () => {
                   </li>
                 )}
               </>
+              {user &&
+                <>
+                  <li className="nav-item">
+                    <a
+                      onClick={navigateBetwenHomeForm}
+                      className="nav-link"
+                      id="btnTop"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    >
+                      {location.pathname == routes.home
+                        ? "Agregar Producto"
+                        : "Ver listado"}
+                    </a>
+                  </li>
 
-              <>
-                <li className="nav-item">
-                  <a
-                    onClick={navigateBetwenHomeForm}
-                    className="nav-link"
-                    id="btnTop"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  >
-                    {location.pathname == routes.home
-                      ? "Agregar Producto"
-                      : "Ver listado"}
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a
-                    style={{
-                      cursor: "pointer",
-                    }}
-                    onClick={() => logout()}
-                    className="nav-link"
-                    id="btnCerrarSesion"
-                  >
-                    Cerrar Sesión
-                  </a>
-                </li>
-              </>
+                  <li className="nav-item">
+                    <a
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => logout()}
+                      className="nav-link"
+                      id="btnCerrarSesion"
+                    >
+                      Cerrar Sesión
+                    </a>
+                  </li>
+                </>
+              }
             </ul>
           </div>
         </>
