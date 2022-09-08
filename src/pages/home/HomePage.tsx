@@ -4,6 +4,7 @@ import Product from "../../interfaces/Product";
 import Card from "../../components/card/Card";
 import Spinner from "../../components/spinner/Spinner";
 import { supabase } from "../../client/supabaase";
+import ButtonUp from "../../components/buttonUp/ButtonUp";
 
 const HomePage = () => {
   const { getProducts, loading, products, user } = useProducts();
@@ -26,6 +27,7 @@ const HomePage = () => {
             {products.map((product: Product, i) => (
               <Card key={i} product={product} />
             ))}
+            <ButtonUp />
           </>
         ) : (
           // <div className="container">

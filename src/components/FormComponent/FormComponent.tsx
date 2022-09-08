@@ -72,7 +72,7 @@ const FormComponent = ({
                 className="form-control"
                 {...register("title", {
                   required: "el titulo es requerido",
-                  validate: (value) => !/[^a-zA-Z0-9\s\-\/]/.test(value),
+                  // validate: (value) => !/[^a-zA-Z0-9\s\-\/]/.test(value),
                 })}
 
               />

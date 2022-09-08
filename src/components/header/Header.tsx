@@ -20,38 +20,52 @@ const Header = () => {
       ? navigate(routes.form)
       : navigate(routes.home);
 
-  // const [isReadyForInstall, setIsReadyForInstall] = useState(true);
-  // useEffect(() => {
-  //   window.addEventListener("beforeinstallprompt", (event) => {
-  //     // Prevent the mini-infobar from appearing on mobile.
-  //     event.preventDefault();
-  //     console.log("👍", "beforeinstallprompt", event);
-  //     // Stash the event so it can be triggered later.
-  //     window.deferredPrompt = event;
-  //     // Remove the 'hidden' class from the install button container.
-  //     setIsReadyForInstall(false);
-  //   });
-  // }, []);
+  const [isReadyForInstall, setIsReadyForInstall] = useState(false);
 
-  // async function downloadApp() {
-  //   console.log("👍", "butInstall-clicked");
-  //   const promptEvent = window.deferredPrompt;
-  //   if (!promptEvent) {
-  //     // The deferred prompt isn't available.
-  //     console.log("oops, no prompt event guardado en window");
-  //     return;
-  //   }
-  //   // Show the install prompt.
-  //   promptEvent.prompt();
-  //   // Log the result
-  //   const result = await promptEvent.userChoice;
-  //   console.log("👍", "userChoice", result);
-  //   // Reset the deferred prompt variable, since
-  //   // prompt() can only be called once.
-  //   window.deferredPrompt = null;
-  //   // Hide the install button.
-  //   setIsReadyForInstall(true);
-  // }
+
+  useEffect(() => {
+    window.addEventListener('appinstalled', () => {
+      // Esconder la promoción de instalación de la PWA
+      // hideInstallPromotion();
+      // Limpiar el defferedPrompt para que pueda ser eliminado por el recolector de basura
+      // deferredPrompt = null;
+      // De manera opcional, enviar el evento de analíticos para indicar una instalación exitosa
+      alert('PWA was installed');
+    });
+  }, [])
+
+
+  useEffect(() => {
+    window.addEventListener("beforeinstallprompt", (event) => {
+      // Prevent the mini-infobar from appearing on mobile.
+      event.preventDefault();
+      console.log("👍", "beforeinstallprompt", event);
+      // Stash the event so it can be triggered later.
+      window.deferredPrompt = event;
+      // Remove the 'hidden' class from the install button container.
+      setIsReadyForInstall(true);
+    });
+  }, []);
+
+  async function downloadApp() {
+    console.log("👍", "butInstall-clicked");
+    const promptEvent = window.deferredPrompt;
+    if (!promptEvent) {
+      // The deferred prompt isn't available.
+      console.log("oops, no prompt event guardado en window");
+      return;
+    }
+    // Show the install prompt.
+    promptEvent.prompt();
+    // Log the result
+    const result = await promptEvent.userChoice;
+    console.log("👍", "userChoice", result);
+    // Reset the deferred prompt variable, since
+    // prompt() can only be called once.
+    window.deferredPrompt = null;
+    // Hide the install button.
+    setIsReadyForInstall(false);
+  }
 
   return (
     <header>
@@ -61,21 +75,26 @@ const Header = () => {
             <img src="/logo.png" className="rounded-circle" />
           </a>
         </div>
-        {user && (
-          <>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-toggle="collapse"
-              data-target="#collapsibleNavbar"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
 
-            <div className="collapse navbar-collapse" id="collapsibleNavbar">
-              <ul className="navbar-nav">
-                <>
-                  {/* {isReadyForInstall && (
+        <>
+          <>
+            {
+              (isReadyForInstall || user) && <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#collapsibleNavbar"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+            }
+
+          </>
+
+          <div className="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul className="navbar-nav">
+              <>
+                {isReadyForInstall && (
                   <li className="nav-item">
                     <a
                       onClick={downloadApp}
@@ -84,14 +103,14 @@ const Header = () => {
                       }}
                       // onClick={() => logout()}
                       className="nav-link"
-                      // id="btnCerrarSesion"
+                    // id="btnCerrarSesion"
                     >
                       Descargar App
                     </a>
                   </li>
-                )} */}
-                </>
-
+                )}
+              </>
+              {user &&
                 <>
                   <li className="nav-item">
                     <a
@@ -121,10 +140,11 @@ const Header = () => {
                     </a>
                   </li>
                 </>
-              </ul>
-            </div>
-          </>
-        )}
+              }
+            </ul>
+          </div>
+        </>
+
       </nav>
     </header>
   );

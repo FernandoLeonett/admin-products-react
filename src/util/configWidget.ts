@@ -4,13 +4,13 @@ import { CLOUD_NAME, UPLOAD_PRESET, API_KEY, FOLDER_IMAGE } from "./util";
 
 const setupWidget = (
   folderImage,
-  title: string,
+ 
   maxFiles: number,
   onSuccess: (result) => void,
   oncloseWdiget: (result) => void,
   onloadWdiget: () => void
 ) => ({
-  folder: `${folderImage}/${title}`,
+  folder: `${folderImage}`,
 
   sources: [
     "local",

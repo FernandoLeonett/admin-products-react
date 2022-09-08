@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import "./ButtonUp.css";
 
 const ButtonUp = () => {
+
+  const [scale, setScale] = useState(0)
   const scrollTop = () => {
     window.scrollTo({
       top: 0,
@@ -8,8 +11,31 @@ const ButtonUp = () => {
     });
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 300) {
+        setScale(0);
+      } else {
+        setScale(1);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [scale]);
+
+
+
+
   return (
     <svg
+      style={
+        {
+          transform: `scale(${scale})`
+        }
+
+
+      }
       xmlns="http://www.w3.org/2000/svg"
       width="3rem"
       height="3rem"
@@ -19,7 +45,7 @@ const ButtonUp = () => {
       onClick={scrollTop}
     >
       <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z" />
-    </svg>
+    </svg >
   );
 };
 
