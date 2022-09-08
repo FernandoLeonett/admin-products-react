@@ -22,6 +22,19 @@ const Header = () => {
 
   const [isReadyForInstall, setIsReadyForInstall] = useState(false);
 
+
+  useEffect(() => {
+    window.addEventListener('appinstalled', () => {
+      // Esconder la promoción de instalación de la PWA
+      // hideInstallPromotion();
+      // Limpiar el defferedPrompt para que pueda ser eliminado por el recolector de basura
+      // deferredPrompt = null;
+      // De manera opcional, enviar el evento de analíticos para indicar una instalación exitosa
+      alert('PWA was installed');
+    });
+  }, [])
+
+
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (event) => {
       // Prevent the mini-infobar from appearing on mobile.
