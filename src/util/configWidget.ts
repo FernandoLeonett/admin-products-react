@@ -1,4 +1,3 @@
-import WidgetProps from "../interfaces/WidgetProps";
 import spanish from "./spanish";
 import { CLOUD_NAME, UPLOAD_PRESET, API_KEY } from "./util";
 
@@ -29,7 +28,6 @@ const setupWidget = (
   language: "es",
   text: spanish,
 
-  // destroy: true,
   onSuccess: onSuccess,
   autoClose: false,
   onCloseWidget: oncloseWdiget,

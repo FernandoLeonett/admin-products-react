@@ -1,14 +1,6 @@
 import axios from "axios";
 import sha1 from "sha1";
-import Product from "../../interfaces/Product";
-import { v2 as cloudinary } from "cloudinary";
-import {
-  API_KEY,
-  API_SECRET,
-  CLOUD_NAME,
-  getPublicIdImage,
-} from "../../util/util";
-import { useProducts } from "../../context/context";
+import { API_KEY, API_SECRET, CLOUD_NAME } from "../../util/util";
 
 export const deleteImage = async (pID) => {
   const timestamp = Math.round(new Date().getTime() / 1000);

@@ -4,7 +4,7 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import { Image } from "cloudinary-react";
 import "./Edit.css";
-import { CLOUD_NAME, getPublicId, getPublicIdImage } from "../../util/util";
+import { CLOUD_NAME } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";

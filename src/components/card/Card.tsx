@@ -4,7 +4,7 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import routes from "../../routers/routes";
 import { Image } from "cloudinary-react";
-import { CLOUD_NAME, getPublicId, getPublicIdImage } from "../../util/util";
+import { CLOUD_NAME } from "../../util/util";
 import { WidgetLoader } from "../cloudinary";
 import DeLeteProductModal from "../modal/DeleteProductModa";
 import useModal from "../../hooks/useModal";
