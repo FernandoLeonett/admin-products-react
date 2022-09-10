@@ -81,9 +81,12 @@ export default function ReplaceImageModal({
 
   // };
   const deleteImageModal = async () => {
-    closeModal();
+
     setLoading(true);
+    console.log('imgId', imgId)
     const localImg = getValues("image").filter((i) => i !== imgId);
+    console.log("local", localImg);
+
     await deleteImage(imgId);
 
     updateProducts(
@@ -93,10 +96,11 @@ export default function ReplaceImageModal({
         image: localImg,
       }
     );
-    setValue("image", localImg);
+
 
     setLoading(false);
-
+    setValue("image", localImg);
+    closeModal();
     toast.warn("🗑 Imagen Eliminada", {
       position: "top-center",
       autoClose: 5000,

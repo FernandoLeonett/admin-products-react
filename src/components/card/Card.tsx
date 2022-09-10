@@ -62,6 +62,10 @@ const Card = ({ product }: props) => {
                   height: 128,
                   // width: "fit-content",
                   objectFit: "cover",
+                  // objectPosition: "80%"
+
+                  // aspectRatio: 7 / 9
+
                   // objectPosition: "center center",
                 }}
               />

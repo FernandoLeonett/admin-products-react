@@ -33,7 +33,7 @@ const UploadWidget = ({
   buttonType = 'button',
   destroy = false,
   autoClose = true,
-  maxFileSize = MAX_FILE_SIZE,
+  maxFileSize,
   max_files,
   language = "es",
   btnClassName,
