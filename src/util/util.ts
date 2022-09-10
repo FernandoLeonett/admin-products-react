@@ -11,13 +11,21 @@ export const FOLDER_IMAGE = "fernnandoleonett@gmai.com";
 export const API_KEY = "258197547193753";
 export const UPLOAD_PRESET = `fernando_preset`;
 export const API_SECRET = "exDjsoiPokHoXoVkMT2tfQ4c_g8";
-export const getPublicIdImage = (url: string) => {
-  const arr = url.split("/");
-  const last = arr[arr.length - 1];
+// export const getPublicIdImage = (url: string) => {
+//   const arr = url.split("/");
+//   const last = arr[arr.length - 1];
 
-  const pid = last.split(".")[0];
-  return pid;
-};
+//   const pid = last.split(".")[0];
+//   return pid;
+// };
+
+// export const getPublicId = (url) => {
+//   const publicId = url.substring(
+//     url.lastIndexOf("/") + 1,
+//     url.lastIndexOf(".")
+//   );
+//   return publicId;
+// };
 
 export const validateEmail = (email) => {
   return String(email)

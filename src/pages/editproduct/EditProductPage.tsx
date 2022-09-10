@@ -29,6 +29,7 @@ const EditPage = () => {
 
   const { updateProducts, products, loading, setLoading, user } = useProducts();
   const [imageMode, setImageMode] = useState(false);
+  const [deleteimg, setDeleteimg] = useState("");
   // const [updatedImage, setUpdatedImage] = useState(false);
 
   const onLoadWidget = () => {
@@ -51,8 +52,8 @@ const EditPage = () => {
 
   const onSuccess = (result) => {
     updateImageField = true;
-    const { public_id } = result.info;
-    setValue("image", [...getValues("image"), public_id]);
+    const { secure_url } = result.info;
+    setValue("image", [...getValues("image"), secure_url]);
   };
 
   const onCloseWidget = async (result) => {
@@ -207,7 +208,11 @@ const EditPage = () => {
                       getValues("image").map((i, k) => (
                         <Fragment key={k}>
                           <Image
-                            onClick={openModal}
+                            onClick={() => {
+
+                              openModal()
+                              setDeleteimg(i);
+                            }}
                             publicId={i}
                             cloudName={CLOUD_NAME}
                             className="imagen-datos-producto"
@@ -221,7 +226,7 @@ const EditPage = () => {
                           <ReplaceImageModal
                             closeModal={closeModal}
                             isOpenModal={isOpenModal}
-                            imgId={i}
+                            imgId={deleteimg}
                             getValues={getValues}
                             setValue={setValue}
                           />
