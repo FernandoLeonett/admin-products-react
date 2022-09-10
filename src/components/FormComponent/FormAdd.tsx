@@ -1,44 +1,96 @@
 import { useEffect } from "react";
 import {
   FieldErrorsImpl,
+  UseFormGetValues,
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormReset,
+  UseFormSetValue,
 } from "react-hook-form";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
+import setupWidget from "../../util/configWidget";
+import { MAX_FILES } from "../../util/util";
+import myWidget from "../cloudinary/MyWidget";
 
 interface props {
   register: UseFormRegister<Product>;
   handleSubmit: UseFormHandleSubmit<Product>;
-  onSubmit: any;
   errors: FieldErrorsImpl<Product>;
-  products: Product[];
-  title: string;
   isDirty: boolean;
   reset?: UseFormReset<Product>;
-  modoEdit?: boolean;
+  getValues: UseFormGetValues<Product>;
+  openModal: () => void;
+  setValue: UseFormSetValue<Product>;
 }
 
-const FormComponent = ({
+const FormAdd = ({
   handleSubmit,
-  onSubmit,
+  getValues,
   register,
-  title,
-  products,
   errors,
   isDirty,
-  modoEdit = false,
+  openModal,
+  setValue,
 }: props) => {
-  // useEffect(() => {
-  //   return () => {
-  //     reset();
-  //   };
-  // }, []);
+  const { createProduct, products, loading, setLoading, user } = useProducts();
+
+  const oncloseWdiget = (result) => {
+    if (Boolean(getValues("image").length)) {
+      createProduct(getValues());
+      openModal();
+    } else {
+      Swal.fire({
+        text: "El producto debe tener al menos una imagen",
+        icon: "error",
+        confirmButtonText: "OK",
+        buttonsStyling: false,
+        customClass: {
+          confirmButton: "btn btn-dark",
+        },
+      });
+    }
+  };
+
+  const onSuccess = (result) => {
+    console.log("success");
+    console.log("M", getValues());
+    const { secure_url } = result.info;
+    setValue("image", [...getValues("image"), secure_url]);
+  };
+
+  const onloadWdiget = () => {
+    setLoading(false);
+  };
+
+  const onSubmit = () => {
+    if (!isDirty) return;
+    if (products.find((p) => p.title.trim() === getValues("title").trim())) {
+      toast.error("Ya tienes un producto con este título!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+    console.log("onSubmit", getValues());
+    setLoading(true);
+    myWidget(
+      setupWidget(user.email, MAX_FILES, onSuccess, oncloseWdiget, onloadWdiget)
+    );
+  };
+
   return (
     <div className="container-fluid">
       <div className="row form">
         <div className="col-xs-12 offset-md-3 col-md-6 my-2">
-          <h2 className="border-title">{title}</h2>
+          <h2 className="border-title">Agregar Producto</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="d-flex justify-content-between align-items-center  mb-3">
               {/* DESTACADO */}
@@ -99,13 +151,13 @@ const FormComponent = ({
                   ))}
                 </datalist>
               </label>
+              <p style={{ fontSize: "12px", color: "#ccc" }}>
+                *Si no tienes categorías puedes poner "Todos"
+              </p>
               {errors?.category && (
                 <p style={{ color: "red" }}>Categoría requerida.</p>
               )}
             </div>
-            <p style={{ fontSize: "12px", color: "#ccc" }}>
-              Si no tienes categorías puedes poner "Todos"
-            </p>
 
             {/* Descripción */}
             <div className="form-group">
@@ -134,7 +186,7 @@ const FormComponent = ({
             <input
               type="submit"
               className="btn btn-dark mb-3"
-              value={modoEdit ? "Actualizar" : "Agregar"}
+              value={"Agregar"}
               onClick={handleSubmit(onSubmit)}
               disabled={!isDirty}
             />
@@ -145,4 +197,4 @@ const FormComponent = ({
   );
 };
 
-export default FormComponent;
+export default FormAdd;

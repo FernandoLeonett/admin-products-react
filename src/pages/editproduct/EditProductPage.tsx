@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, SetStateAction, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
@@ -12,9 +12,9 @@ import ReplaceImageModal from "../../components/modal/ReplaceImageModal";
 import useModal from "../../hooks/useModal";
 import { WidgetLoader } from "../../components/cloudinary";
 import Spinner from "../../components/spinner/Spinner";
-import FormComponent from "../../components/FormComponent/FormComponent";
 import setupWidget from "../../util/configWidget";
 import { toast } from "react-toastify";
+import FormEdit from "../../components/FormComponent/FormEdit";
 
 interface ParamProduct {
   state: { product: Product };
@@ -59,7 +59,7 @@ const EditPage = () => {
   const onCloseWidget = async (result) => {
     if (updateImageField) {
       updateImageField = false;
-      console.log("valores a actualizar", getValues())
+      console.log("valores a actualizar", getValues());
       console.log("onCloseWidget", "hubo cambios");
 
       await updateProducts(getValues("id"), {
@@ -89,24 +89,9 @@ const EditPage = () => {
         4 - getValues("image").length,
         onSuccess,
         onCloseWidget,
-        onLoadWidget,
-
+        onLoadWidget
       )
     );
-  };
-
-  const onSubmit = async () => {
-    if (!isDirty) return;
-    setImageMode(true);
-    const { id, title, description, category, boost, price } = getValues();
-
-    await updateProducts(id, {
-      title,
-      description,
-      category,
-      boost,
-      price,
-    });
   };
 
   // useEffect(() => {
@@ -131,15 +116,13 @@ const EditPage = () => {
   return (
     <>
       {!imageMode ? (
-        <FormComponent
+        <FormEdit
           handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
           register={register}
-          title={"Editar Producto"}
           products={products}
           errors={errors}
-          isDirty={isDirty}
-          modoEdit={true}
+          getValues={getValues}
+          setImageMode={setImageMode}
         />
       ) : (
         <>
@@ -209,8 +192,7 @@ const EditPage = () => {
                         <Fragment key={k}>
                           <Image
                             onClick={() => {
-
-                              openModal()
+                              openModal();
                               setDeleteimg(i);
                             }}
                             publicId={i}

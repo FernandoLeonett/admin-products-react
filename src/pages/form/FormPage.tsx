@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import { useForm } from "react-hook-form";
+import { Path, PathValue, useForm } from "react-hook-form";
 import "./Form.css";
 import { WidgetLoader } from "../../components/cloudinary";
 import { MAX_FILES } from "../../util/util";
@@ -11,11 +11,13 @@ import useModal from "../../hooks/useModal";
 import ModalAdd from "../../components/modal/AddModal";
 import setupWidget from "../../util/configWidget";
 import Spinner from "../../components/spinner/Spinner";
-import FormComponent from "../../components/FormComponent/FormComponent";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import FormAdd from "../../components/FormComponent/FormAdd";
 
 const FormPage = () => {
+  const { loading } = useProducts();
+
   const {
     register,
     getValues,
@@ -30,7 +32,6 @@ const FormPage = () => {
       boost: false,
       category: "",
       description: "",
-
       image: [],
     },
   });
@@ -38,67 +39,6 @@ const FormPage = () => {
   const isDirty = !!Object.keys(dirtyFields).length;
 
   const [isOpenModal, openModal, closeModal] = useModal(false);
-
-  const { createProduct, products, loading, setLoading, user } = useProducts();
-
-  const oncloseWdiget = (result) => {
-    if (Boolean(getValues("image").length)) {
-      createProduct(getValues());
-      openModal();
-    } else {
-      Swal.fire({
-        text: "El producto debe tener al menos una imagen",
-        icon: "error",
-        confirmButtonText: "OK",
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: "btn btn-dark",
-        },
-      });
-    }
-  };
-
-  const onSuccess = (result) => {
-    console.log("success");
-    console.log("M", getValues());
-    const { secure_url } = result.info;
-
-    setValue("image", [...getValues("image"), secure_url]);
-  };
-
-  const onloadWdiget = () => {
-    setLoading(false);
-  };
-
-  const onSubmit = () => {
-    if (!isDirty) return;
-
-    if (products.find((p) => p.title.trim() === getValues("title").trim())) {
-      toast.error("Ya tienes un producto con este título!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
-
-    console.log("onSubmit", getValues());
-    setLoading(true);
-    myWidget(
-      setupWidget(
-        user.email,
-
-        MAX_FILES,
-        onSuccess,
-        oncloseWdiget,
-        onloadWdiget
-      )
-    );
-  };
 
   return (
     <>
@@ -111,15 +51,15 @@ const FormPage = () => {
           />
 
           {isDirty && <WidgetLoader />}
-          <FormComponent
+          <FormAdd
             handleSubmit={handleSubmit}
-            onSubmit={onSubmit}
             register={register}
-            title={"Agregar Producto"}
-            products={products}
             errors={errors}
             isDirty={isDirty}
             reset={reset}
+            getValues={getValues}
+            openModal={openModal}
+            setValue={setValue}
           />
         </>
       ) : (
