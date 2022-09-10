@@ -16,7 +16,7 @@ interface props {
   title: string;
   isDirty: boolean;
   reset?: UseFormReset<Product>;
-  modoEdit?: boolean
+  modoEdit?: boolean;
 }
 
 const FormComponent = ({
@@ -27,8 +27,7 @@ const FormComponent = ({
   products,
   errors,
   isDirty,
-  modoEdit = false
-
+  modoEdit = false,
 }: props) => {
   // useEffect(() => {
   //   return () => {
@@ -74,11 +73,12 @@ const FormComponent = ({
                   required: "el titulo es requerido",
                   // validate: (value) => !/[^a-zA-Z0-9\s\-\/]/.test(value),
                 })}
-
               />
             </div>
             {errors?.title && (
-              <p style={{ color: "red" }}>el titulo no debe contener caracteres especiales</p>
+              <p style={{ color: "red" }}>
+                el titulo no debe contener caracteres especiales
+              </p>
             )}
             {/* Category */}
             <div className="form-group">
@@ -88,8 +88,8 @@ const FormComponent = ({
                   list="category-list"
                   type="text"
                   {...register("category", {
-                    required: "la categoria es requerida para agrupar tus productos"
-
+                    required:
+                      "La categoria es requerida para agrupar tus productos",
                   })}
                   className="form-control"
                 />
@@ -100,34 +100,29 @@ const FormComponent = ({
                 </datalist>
               </label>
               {errors?.category && (
-                <p style={{ color: "red" }}>Categoría requerida</p>
+                <p style={{ color: "red" }}>Categoría requerida.</p>
               )}
             </div>
+            <p style={{ fontSize: "12px", color: "#ccc" }}>
+              Si no tienes categorías puedes poner "Todos"
+            </p>
 
             {/* Descripción */}
             <div className="form-group">
               <label htmlFor="txtDescripcion">Descripción</label>
-              <textarea className="form-control" rows={3}
-
+              <textarea
+                className="form-control"
+                rows={3}
                 {...register("description")}
-
               ></textarea>
-
-
             </div>
             {/* Precio */}
             <div className="form-group">
               <label htmlFor="numPrecio">Precio:</label>
               <input
                 type={"number"}
-
-
                 {...register("price", {
                   required: "el precio es requerido",
-
-
-
-
                 })}
                 className="form-control"
               />
@@ -142,7 +137,6 @@ const FormComponent = ({
               value={modoEdit ? "Actualizar" : "Agregar"}
               onClick={handleSubmit(onSubmit)}
               disabled={!isDirty}
-
             />
           </form>
         </div>
