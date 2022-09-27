@@ -12,7 +12,6 @@ const Layout = ({ children }) => {
         setIsReadyForInstall &&
         <button onClick={downloadApp}> Descargasdasda </button>
       } */}
-      CLOUD_NAME:{CLOUD_NAME}
       <main>{children}</main>
       <Footer />
     </>
