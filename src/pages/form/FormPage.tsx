@@ -25,12 +25,13 @@ const FormPage = () => {
     formState: { errors, dirtyFields },
     reset,
     setValue,
+    watch,
   } = useForm<Product>({
     // resolver: resolver,
     defaultValues: {
       title: "",
       boost: false,
-      category: "",
+      category: "Otros",
       description: "",
       image: [],
     },
@@ -60,6 +61,7 @@ const FormPage = () => {
             getValues={getValues}
             openModal={openModal}
             setValue={setValue}
+            watch={watch}
           />
         </>
       ) : (

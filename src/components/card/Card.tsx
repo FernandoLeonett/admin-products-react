@@ -14,7 +14,7 @@ interface props {
 }
 
 const Card = ({ product }: props) => {
-  const { title, description, price, image, category } = product;
+  const { title, description, price, image, category, boost } = product;
   const { deleteProduct } = useProducts();
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
@@ -89,6 +89,11 @@ const Card = ({ product }: props) => {
             </p>
             <p className="card-text">
               <small className="text-muted">{category}</small>
+            </p>
+            <p className="card-text">
+              <small className="text-muted">
+                {boost ? "destacado" : "no destacado"}
+              </small>
             </p>
             <p
               className="card-text"

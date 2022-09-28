@@ -41,8 +41,8 @@ const EditPage = () => {
     getValues,
     handleSubmit,
     formState: { errors, dirtyFields },
-
     setValue,
+    watch,
   } = useForm<Product>({
     defaultValues: param.state.product,
   });
@@ -123,6 +123,7 @@ const EditPage = () => {
           errors={errors}
           getValues={getValues}
           setImageMode={setImageMode}
+          watch={watch}
         />
       ) : (
         <>
