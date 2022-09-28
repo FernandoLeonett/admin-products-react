@@ -141,7 +141,7 @@ const FormEdit = ({
 
             <input
               type="submit"
-              className="btn btn-dark mb-3"
+              className="btn btn-dark"
               value={"Actualizar"}
               onClick={handleSubmit(onSubmit)}
             />
