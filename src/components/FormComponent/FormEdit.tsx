@@ -146,7 +146,8 @@ const FormEdit = ({
               onClick={handleSubmit(onSubmit)}
             />
             <p style={{ fontSize: "12px", color: "#ccc" }}>
-              *Si solo deseas editar fotos puedes darle click al botón
+              *Si solo deseas agregar, editar o eliminar fotos, puedes darle
+              click al botón
             </p>
           </form>
         </div>
