@@ -84,19 +84,19 @@ const Card = ({ product }: props) => {
             <h5 className="card-title" style={{ fontWeight: "bold" }}>
               {title}
             </h5>
-            <p className="card-text">
-              <small className="text-muted">{price}</small>
+            <p className="card-text mb-0">
+              <small className="text-muted">$ {price}</small>
             </p>
-            <p className="card-text">
+            <p className="card-text mb-0">
               <small className="text-muted">{category}</small>
             </p>
-            <p className="card-text">
+            <p className="card-text mb-0">
               <small className="text-muted">
-                {boost ? "destacado" : "no destacado"}
+                {boost ? "Destacado" : "No destacado"}
               </small>
             </p>
             <p
-              className="card-text"
+              className="card-text mb-0"
               style={{
                 height: 70,
                 overflow: "auto",

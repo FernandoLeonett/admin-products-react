@@ -183,12 +183,12 @@ const FormAdd = ({
                     ))}
                   </datalist>
                 </label>
-                <p style={{ fontSize: "12px", color: "#ccc" }}>
+                {/* <p style={{ fontSize: "12px", color: "#ccc" }}>
                   *Si no tienes categorías puedes poner "Todos"
-                </p>
-                {errors?.category && (
+                </p> */}
+                {/* {errors?.category && (
                   <p style={{ color: "red" }}>Categoría requerida.</p>
-                )}
+                )} */}
               </div>
             )}
 
