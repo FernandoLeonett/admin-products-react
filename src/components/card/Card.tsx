@@ -91,7 +91,7 @@ const Card = ({ product }: props) => {
               <small className="text-muted">{category}</small>
             </p>
             <p className="card-text mb-0">
-              <small className="text-muted">
+              <small style={{ color: boost ? "#28a745" : "#dc3545" }}>
                 {boost ? "Destacado" : "No destacado"}
               </small>
             </p>

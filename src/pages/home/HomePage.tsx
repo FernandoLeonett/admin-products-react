@@ -40,12 +40,12 @@ const HomePage = () => {
           <div className="collapse width col-xs-4 " id="collapseWidthExample">
             {productosDestacados.length < 3 ? (
               <div
-                className="card card-body alert-dark  p-3"
+                className="card card-body alert-secondary  p-3"
                 // style={{ backgroundColor: "#000000" }}
               >
                 Puedes mostrar tus productos destacados en la parte superior de
-                tu tienda, para ello necesitas destacar
-                {3 - productosDestacados.length}
+                tu tienda, para ello necesitas destacar{" "}
+                {3 - productosDestacados.length} productos más.
               </div>
             ) : (
               <div

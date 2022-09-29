@@ -1,3 +1,5 @@
+import Product from "../interfaces/Product";
+
 export const getPublicIdFromPath = (path: string) => {
   const separateBySlash = path.split("/");
   const publicId = separateBySlash[1] + "/" + separateBySlash[2];
