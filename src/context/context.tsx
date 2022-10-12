@@ -232,7 +232,6 @@ export const ProductContextProvider = ({ children }) => {
 
 
 
-    console.log("me ejecute");
 
 
 
