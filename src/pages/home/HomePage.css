@@ -1,0 +1,14 @@
+.color-destacados{
+	font-weight: bold;
+	color: #03FA6E;
+	background-color: #000000;
+}
+
+.color-destacados:hover{
+	color: #03FA6E;
+	box-shadow: none;
+}
+
+.color-destacados:focus{
+	box-shadow: none;
+}

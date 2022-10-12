@@ -8,4 +8,5 @@ export default interface Product {
   price?: number;
   category?: string;
   id?: number;
+  hasCategory?: boolean;
 }

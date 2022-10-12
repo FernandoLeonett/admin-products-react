@@ -1,3 +1,5 @@
+import Product from "../interfaces/Product";
+
 export const getPublicIdFromPath = (path: string) => {
   const separateBySlash = path.split("/");
   const publicId = separateBySlash[1] + "/" + separateBySlash[2];
@@ -6,11 +8,10 @@ export const getPublicIdFromPath = (path: string) => {
 };
 export const MAX_FILES: number = 4;
 export const MAX_FILE_SIZE = 4 * 1024 * 1024;
-export const CLOUD_NAME = "fernandoleonett";
-export const FOLDER_IMAGE = "fernnandoleonett@gmai.com";
-export const API_KEY = "258197547193753";
-export const UPLOAD_PRESET = `fernando_preset`;
-export const API_SECRET = "exDjsoiPokHoXoVkMT2tfQ4c_g8";
+export const CLOUD_NAME = "matiascabral";
+export const API_KEY = "548439612459673";
+export const UPLOAD_PRESET = `matiascabral`;
+export const API_SECRET = "2-IaP7dE8q-Oq8aPJDcOX_qLTDs";
 // export const getPublicIdImage = (url: string) => {
 //   const arr = url.split("/");
 //   const last = arr[arr.length - 1];

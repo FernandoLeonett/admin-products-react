@@ -14,7 +14,7 @@ interface props {
 }
 
 const Card = ({ product }: props) => {
-  const { title, description, price, image, category } = product;
+  const { title, description, price, image, category, boost } = product;
   const { deleteProduct } = useProducts();
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
@@ -50,8 +50,7 @@ const Card = ({ product }: props) => {
       <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-4">
         <div className="card border-secondary ">
           {/* <div className="row no-gutters"> */}
-          {/* <div style={{ width: "100%", height: "auto" }}> */}
-
+          {/* <div style={{ height: 128 }}> */}
           <>
             {Boolean(product.image.length) ? (
               <Image
@@ -60,7 +59,7 @@ const Card = ({ product }: props) => {
                 className="card-img-top img-fluid"
                 style={{
                   height: 128,
-                  // width: "fit-content",
+                  // width: "fit-content"
                   objectFit: "cover",
                   // objectPosition: "80%"
 
@@ -80,20 +79,24 @@ const Card = ({ product }: props) => {
               />
             )}
           </>
-
           {/* </div> */}
           <div className="card-body text-secondary">
             <h5 className="card-title" style={{ fontWeight: "bold" }}>
               {title}
             </h5>
-            <p className="card-text">
-              <small className="text-muted">{price}</small>
+            <p className="card-text mb-0">
+              <small className="text-muted">$ {price}</small>
             </p>
-            <p className="card-text">
+            <p className="card-text mb-0">
               <small className="text-muted">{category}</small>
             </p>
+            <p className="card-text mb-0">
+              <small style={{ color: boost ? "#28a745" : "#dc3545" }}>
+                {boost ? "Destacado" : "No destacado"}
+              </small>
+            </p>
             <p
-              className="card-text"
+              className="card-text mb-0"
               style={{
                 height: 70,
                 overflow: "auto",

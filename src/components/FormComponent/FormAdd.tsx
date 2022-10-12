@@ -6,6 +6,7 @@ import {
   UseFormRegister,
   UseFormReset,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
@@ -24,6 +25,7 @@ interface props {
   getValues: UseFormGetValues<Product>;
   openModal: () => void;
   setValue: UseFormSetValue<Product>;
+  watch: UseFormWatch<Product>;
 }
 
 const FormAdd = ({
@@ -34,12 +36,22 @@ const FormAdd = ({
   isDirty,
   openModal,
   setValue,
+  watch,
 }: props) => {
   const { createProduct, products, loading, setLoading, user } = useProducts();
+  const showCategory = watch("hasCategory", false);
 
   const oncloseWdiget = (result) => {
     if (Boolean(getValues("image").length)) {
-      createProduct(getValues());
+      const product: Product = {
+        title: getValues("title"),
+        description: getValues("description"),
+        image: getValues("image"),
+        boost: getValues("boost"),
+        price: getValues("price"),
+        category: getValues("category"),
+      };
+      createProduct(product);
       openModal();
     } else {
       Swal.fire({
@@ -132,32 +144,53 @@ const FormAdd = ({
                 el titulo no debe contener caracteres especiales
               </p>
             )}
+
             {/* Category */}
-            <div className="form-group">
-              <label className="w-100">
-                Categoría
-                <input
-                  list="category-list"
-                  type="text"
-                  {...register("category", {
-                    required:
-                      "La categoria es requerida para agrupar tus productos",
-                  })}
-                  className="form-control"
-                />
-                <datalist id="category-list">
-                  {products.map(({ category }, i) => (
-                    <option key={i} value={category} />
-                  ))}
-                </datalist>
-              </label>
-              <p style={{ fontSize: "12px", color: "#ccc" }}>
-                *Si no tienes categorías puedes poner "Todos"
-              </p>
-              {errors?.category && (
-                <p style={{ color: "red" }}>Categoría requerida.</p>
-              )}
+            <div className="d-flex justify-content-between align-items-center  mb-3">
+              <div className="form-group">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    // id="flexCheckIndeterminate"
+                    {...register("hasCategory")}
+                  />
+                  <label
+                    style={{
+                      cursor: "pointer",
+                    }}
+                    className="form-check-label"
+                    // htmlFor="flexCheckIndeterminate"
+                  >
+                    Agregar Categoría
+                  </label>
+                </div>
+              </div>
             </div>
+            {showCategory && (
+              <div className="form-group">
+                <label className="w-100">
+                  Categoría
+                  <input
+                    list="category-list"
+                    type="text"
+                    {...register("category")}
+                    className="form-control"
+                  />
+                  <datalist id="category-list">
+                    {products.map(({ category }, i) => (
+                      <option key={i} value={category} />
+                    ))}
+                  </datalist>
+                </label>
+                {/* <p style={{ fontSize: "12px", color: "#ccc" }}>
+                  *Si no tienes categorías puedes poner "Todos"
+                </p> */}
+                {/* {errors?.category && (
+                  <p style={{ color: "red" }}>Categoría requerida.</p>
+                )} */}
+              </div>
+            )}
 
             {/* Descripción */}
             <div className="form-group">
