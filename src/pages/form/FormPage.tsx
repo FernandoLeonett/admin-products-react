@@ -1,18 +1,11 @@
-import { useEffect } from "react";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import { Path, PathValue, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import "./Form.css";
-import { WidgetLoader } from "../../components/cloudinary";
-import { MAX_FILES } from "../../util/util";
-import myWidget from "../../components/cloudinary/MyWidget";
 import useModal from "../../hooks/useModal";
 
 import ModalAdd from "../../components/modal/AddModal";
-import setupWidget from "../../util/configWidget";
 import Spinner from "../../components/spinner/Spinner";
-import { toast } from "react-toastify";
-import Swal from "sweetalert2";
 import FormAdd from "../../components/FormComponent/FormAdd";
 
 const FormPage = () => {
@@ -51,7 +44,7 @@ const FormPage = () => {
             reset={reset}
           />
 
-          {isDirty && <WidgetLoader />}
+          {/* {isDirty && <WidgetLoader />} */}
           <FormAdd
             handleSubmit={handleSubmit}
             register={register}

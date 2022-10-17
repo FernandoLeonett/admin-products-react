@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   FieldErrorsImpl,
   UseFormGetValues,
@@ -8,13 +7,13 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { toast } from "react-toastify";
-import Swal from "sweetalert2";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import setupWidget from "../../util/configWidget";
-import { MAX_FILES } from "../../util/util";
-import myWidget from "../cloudinary/MyWidget";
+import firebaseApp from "../../../credenciales";
+import { getFirestore, updateDoc, doc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+const firestore = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
 
 interface props {
   register: UseFormRegister<Product>;
@@ -40,62 +39,78 @@ const FormAdd = ({
 }: props) => {
   const { createProduct, products, loading, setLoading, user } = useProducts();
   const showCategory = watch("hasCategory", false);
+    let urlDescarga;
 
-  const oncloseWdiget = (result) => {
-    if (Boolean(getValues("image").length)) {
-      const product: Product = {
-        title: getValues("title"),
-        description: getValues("description"),
-        image: getValues("image"),
-        boost: getValues("boost"),
-        price: getValues("price"),
-        category: getValues("category"),
-      };
-      createProduct(product);
-      openModal();
-    } else {
-      Swal.fire({
-        text: "El producto debe tener al menos una imagen",
-        icon: "error",
-        confirmButtonText: "OK",
-        buttonsStyling: false,
-        customClass: {
-          confirmButton: "btn btn-dark",
-        },
-      });
-    }
-  };
+  // const oncloseWdiget = (result) => {
+  //   if (Boolean(getValues("image").length)) {
+  //     const product: Product = {
+  //       title: getValues("title"),
+  //       description: getValues("description"),
+  //       image: getValues("image"),
+  //       boost: getValues("boost"),
+  //       price: getValues("price"),
+  //       category: getValues("category"),
+  //     };
+  //     createProduct(product);
+  //     openModal();
+  //   } else {
+  //     Swal.fire({
+  //       text: "El producto debe tener al menos una imagen",
+  //       icon: "error",
+  //       confirmButtonText: "OK",
+  //       buttonsStyling: false,
+  //       customClass: {
+  //         confirmButton: "btn btn-dark",
+  //       },
+  //     });
+  //   }
+  // };
 
-  const onSuccess = (result) => {
-    console.log("success");
-    console.log("M", getValues());
-    const { secure_url } = result.info;
-    setValue("image", [...getValues("image"), secure_url]);
-  };
+  // const onSuccess = (result) => {
+  //   console.log("success");
+  //   console.log("M", getValues());
+  //   const { secure_url } = result.info;
+  //   setValue("image", [...getValues("image"), secure_url]);
+  // };
 
-  const onloadWdiget = () => {
-    setLoading(false);
-  };
+  // const onloadWdiget = () => {
+  //   setLoading(false);
+  // };
 
-  const onSubmit = () => {
+  async function fileHandler(e) {
+    if(e.target.files.length >= 4) {
+      return}   
+      // detectar archivo
+      const archivoLocal = e.target.files[0];
+      // cargarlo a firebase storage
+    const archivoRef = ref(storage, `documentos/${archivoLocal.name}`);
+    await uploadBytes(archivoRef, archivoLocal);
+    // obtener url de descarga
+    urlDescarga = await getDownloadURL(archivoRef);
+  }
+
+
+  const onSubmit = (data) => {
     if (!isDirty) return;
-    if (products.find((p) => p.title.trim() === getValues("title").trim())) {
-      toast.error("Ya tienes un producto con este título!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
-    console.log("onSubmit", getValues());
-    setLoading(true);
-    myWidget(
-      setupWidget(user.email, MAX_FILES, onSuccess, oncloseWdiget, onloadWdiget)
-    );
+    console.log("onSubmit", data);
+    console.log("data.image.filelist", data.image.FileList);
+    // if (products.find((p) => p.title.trim() === getValues("title").trim())) {
+    //   toast.error("Ya tienes un producto con este título!", {
+    //     position: "top-center",
+    //     autoClose: 5000,
+    //     hideProgressBar: false,
+    //     closeOnClick: true,
+    //     pauseOnHover: true,
+    //     draggable: true,
+    //     progress: undefined,
+    //   });
+    //   return;
+    // }
+    // console.log("onSubmit", getValues());
+    // setLoading(true);
+    // myWidget(
+    //   setupWidget(user.email, MAX_FILES, onSuccess, onloadWdiget)
+    // );
   };
 
   return (
@@ -104,6 +119,19 @@ const FormAdd = ({
         <div className="col-xs-12 offset-md-3 col-md-6 my-2">
           <h2 className="border-title">Agregar Producto</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* IMAGEN  */}
+            <div className="form-group">
+              <input
+                type="file"
+                name="imagen[]"
+                id="img"
+                multiple
+                accept="jpg, jpeg, png, webp"
+                className="caja-input"
+                onChange={fileHandler}
+                {...register("image")}
+              />
+            </div>
             <div className="d-flex justify-content-between align-items-center  mb-3">
               {/* DESTACADO */}
               <div className="form-group">
