@@ -2,7 +2,7 @@ import { Fragment, SetStateAction, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import { Image } from "cloudinary-react";
+
 import "./Edit.css";
 import { bucketName, CLOUD_NAME, generateUrlsImage, validateAllType } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
@@ -200,25 +200,28 @@ const EditPage = () => {
                 <p className="m-0" style={{ fontSize: 12, color: "#ccc" }}>
                   clickea sobre la imágen para ver más opciones
                 </p>
+              
                 <input
-                  disabled={getValues("image").length >= 4}
-                  onClick={addImageEdit}
+                  // disabled={getValues("image").length >= 4}
+                      accept="png, jpeg,  jpg, webp"
+                      multiple
+                  
+                      onChange={addImageEdit}
                   type="file"
                   className="btn btn-outline-primary w-auto "
-                  value="Agregar Imágenes"
+                  // value="Agregar Imágenes"
                 />
                 <div className="row d-flex justify-content-center">
                   <div className="col-xs-12   text-center pb-3">
                     {Boolean(getValues("image").length) ? (
                       getValues("image").map((i, k) => (
                         <Fragment key={k}>
-                          <Image
+                          <img
                             onClick={() => {
                               openModal();
                               setDeleteimg(i);
                             }}
-                            publicId={i}
-                            cloudName={CLOUD_NAME}
+                          
                             className="imagen-datos-producto"
                             style={{
                               height: "160px",
