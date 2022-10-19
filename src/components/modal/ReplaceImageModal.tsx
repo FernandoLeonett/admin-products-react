@@ -7,12 +7,14 @@ import Modal from "./Modal";
 
 import { toast } from "react-toastify";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
+import ImageFireBase from "../../interfaces/ImageFIreBase";
+import { deleteImageFireBase, updateProducts } from "../../firebase/services";
 
 interface props {
   closeModal: () => void;
   isOpenModal: () => void;
 
-  imgId: string;
+  imgId: ImageFireBase;
   getValues: UseFormGetValues<Product>;
   setValue: UseFormSetValue<Product>;
 }
@@ -25,7 +27,7 @@ export default function ReplaceImageModal({
   getValues,
   setValue,
 }: props) {
-  const { updateProducts, setLoading, user } = useProducts();
+  const {  setLoading, user } = useProducts();
 
   // let updateImageField = false;
   // const onLoadWidget = () => {
@@ -84,22 +86,21 @@ export default function ReplaceImageModal({
 
     setLoading(true);
     console.log('imgId', imgId)
-    const localImg = getValues("image").filter((i) => i !== imgId);
-    console.log("local", localImg);
+    // const localImg = getValues("image").filter((i) => i !== imgId);
+    // console.log("local", localImg);
 
-    await deleteImage(imgId);
-
-    updateProducts(
-      getValues("id"),
-
-      {
-        image: localImg,
-      }
+    // await deleteImage(imgId);
+    deleteImageFireBase(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
+    const localImg = getValues("image").filter((i:ImageFireBase) => i.id !== imgId.id);
+    updateProducts({
+    image:localImg,
+    },
+      getValues("id")
     );
 
 
     setLoading(false);
-    setValue("image", localImg);
+    // setValue("image", localImg);
     closeModal();
     toast.warn("🗑 Imagen Eliminada", {
       position: "top-center",

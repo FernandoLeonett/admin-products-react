@@ -4,7 +4,7 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import { Image } from "cloudinary-react";
 import "./Edit.css";
-import { CLOUD_NAME } from "../../util/util";
+import { bucketName, CLOUD_NAME, generateUrlsImage, validateAllType } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
@@ -15,6 +15,9 @@ import Spinner from "../../components/spinner/Spinner";
 import setupWidget from "../../util/configWidget";
 import { toast } from "react-toastify";
 import FormEdit from "../../components/FormComponent/FormEdit";
+import { updateProducts, uploadData } from "../../firebase/services";
+import { v4 } from "uuid";
+import ImageFireBase from "../../interfaces/ImageFIreBase";
 
 interface ParamProduct {
   state: { product: Product };
@@ -27,14 +30,15 @@ const EditPage = () => {
   }
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
-  const { updateProducts, products, loading, setLoading, user } = useProducts();
+  const {  products, loading, setLoading, user } = useProducts();
   const [imageMode, setImageMode] = useState(false);
-  const [deleteimg, setDeleteimg] = useState("");
-  // const [updatedImage, setUpdatedImage] = useState(false);
+  const [deleteimg, setDeleteimg] = useState<ImageFireBase>(null);
+  const [updatedImage, setUpdatedImage] = useState(false);
 
   const onLoadWidget = () => {
     setLoading(false);
   };
+  const id = v4()
 
   const {
     register,
@@ -62,9 +66,9 @@ const EditPage = () => {
       console.log("valores a actualizar", getValues());
       console.log("onCloseWidget", "hubo cambios");
 
-      await updateProducts(getValues("id"), {
-        image: getValues("image"),
-      });
+      // await updateProducts(getValues("id"), {
+      //   image: getValues("image"),
+      // });
 
       toast.success("✨ Imagen Agregada", {
         position: "top-center",
@@ -80,18 +84,36 @@ const EditPage = () => {
     console.log("entro a close");
   };
 
-  const addImageEdit = () => {
-    setLoading(true);
-    myWidget(
-      setupWidget(
-        user.email,
+  const addImageEdit = (e) => {
+    const files = e.target.files
 
-        4 - getValues("image").length,
-        onSuccess,
-        onCloseWidget,
-        onLoadWidget
-      )
-    );
+
+    if (files > 4- getValues("image").length) {
+      alert("el producto puede tener hasta 4 imagenes")
+      return
+    }
+    if (!validateAllType(Object.values(files))) {
+      alert("Formato no permitido para una o varias imagenes")
+
+      return
+    }
+    uploadData(files,user.email,getValues("title"), id)
+    setLoading(true);
+  
+    updateProducts({
+
+      image: generateUrlsImage(files, bucketName, user.email, getValues("title"), id),
+    }, getValues("id"))
+    // myWidget(
+    //   setupWidget(
+    //     user.email,
+
+    //     4 - getValues("image").length,
+    //     onSuccess,
+    //     onCloseWidget,
+    //     onLoadWidget
+    //   )
+    // );
   };
 
   // useEffect(() => {
@@ -123,11 +145,10 @@ const EditPage = () => {
           errors={errors}
           getValues={getValues}
           setImageMode={setImageMode}
-          watch={watch}
-        />
+          watch={watch} isDirty={isDirty}        />
       ) : (
         <>
-          <WidgetLoader />
+      
 
           <>
             {loading ? (
@@ -182,7 +203,7 @@ const EditPage = () => {
                 <input
                   disabled={getValues("image").length >= 4}
                   onClick={addImageEdit}
-                  type="button"
+                  type="file"
                   className="btn btn-outline-primary w-auto "
                   value="Agregar Imágenes"
                 />

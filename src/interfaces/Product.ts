@@ -1,13 +1,14 @@
-import ImageCloud from "./ImageCloud";
+import ImageFireBse from "./ImageFIreBase";
+
 
 export default interface Product {
   title?: string;
   description?: string;
-  image?: string[];
+  image?: ImageFireBse[];
   boost?: boolean;
   price?: number;
   category?: string;
-  id?: number;
+  id?: string;
   hasCategory?: boolean;
   user?:string
 }

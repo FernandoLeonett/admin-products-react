@@ -18,12 +18,13 @@ import schema from "yup/lib/schema";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import setupWidget from "../../util/configWidget";
-import { getUrl, MAX_FILES, validateAllType } from "../../util/util";
+import { bucketName, generateUrlsImage, getUrl, MAX_FILES, validateAllType } from "../../util/util";
 import myWidget from "../cloudinary/MyWidget";
-import { saveData } from "../../firebase/services";
+import { saveData, uploadData } from "../../firebase/services";
 import { getFirestore } from "firebase/firestore";
 import firebaseApp from "../../firebase/credentials";
 import User from "../../interfaces/User";
+import ImageFireBse from "../../interfaces/ImageFIreBase";
 
 const storage = getStorage(firebaseApp);
 
@@ -39,11 +40,11 @@ interface props {
   openModal: () => void;
   setValue: UseFormSetValue<Product>;
   watch: UseFormWatch<Product>;
-  isSubmitSuccessful :boolean;
+
 }
 
 const FormAdd = ({
-  isSubmitSuccessful,
+ 
   handleSubmit,
   getValues,
   register,
@@ -63,38 +64,7 @@ const FormAdd = ({
 
   const id = v4()
 
-  function uploadData (){
  
-
-    Object.values(imageUpload).forEach( async (file: File) => {
-      if (file == null) return;
-  
-      // console.log("esto es cada file", file)
-      const imageRef = ref(storage, `${user.email}/${getValues("title")}/${file.name}${id}`);
-
-    
-      try {
-         await (uploadBytes(imageRef, file))
-      } catch (error) {
-        console.log(error);
-
-      } finally {
-        setLocalUrls([])
-     
-
-   
-   
-
-      }
-
-
-
-
-
-
-    });
-  }
-
   
 
 
@@ -169,17 +139,17 @@ const FormAdd = ({
 
       return
     }
-    const urls =[]
-
-    Object.values(imageUpload).forEach(async (file: File) => {
-      urls.push(getUrl(file,'admin-gregory-shop',id,user,getValues("title")))
 
 
-    })
-    uploadData()
-    data.image = urls
+
+    setLoading(true);
+    uploadData(imageUpload,user.email,getValues("title"),id)
+    setLocalUrls([])
+    data.image = generateUrlsImage(imageUpload, bucketName, user.email, getValues("title"), id)
     console.log("data", data)
-    saveData(data)
+    await saveData(data)
+    setLoading(false)
+    openModal()
 
     
 
@@ -190,7 +160,7 @@ const FormAdd = ({
     
 
 
-    // setLoading(true);
+
 
   };
 

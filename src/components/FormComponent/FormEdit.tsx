@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useProducts } from "../../context/context";
+import { updateProducts } from "../../firebase/services";
 import Product from "../../interfaces/Product";
 
 interface props {
@@ -19,10 +20,12 @@ interface props {
   getValues: UseFormGetValues<Product>;
   setImageMode: Dispatch<SetStateAction<boolean>>;
   watch: UseFormWatch<Product>;
+  isDirty: boolean
 }
 
 const FormEdit = ({
   handleSubmit,
+  isDirty,
   getValues,
   register,
   products,
@@ -30,20 +33,22 @@ const FormEdit = ({
   setImageMode,
   watch,
 }: props) => {
-  const { updateProducts } = useProducts();
+
   const showCategory = watch("hasCategory", false);
 
-  const onSubmit = async () => {
+  const onSubmit =  (data:Product) => {
     setImageMode(true);
-    const { id, title, description, category, boost, price } = getValues();
-
-    await updateProducts(id, {
+    const { title, description, boost, category, price, id } = data;
+    updateProducts({
       title,
       description,
-      category,
       boost,
-      price,
-    });
+      category,
+      price
+
+    },id)
+  
+
   };
 
   return (
@@ -167,6 +172,7 @@ const FormEdit = ({
               className="btn btn-dark"
               value={"Actualizar"}
               onClick={handleSubmit(onSubmit)}
+              disabled={!isDirty}
             />
             <p style={{ fontSize: "12px", color: "#ccc" }}>
               *Si solo deseas agregar, editar o eliminar fotos, puedes darle
