@@ -89,7 +89,7 @@ const EditPage = () => {
 
 
     if (files > 4- getValues("image").length) {
-      alert("el producto puede tener hasta 4 imagenes")
+      alert("el producto puede tener hasta 4 imágenes")
       return
     }
     if (!validateAllType(Object.values(files))) {
