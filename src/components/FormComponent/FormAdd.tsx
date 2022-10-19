@@ -25,13 +25,20 @@ import schema from "yup/lib/schema";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import setupWidget from "../../util/configWidget";
-import { getUrl, MAX_FILES, validateAllType } from "../../util/util";
+import {
+  bucketName,
+  generateUrlsImage,
+  getUrl,
+  MAX_FILES,
+  validateAllType,
+} from "../../util/util";
 import myWidget from "../cloudinary/MyWidget";
-import { saveData } from "../../firebase/services";
+import { saveData, uploadData } from "../../firebase/services";
 import { getFirestore } from "firebase/firestore";
 import firebaseApp from "../../firebase/credentials";
 import User from "../../interfaces/User";
 import "./FormComponent.css";
+import ImageFireBse from "../../interfaces/ImageFIreBase";
 
 const storage = getStorage(firebaseApp);
 
@@ -45,11 +52,9 @@ interface props {
   openModal: () => void;
   setValue: UseFormSetValue<Product>;
   watch: UseFormWatch<Product>;
-  isSubmitSuccessful: boolean;
 }
 
 const FormAdd = ({
-  isSubmitSuccessful,
   handleSubmit,
   getValues,
   register,
@@ -68,26 +73,6 @@ const FormAdd = ({
   const cont = useRef(0);
 
   const id = v4();
-
-  function uploadData() {
-    Object.values(imageUpload).forEach(async (file: File) => {
-      if (file == null) return;
-
-      // console.log("esto es cada file", file)
-      const imageRef = ref(
-        storage,
-        `${user.email}/${getValues("title")}/${file.name}${id}`
-      );
-
-      try {
-        await uploadBytes(imageRef, file);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLocalUrls([]);
-      }
-    });
-  }
 
   // const oncloseWdiget = (result) => {
   //   if (Boolean(getValues("image").length)) {
@@ -154,19 +139,21 @@ const FormAdd = ({
 
       return;
     }
-    const urls = [];
 
-    Object.values(imageUpload).forEach(async (file: File) => {
-      urls.push(
-        getUrl(file, "admin-gregory-shop", id, user, getValues("title"))
-      );
-    });
-    uploadData();
-    data.image = urls;
+    setLoading(true);
+    uploadData(imageUpload, user.email, getValues("title"), id);
+    setLocalUrls([]);
+    data.image = generateUrlsImage(
+      imageUpload,
+      bucketName,
+      user.email,
+      getValues("title"),
+      id
+    );
     console.log("data", data);
-    saveData(data);
-
-    // setLoading(true);
+    await saveData(data);
+    setLoading(false);
+    openModal();
   };
 
   const fileHandler = (event) => {
@@ -203,17 +190,22 @@ const FormAdd = ({
               {/* {errors?.image && <p style={{ color: "red" }}>{errors?.image.message}</p>} */}
             </div>
 
-              <div className="container">
-            <div className="row d-flex justify-content-around">
+            <div className="container">
+              <div className="row d-flex justify-content-around">
                 {localUrls.length > 0 ? (
                   localUrls.map((i, k) => (
-                    <img src={i} alt={""} key={k} className="col-sm-6 col-md-3 p-1 bg-light img-form" />
+                    <img
+                      src={i}
+                      alt={""}
+                      key={k}
+                      className="col-sm-6 col-md-3 p-1 bg-light img-form"
+                    />
                   ))
                 ) : (
                   <h6>Este producto no tiene fotos aún 📷</h6>
                 )}
-            </div>
               </div>
+            </div>
 
             <div className="d-flex justify-content-between align-items-center  mt-2 mb-3">
               {/* DESTACADO */}

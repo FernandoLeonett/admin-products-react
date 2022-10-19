@@ -21,7 +21,7 @@ const FormPage = () => {
     register,
     getValues,
     handleSubmit,
-    formState: { errors, dirtyFields ,isSubmitSuccessful},
+    formState: { errors, dirtyFields },
     reset,
     setValue,
     watch,
@@ -55,7 +55,7 @@ const FormPage = () => {
 
      
           <FormAdd
-            isSubmitSuccessful ={isSubmitSuccessful}
+   
             handleSubmit={handleSubmit}
             register={register}
             errors={errors}

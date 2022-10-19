@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useProducts } from "../../context/context";
+import { deleteProduct } from "../../firebase/services";
 import useModal from "../../hooks/useModal";
 import ModalProps from "../../interfaces/ModalProps";
 import Product from "../../interfaces/Product";
@@ -21,10 +22,10 @@ export default function DeLeteProductModal({
 
   product,
 }: props) {
-  const { deleteProduct } = useProducts();
+  // const { deleteProduct } = useProducts();
 
   const deleteProductFn = () => {
-    deleteProduct(product);
+    deleteProduct(product.id);
     toast.warn("🗑 Producto eliminado", {
       position: "top-center",
       autoClose: 5000,
