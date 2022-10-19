@@ -2,23 +2,30 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import { useForm } from "react-hook-form";
 import "./Form.css";
+
+
+
 import useModal from "../../hooks/useModal";
 
 import ModalAdd from "../../components/modal/AddModal";
+
 import Spinner from "../../components/spinner/Spinner";
 import FormAdd from "../../components/FormComponent/FormAdd";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 
 const FormPage = () => {
-  const { loading } = useProducts();
+  const { loading , user} = useProducts();
 
   const {
     register,
     getValues,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    formState: { errors, dirtyFields ,isSubmitSuccessful},
     reset,
     setValue,
     watch,
+    
   } = useForm<Product>({
     // resolver: resolver,
     defaultValues: {
@@ -27,7 +34,9 @@ const FormPage = () => {
       category: "Otros",
       description: "",
       image: [],
-    },
+      user:user.email
+      
+    }
   });
 
   const isDirty = !!Object.keys(dirtyFields).length;
@@ -44,8 +53,9 @@ const FormPage = () => {
             reset={reset}
           />
 
-          {/* {isDirty && <WidgetLoader />} */}
+     
           <FormAdd
+            isSubmitSuccessful ={isSubmitSuccessful}
             handleSubmit={handleSubmit}
             register={register}
             errors={errors}

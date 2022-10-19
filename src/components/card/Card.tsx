@@ -81,7 +81,10 @@ const Card = ({ product }: props) => {
           </>
           {/* </div> */}
           <div className="card-body text-secondary">
-            <h5 className="card-title" style={{ fontWeight: "bold" }}>
+            <h5
+              className="card-title text-truncate"
+              style={{ fontWeight: "bold" }}
+            >
               {title}
             </h5>
             <p className="card-text mb-0">

@@ -5,7 +5,7 @@ import { ProductContextProvider, useProducts } from "./context/context";
 import AppRouter from "./routers/AppRouter";
 import "react-toastify/dist/ReactToastify.min.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "./client/supabaase";
+import { supabase } from "./client/supabase";
 import Layout from "./components/layout/Layout";
 
 // interface IBeforeInstallPromptEvent extends Event {

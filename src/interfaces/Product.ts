@@ -9,4 +9,5 @@ export default interface Product {
   category?: string;
   id?: number;
   hasCategory?: boolean;
+  user?:string
 }

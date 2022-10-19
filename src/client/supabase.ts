@@ -1,4 +1,6 @@
-// Initialize the JS client
+
+
+
 import { createClient } from "@supabase/supabase-js";
 export const supabase = createClient(
   "https://ssfvmwrybbqyhxrnqfkf.supabase.co",

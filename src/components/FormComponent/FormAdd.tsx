@@ -1,3 +1,15 @@
+import { useEffect, useRef, useState } from "react";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  deleteObject,
+  getStorage,
+  UploadResult,
+} from "firebase/storage";
+
+import { v4 } from "uuid";
 import {
   FieldErrorsImpl,
   UseFormGetValues,
@@ -7,13 +19,21 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import schema from "yup/lib/schema";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-// import firebaseApp from "../../../credenciales";
-import { getFirestore, updateDoc, doc } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// const firestore = getFirestore(firebaseApp);
-// const storage = getStorage(firebaseApp);
+import setupWidget from "../../util/configWidget";
+import { getUrl, MAX_FILES, validateAllType } from "../../util/util";
+import myWidget from "../cloudinary/MyWidget";
+import { saveData } from "../../firebase/services";
+import { getFirestore } from "firebase/firestore";
+import firebaseApp from "../../firebase/credentials";
+import User from "../../interfaces/User";
+import "./FormComponent.css";
+
+const storage = getStorage(firebaseApp);
 
 interface props {
   register: UseFormRegister<Product>;
@@ -25,9 +45,11 @@ interface props {
   openModal: () => void;
   setValue: UseFormSetValue<Product>;
   watch: UseFormWatch<Product>;
+  isSubmitSuccessful: boolean;
 }
 
 const FormAdd = ({
+  isSubmitSuccessful,
   handleSubmit,
   getValues,
   register,
@@ -39,7 +61,33 @@ const FormAdd = ({
 }: props) => {
   const { createProduct, products, loading, setLoading, user } = useProducts();
   const showCategory = watch("hasCategory", false);
-  let urlDescarga;
+
+  const [imageUpload, setImageUpload] = useState<File[]>([]);
+  // const [imageUrls, setImageUrls] = useState([]);
+  const [localUrls, setLocalUrls] = useState([]);
+  const cont = useRef(0);
+
+  const id = v4();
+
+  function uploadData() {
+    Object.values(imageUpload).forEach(async (file: File) => {
+      if (file == null) return;
+
+      // console.log("esto es cada file", file)
+      const imageRef = ref(
+        storage,
+        `${user.email}/${getValues("title")}/${file.name}${id}`
+      );
+
+      try {
+        await uploadBytes(imageRef, file);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLocalUrls([]);
+      }
+    });
+  }
 
   // const oncloseWdiget = (result) => {
   //   if (Boolean(getValues("image").length)) {
@@ -66,73 +114,108 @@ const FormAdd = ({
   //   }
   // };
 
-  // const onSuccess = (result) => {
-  //   console.log("success");
-  //   console.log("M", getValues());
-  //   const { secure_url } = result.info;
-  //   setValue("image", [...getValues("image"), secure_url]);
-  // };
+  const onSuccess = (result) => {
+    console.log("success");
+    console.log("M", getValues());
+    const { secure_url } = result.info;
+    setValue("image", [...getValues("image"), secure_url]);
+  };
 
-  // const onloadWdiget = () => {
-  //   setLoading(false);
-  // };
+  const onloadWdiget = () => {
+    setLoading(false);
+  };
 
-  async function fileHandler(e) {
-    if (e.target.files.length >= 4) {
+  const onSubmit = async (data: Product) => {
+    if (!isDirty) return;
+    if (products.find((p) => p.title.trim() === getValues("title").trim())) {
+      toast.error("Ya tienes un producto con este título!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
-    // detectar archivo
-    const archivoLocal = e.target.files[0];
-    // cargarlo a firebase storage
-    // const archivoRef = ref(storage, `documentos/${archivoLocal.name}`);
-    // await uploadBytes(archivoRef, archivoLocal);
-    // obtener url de descarga
-    // urlDescarga = await getDownloadURL(archivoRef);
-  }
 
-  const onSubmit = (data) => {
-    if (!isDirty) return;
-    console.log("onSubmit", data);
-    console.log("data.image.filelist", data.image.FileList);
-    // if (products.find((p) => p.title.trim() === getValues("title").trim())) {
-    //   toast.error("Ya tienes un producto con este título!", {
-    //     position: "top-center",
-    //     autoClose: 5000,
-    //     hideProgressBar: false,
-    //     closeOnClick: true,
-    //     pauseOnHover: true,
-    //     draggable: true,
-    //     progress: undefined,
-    //   });
-    //   return;
-    // }
-    // console.log("onSubmit", getValues());
+    if (imageUpload.length === 0) {
+      alert("debes seleccionar al menos una foto para el producto");
+      return;
+    }
+
+    if (imageUpload.length > 4) {
+      alert("el producto puede tener hasta 4 imágenes");
+      return;
+    }
+    if (!validateAllType(Object.values(imageUpload))) {
+      alert("formato no permitido para una o varias imagenes");
+
+      return;
+    }
+    const urls = [];
+
+    Object.values(imageUpload).forEach(async (file: File) => {
+      urls.push(
+        getUrl(file, "admin-gregory-shop", id, user, getValues("title"))
+      );
+    });
+    uploadData();
+    data.image = urls;
+    console.log("data", data);
+    saveData(data);
+
     // setLoading(true);
-    // myWidget(
-    //   setupWidget(user.email, MAX_FILES, onSuccess, onloadWdiget)
-    // );
   };
+
+  const fileHandler = (event) => {
+    setImageUpload(event.target.files);
+  };
+
+  useEffect(() => {
+    function onChangeInputFIle() {
+      Object.values(imageUpload).forEach((file) => {
+        if (file == null) return;
+
+        setLocalUrls((prev) => [...prev, URL.createObjectURL(file)]);
+      });
+    }
+    onChangeInputFIle();
+  }, [imageUpload]);
 
   return (
     <div className="container-fluid">
       <div className="row form">
         <div className="col-xs-12 offset-md-3 col-md-6 my-2">
           <h2 className="border-title">Agregar Producto</h2>
+
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* IMAGEN  */}
             <div className="form-group">
               <input
                 type="file"
-                name="imagen[]"
-                id="img"
+                accept="png, jpeg,  jpg, webp"
                 multiple
-                accept="jpg, jpeg, png, webp"
                 className="caja-input"
                 onChange={fileHandler}
-                {...register("image")}
               />
+              {/* {errors?.image && <p style={{ color: "red" }}>{errors?.image.message}</p>} */}
             </div>
-            <div className="d-flex justify-content-between align-items-center  mb-3">
+
+              <div className="container">
+            <div className="row d-flex justify-content-around">
+                {localUrls.length > 0 ? (
+                  localUrls.map((i, k) => (
+                    <img src={i} alt={""} key={k} className="col-sm-6 col-md-3 p-1 bg-light img-form" />
+                  ))
+                ) : (
+                  <h6>Este producto no tiene fotos aún 📷</h6>
+                )}
+            </div>
+              </div>
+
+            <div className="d-flex justify-content-between align-items-center  mt-2 mb-3">
               {/* DESTACADO */}
               <div className="form-group">
                 <div className="form-check">
@@ -206,8 +289,8 @@ const FormAdd = ({
                     className="form-control"
                   />
                   <datalist id="category-list">
-                    {products.map(({ category }, i) => (
-                      <option key={i} value={category} />
+                    {products.map(({ category }, file) => (
+                      <option key={file} value={category} />
                     ))}
                   </datalist>
                 </label>

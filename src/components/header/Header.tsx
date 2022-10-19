@@ -66,7 +66,7 @@ const Header = () => {
   }
 
   return (
-    <header className="sticky-top">
+    <header>
       <nav className="navbar navbar-expand-md bg-dark navbar-dark ">
         <div>
           <a className="navbar-brand">
