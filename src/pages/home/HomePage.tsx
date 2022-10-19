@@ -3,7 +3,7 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import Card from "../../components/card/Card";
 import Spinner from "../../components/spinner/Spinner";
-import { supabase } from "../../client/supabaase";
+
 import ButtonUp from "../../components/buttonUp/ButtonUp";
 import "./HomePage.css";
 

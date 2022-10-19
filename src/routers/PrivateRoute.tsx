@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useSearchParams } from "react-router-dom";
-import { supabase } from "../client/supabaase";
+// import { supabase } from "../firebase/credentials";
 import { useProducts } from "../context/context";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";

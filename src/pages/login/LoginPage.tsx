@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { supabase } from "../../client/supabaase";
+
 import { useProducts } from "../../context/context";
 import routes from "../../routers/routes";
 import "./Login.css";

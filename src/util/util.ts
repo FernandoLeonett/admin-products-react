@@ -1,4 +1,5 @@
 import Product from "../interfaces/Product";
+import User from "../interfaces/User";
 
 export const getPublicIdFromPath = (path: string) => {
   const separateBySlash = path.split("/");
@@ -35,3 +36,48 @@ export const validateEmail = (email) => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 };
+
+export function validateAllType(types) {
+  let ok = true;
+  types.forEach((a) => {
+    console.log("file: ", a.type);
+
+    if (
+      a.type !== "image/jpeg" &&
+      a.type !== "image/png" &&
+      a.type !== "image/jpg" &&
+      a.type !== "image/gif" &&
+      a.type !== "image/tiff" &&
+      a.type !== "image/webp"
+    ) {
+      ok = false;
+    }
+  });
+  return ok;
+}
+
+ export function getUrl(
+   file: File,
+   bucketName: string,
+   id: string,
+   user: User,
+   title: string,
+   dim = "600x600"
+ ) {
+   let fileName = file.name;
+
+   if (fileName.indexOf(" ") !== -1) {
+     fileName = fileName.replaceAll(" ", "%20");
+   }
+
+   let url = `https://firebasestorage.googleapis.com/v0/b/${bucketName}.appspot.com/o/${user.email}%2F${title}%2F${fileName}${id}_${dim}?alt=media`;
+
+   if (url.indexOf(" ") !== -1) {
+     url = url.replaceAll(" ", "%20");
+   }
+   if (url.indexOf("@") !== -1) {
+     url = url.replaceAll(" ", " %40");
+   }
+
+   return url;
+ }
