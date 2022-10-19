@@ -15,7 +15,7 @@ interface props {
 
 const Card = ({ product }: props) => {
   const { title, description, price, image, category, boost } = product;
-  // const { deleteProduct } = useProducts();
+  const { deleteProduct } = useProducts();
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
   const [isOpenModal, openModal, closeModal] = useModal(false);
