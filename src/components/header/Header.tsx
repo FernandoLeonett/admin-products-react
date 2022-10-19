@@ -66,8 +66,8 @@ const Header = () => {
   }
 
   return (
-    <header>
-      <nav className="navbar navbar-expand-md bg-dark navbar-dark">
+    <header className="sticky-top">
+      <nav className="navbar navbar-expand-md bg-dark navbar-dark ">
         <div>
           <a className="navbar-brand">
             <img src="/logo.png" className="rounded-circle" />

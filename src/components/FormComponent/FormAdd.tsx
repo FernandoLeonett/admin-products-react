@@ -9,11 +9,11 @@ import {
 } from "react-hook-form";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import firebaseApp from "../../../credenciales";
+// import firebaseApp from "../../../credenciales";
 import { getFirestore, updateDoc, doc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-const firestore = getFirestore(firebaseApp);
-const storage = getStorage(firebaseApp);
+// const firestore = getFirestore(firebaseApp);
+// const storage = getStorage(firebaseApp);
 
 interface props {
   register: UseFormRegister<Product>;
@@ -39,7 +39,7 @@ const FormAdd = ({
 }: props) => {
   const { createProduct, products, loading, setLoading, user } = useProducts();
   const showCategory = watch("hasCategory", false);
-    let urlDescarga;
+  let urlDescarga;
 
   // const oncloseWdiget = (result) => {
   //   if (Boolean(getValues("image").length)) {
@@ -78,17 +78,17 @@ const FormAdd = ({
   // };
 
   async function fileHandler(e) {
-    if(e.target.files.length >= 4) {
-      return}   
-      // detectar archivo
-      const archivoLocal = e.target.files[0];
-      // cargarlo a firebase storage
-    const archivoRef = ref(storage, `documentos/${archivoLocal.name}`);
-    await uploadBytes(archivoRef, archivoLocal);
+    if (e.target.files.length >= 4) {
+      return;
+    }
+    // detectar archivo
+    const archivoLocal = e.target.files[0];
+    // cargarlo a firebase storage
+    // const archivoRef = ref(storage, `documentos/${archivoLocal.name}`);
+    // await uploadBytes(archivoRef, archivoLocal);
     // obtener url de descarga
-    urlDescarga = await getDownloadURL(archivoRef);
+    // urlDescarga = await getDownloadURL(archivoRef);
   }
-
 
   const onSubmit = (data) => {
     if (!isDirty) return;
@@ -219,7 +219,18 @@ const FormAdd = ({
                 )} */}
               </div>
             )}
-
+            {/* STOCK */}
+            {/* <div className="form-group">
+              <label htmlFor="numCopia">Stock</label>
+              <input
+                type="number"
+                name="copias"
+                id="numCopia"
+                required
+                min="1"
+                className="form-control"
+              />
+            </div> */}
             {/* Descripción */}
             <div className="form-group">
               <label htmlFor="txtDescripcion">Descripción</label>

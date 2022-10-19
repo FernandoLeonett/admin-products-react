@@ -138,6 +138,18 @@ const FormEdit = ({
                 )} */}
               </div>
             )}
+            {/* STOCK */}
+            {/* <div className="form-group">
+              <label htmlFor="numCopia">Stock</label>
+              <input
+                type="number"
+                name="copias"
+                id="numCopia"
+                required
+                min="1"
+                className="form-control"
+              />
+            </div> */}
             {/* Descripción */}
             <div className="form-group">
               <label htmlFor="txtDescripcion">Descripción</label>

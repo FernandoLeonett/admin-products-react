@@ -40,7 +40,7 @@ const HomePage = () => {
           <div className="collapse width col-xs-4 " id="collapseWidthExample">
             {productosDestacados.length < 3 ? (
               <div
-                className="card card-body alert-secondary  p-3"
+                className="card card-body alert-secondary  p-3 font-weight-bold"
                 // style={{ backgroundColor: "#000000" }}
               >
                 Puedes mostrar tus productos destacados en la parte superior de
@@ -49,7 +49,7 @@ const HomePage = () => {
               </div>
             ) : (
               <div
-                className="card card-body alert-secondary  p-3"
+                className="card card-body alert-secondary  p-3 font-weight-bold"
                 // style={{ backgroundColor: "#000000" }}
               >
                 El banner de tu tienda se mostrará cuando tengas menos de 3
