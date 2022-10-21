@@ -2,22 +2,22 @@ import axios from "axios";
 import sha1 from "sha1";
 import { API_KEY, API_SECRET, CLOUD_NAME } from "../../util/util";
 
-export const deleteImage = async (pID) => {
-  const timestamp = Math.round(new Date().getTime() / 1000);
-  const string = `public_id=${pID}&timestamp=${timestamp}${API_SECRET}`;
-  const signature = sha1(string);
-  const formData = new FormData();
-  formData.append("public_id", pID);
-  formData.append("signature", signature);
-  formData.append("api_key", API_KEY);
-  formData.append("timestamp", timestamp as any);
-  const res = await axios.post(
-    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`,
-    formData
-  );
+// export const deleteImage = async (pID) => {
+//   const timestamp = Math.round(new Date().getTime() / 1000);
+//   const string = `public_id=${pID}&timestamp=${timestamp}${API_SECRET}`;
+//   const signature = sha1(string);
+//   const formData = new FormData();
+//   formData.append("public_id", pID);
+//   formData.append("signature", signature);
+//   formData.append("api_key", API_KEY);
+//   formData.append("timestamp", timestamp as any);
+//   const res = await axios.post(
+//     `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`,
+//     formData
+//   );
 
-  console.log("resultado borrar una imagen", res);
-};
+//   console.log("resultado borrar una imagen", res);
+// };
 // export const deleteResource = async (product: Product) => {
 //   alert("vas a borrar la carpeta");
 //   const formData = new FormData();

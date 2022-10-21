@@ -9,7 +9,7 @@ import {
 } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useProducts } from "../../context/context";
-import { updateProducts } from "../../firebase/services";
+// import { updateProducts } from "../../firebase/services";
 import Product from "../../interfaces/Product";
 
 interface props {
@@ -33,21 +33,22 @@ const FormEdit = ({
   setImageMode,
   watch,
 }: props) => {
+  const {updateProducts} =useProducts()
 
   const showCategory = watch("hasCategory", false);
 
   const onSubmit =  (data:Product) => {
     console.log(data)
     setImageMode(true);
-    // const { title, description, boost, category, price, id } = data;
-    // updateProducts({
-    //   title,
-    //   description,
-    //   boost,
-    //   category,
-    //   price
+    const { title, description, boost, category, price, id } = data;
+    updateProducts({
+      title,
+      description,
+      boost,
+      category,
+      price
 
-    // },id)
+    },id)
   
 
   };

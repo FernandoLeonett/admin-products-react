@@ -35,12 +35,12 @@ import {
 import myWidget from "../cloudinary/MyWidget";
 import { saveData, uploadData } from "../../firebase/services";
 import { getFirestore } from "firebase/firestore";
-import firebaseApp from "../../firebase/credentials";
+
 import User from "../../interfaces/User";
 import "./FormComponent.css";
 import ImageFireBse from "../../interfaces/ImageFIreBase";
 
-const storage = getStorage(firebaseApp);
+
 
 interface props {
   register: UseFormRegister<Product>;
@@ -140,7 +140,7 @@ const FormAdd = ({
       return;
     }
 
-    setLoading(true);
+  
     uploadData(imageUpload, user.email, getValues("title"), id);
     setLocalUrls([]);
     data.image = generateUrlsImage(
@@ -151,8 +151,10 @@ const FormAdd = ({
       id
     );
     console.log("data", data);
-    await saveData(data);
-    setLoading(false);
+
+;
+createProduct(data)
+
     openModal();
   };
 
