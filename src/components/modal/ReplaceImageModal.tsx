@@ -2,13 +2,13 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import setupWidget from "../../util/configWidget";
 import myWidget from "../cloudinary/MyWidget";
-import { deleteImage } from "../cloudinary/Service";
+
 import Modal from "./Modal";
 
 import { toast } from "react-toastify";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import ImageFireBase from "../../interfaces/ImageFIreBase";
-import { deleteImageFireBase, updateProducts } from "../../firebase/services";
+import { deleteImageFireBase } from "../../firebase/services";
 
 interface props {
   closeModal: () => void;
@@ -27,7 +27,7 @@ export default function ReplaceImageModal({
   getValues,
   setValue,
 }: props) {
-  const {  setLoading, user } = useProducts();
+  const {  setLoading, user, updateProducts } = useProducts();
 
   // let updateImageField = false;
   // const onLoadWidget = () => {
@@ -90,7 +90,7 @@ export default function ReplaceImageModal({
     // console.log("local", localImg);
 
     // await deleteImage(imgId);
-    deleteImageFireBase(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
+    await deleteImageFireBase(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
     const localImg = getValues("image").filter((i:ImageFireBase) => i.id !== imgId.id);
     updateProducts({
     image:localImg,
