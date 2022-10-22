@@ -38,12 +38,12 @@ export async function saveData(product: Product) {
 // }
 
 export async function uploadData(
-  imageUpload: File[],
+  file: File,
   email: string,
   productTitle: string,
   id: string
 ) {
-  Object.values(imageUpload).forEach(async (file: File) => {
+  // Object.values(imageUpload).forEach(async (file: File) => {
     if (file == null) return;
 
     // console.log("esto es cada file", file)
@@ -51,12 +51,13 @@ export async function uploadData(
 
     try {
       const res = await uploadBytes(imageRef, file);
+      console.log("upload data",res)
 
       return res;
     } catch (error) {
       console.log(error);
     }
-  });
+  // });
 }
 
 export async function deleteImageFireBase(

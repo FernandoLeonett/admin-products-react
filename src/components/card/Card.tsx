@@ -8,7 +8,7 @@ import routes from "../../routers/routes";
 // import { WidgetLoader } from "../cloudinary";
 import DeLeteProductModal from "../modal/DeleteProductModa";
 import useModal from "../../hooks/useModal";
-import { generateUrlsImage } from "../../util/util";
+import { generateUrlsImage, getUrl } from "../../util/util";
 
 interface props {
   product: Product;
@@ -55,17 +55,25 @@ const selectedImage = image[img]
           {/* <div style={{ height: 128 }}> */}
           <>
             {Boolean(product.image.length) ? (
+              <>
+              <p>Tiene algo</p>
               <img
                 className="card-img-top img-fluid"
                 style={{
                   height: 128,
                   objectFit: "cover",
                 }}
-                src="/noImg.png"
-                // src={generateUrlsImage(product.image[img])}
-                // alt={title}
+                onError ={
+
+                  (e)=>console.log("Image error",e)
+                }
+                // src="/noImg.png"
+                src={getUrl(image[img])}
+                alt={title}
               />
+              </>
             ) : (
+              <><p>No tiene imagen</p>
               <img
                 src="/noImg.png"
                 className="card-img-top img-fluid"
@@ -73,7 +81,9 @@ const selectedImage = image[img]
                   height: 128,
                   objectFit: "cover",
                 }}
+                alt={"sin imagen"}
               />
+              </>
             )}
           </>
           {/* </div> */}

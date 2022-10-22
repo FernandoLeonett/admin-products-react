@@ -27,7 +27,7 @@ export default function ReplaceImageModal({
   getValues,
   setValue,
 }: props) {
-  const {  setLoading, user, updateProducts } = useProducts();
+  const { setLoading, user, updateProducts, setProducts, products } = useProducts();
 
   // let updateImageField = false;
   // const onLoadWidget = () => {
@@ -84,23 +84,36 @@ export default function ReplaceImageModal({
   // };
   const deleteImageModal = async () => {
 
+
     setLoading(true);
     console.log('imgId', imgId)
     // const localImg = getValues("image").filter((i) => i !== imgId);
     // console.log("local", localImg);
 
     // await deleteImage(imgId);
-    await deleteImageFireBase(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
+ deleteImageFireBase(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
+ console.log("me han borrado")
     const localImg = getValues("image").filter((i:ImageFireBase) => i.id !== imgId.id);
+    console.log("quedaron", localImg)
     updateProducts({
     image:localImg,
     },
       getValues("id")
     );
+    // let pos = products.findIndex((p) => p.id === getValues("id"));
+    // const  product = products.find((p) => p.id === getValues("id"));
+    // product.image = localImg
+
+    // const newList = [...products];
+
+    // newList[pos] = { ...newList[pos], ...product };
+    // console.log(product)
+
+    // setProducts(newList);
 
 
-    setLoading(false);
-    // setValue("image", localImg);
+    // setLoading(false);
+    setValue("image", localImg);
     closeModal();
     toast.warn("🗑 Imagen Eliminada", {
       position: "top-center",
@@ -114,6 +127,7 @@ export default function ReplaceImageModal({
   };
 
   const cancelReplaceImage = () => {
+    console.log("cancelando")
     closeModal();
   };
 

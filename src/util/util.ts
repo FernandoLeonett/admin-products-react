@@ -89,7 +89,7 @@ export function validateAllType(types) {
 
 
  export function generateUrlsImage(
-   imageUpload: File[],
+   imageUpload: File,
    bucketName: string,
    email: string,
    productTitle: string,

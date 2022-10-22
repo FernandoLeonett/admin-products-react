@@ -4,7 +4,7 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 
 import "./Edit.css";
-import { bucketName, CLOUD_NAME, generateUrlsImage, validateAllType } from "../../util/util";
+import { bucketName, CLOUD_NAME, generateUrlsImage, getUrl, validateAllType } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
@@ -23,6 +23,7 @@ interface ParamProduct {
   state: { product: Product };
 }
 
+
 const EditPage = () => {
   const param = useLocation() as ParamProduct;
   if (!param.state) {
@@ -35,10 +36,20 @@ const EditPage = () => {
   const [deleteimg, setDeleteimg] = useState<ImageFireBase>(null);
   const [updatedImage, setUpdatedImage] = useState(false);
 
+  function deleteOneImage(file: ImageFireBase) {
+    console.log(file)
+
+
+
+    openModal();
+    setDeleteimg(file);
+
+  }
+
   const onLoadWidget = () => {
     setLoading(false);
   };
-  const id = v4()
+
 
   const {
     register,
@@ -84,11 +95,12 @@ const EditPage = () => {
     console.log("entro a close");
   };
 
-  const addImageEdit = (e) => {
-    const files = e.target.files
+  const addImageEdit = async (e) => {
+    const files: File[] = e.target.files
+    console.log("files ", files.length)
 
 
-    if (files > 4- getValues("image").length) {
+    if (files.length > 4 - getValues("image").length) {
       alert("el producto puede tener hasta 4 imágenes")
       return
     }
@@ -97,13 +109,62 @@ const EditPage = () => {
 
       return
     }
-    uploadData(files,user.email,getValues("title"), id)
-    setLoading(true);
-  
-    updateProducts({
 
-      image: generateUrlsImage(files, bucketName, user.email, getValues("title"), id),
+    // uploadData(files, user.email, getValues("title"), id)
+
+
+// urls para firebase
+    const urls: ImageFireBase[] = []
+    const emergecyImages = []
+
+    const currentImages = getValues("image");
+
+    Object.values(files).forEach((file: File) => {
+       const id = v4()
+      urls.push({
+        bucketName: bucketName,
+        dime: "600x600",
+        email: user.email,
+        fileName: file.name,
+        id: id,
+        productTitle: getValues("title"),
+      })
+
+
+
+      uploadData(file, user.email, getValues("title"), id)
+
+    }
+    
+    
+    )
+
+
+
+
+
+    const updateImages = [...currentImages, ...urls]
+
+
+
+
+    await updateProducts({
+
+      image: updateImages,
     }, getValues("id"))
+
+
+
+
+
+
+    setValue("image", updateImages)
+
+
+
+
+
+    // const localImg = [...getValues("image")
     // myWidget(
     //   setupWidget(
     //     user.email,
@@ -115,6 +176,14 @@ const EditPage = () => {
     //   )
     // );
   };
+
+  const errorImage =(e, k) => {
+    console.log("elemento",e.target)
+    console.log("second parameter", k)
+    e.target.src = "/noImg.png"
+
+
+  }
 
   // useEffect(() => {
   //   setUpdatedImage(true)
@@ -145,10 +214,10 @@ const EditPage = () => {
           errors={errors}
           getValues={getValues}
           setImageMode={setImageMode}
-          watch={watch} isDirty={isDirty}        />
+          watch={watch} isDirty={isDirty} />
       ) : (
         <>
-      
+
 
           <>
             {loading ? (
@@ -200,49 +269,58 @@ const EditPage = () => {
                 <p className="m-0" style={{ fontSize: 12, color: "#ccc" }}>
                   clickea sobre la imágen para ver más opciones
                 </p>
-              
+
                 <input
                   // disabled={getValues("image").length >= 4}
-                      accept="png, jpeg,  jpg, webp"
-                      multiple
-                  
-                      onChange={addImageEdit}
+                  accept="png, jpeg,  jpg, webp"
+                  multiple
+
+                  onChange={addImageEdit}
                   type="file"
                   className="btn btn-outline-primary w-auto "
-                  // value="Agregar Imágenes"
+                // value="Agregar Imágenes"
                 />
                 <div className="row d-flex justify-content-center">
-                  <div className="col-xs-12   text-center pb-3">
-                    {Boolean(getValues("image").length) ? (
-                      getValues("image").map((i, k) => (
-                        <Fragment key={k}>
-                          <img
-                            onClick={() => {
-                              openModal();
-                              setDeleteimg(i);
-                            }}
-                          
-                            className="imagen-datos-producto"
-                            style={{
-                              height: "160px",
-                              aspectRatio: "1",
-                              padding: "0.5rem",
-                              cursor: "pointer",
-                            }}
-                          />
-                          <ReplaceImageModal
-                            closeModal={closeModal}
-                            isOpenModal={isOpenModal}
-                            imgId={deleteimg}
-                            getValues={getValues}
-                            setValue={setValue}
-                          />
-                        </Fragment>
-                      ))
-                    ) : (
-                      <h3>Este producto no tiene fotos aún 📷</h3>
-                    )}
-                  </div>
+                  <><p>{JSON.stringify(deleteimg)}</p>
+                    <div className="col-xs-12   text-center pb-3">
+
+
+                      {Boolean(getValues("image").length) ? (
+                        getValues("image").map((file, k) => (
+                          <Fragment key={k}>
+
+
+                            <img
+                         
+                              alt={getValues("title")}
+                              title={getValues("title")}
+                              src={getUrl(file)}
+                              onClick={() => deleteOneImage(file)}
+                              onError ={(e) =>errorImage(e, k)}
+
+                              className="imagen-datos-producto"
+                              style={{
+                                height: "160px",
+                                aspectRatio: "1",
+                                padding: "0.5rem",
+                                cursor: "pointer",
+                              }}
+                            />
+                            <ReplaceImageModal
+                              closeModal={closeModal}
+                              isOpenModal={isOpenModal}
+                              imgId={deleteimg}
+                              getValues={getValues}
+                              setValue={setValue}
+                            />
+                          </Fragment>
+                        ))
+                      ) : (
+                        <h3>Este producto no tiene fotos aún 📷</h3>
+                      )}
+
+                    </div>
+                  </>
                 </div>
               </div>
             )}

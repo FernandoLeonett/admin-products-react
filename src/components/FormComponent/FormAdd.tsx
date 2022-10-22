@@ -39,6 +39,8 @@ import { getFirestore } from "firebase/firestore";
 import User from "../../interfaces/User";
 import "./FormComponent.css";
 import ImageFireBse from "../../interfaces/ImageFIreBase";
+import { storage } from "../../firebase/credentials";
+
 
 
 
@@ -72,7 +74,7 @@ const FormAdd = ({
   const [localUrls, setLocalUrls] = useState([]);
   const cont = useRef(0);
 
-  const id = v4();
+
 
   // const oncloseWdiget = (result) => {
   //   if (Boolean(getValues("image").length)) {
@@ -140,16 +142,27 @@ const FormAdd = ({
       return;
     }
 
+
+    const urls: ImageFireBse [] =[]
+
   
-    uploadData(imageUpload, user.email, getValues("title"), id);
-    setLocalUrls([]);
-    data.image = generateUrlsImage(
-      imageUpload,
-      bucketName,
-      user.email,
-      getValues("title"),
-      id
-    );
+   Object.values(imageUpload).forEach((i:File)=>{
+    const id = v4()
+
+    
+     uploadData(i, user.email, getValues("title"), id)
+     urls.push({
+       bucketName: bucketName,
+       dime:"600x600",
+       email: user.email,
+       fileName: i.name,
+       id: id,
+       productTitle:getValues("title"),
+     })
+    }
+    ) 
+    setLocalUrls([])
+    data.image = urls
     console.log("data", data);
 
 ;
@@ -158,6 +171,9 @@ createProduct(data)
     openModal();
   };
 
+
+
+ 
   const fileHandler = (event) => {
     setImageUpload(event.target.files);
   };

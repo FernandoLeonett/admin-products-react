@@ -8,13 +8,13 @@ import ButtonUp from "../../components/buttonUp/ButtonUp";
 import "./HomePage.css";
 
 const HomePage = () => {
-  const { getProducts, loading, products, user } = useProducts();
+  const { getProducts, loading, products, user, setProducts } = useProducts();
   const productosDestacados = products.filter((p) => p.boost);
 
-  // useEffect(() => {
-  //   console.log(user);
-
-  //   // }, [products])
+  useEffect(() => {
+    console.log(user);
+    getProducts()
+  }, [setProducts])
 
   //   getProducts();
   // }, []);
@@ -91,4 +91,4 @@ const HomePage = () => {
 };
 
 // export default memo(HomePage);
-export default HomePage;
+export default memo(HomePage);

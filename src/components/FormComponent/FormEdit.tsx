@@ -38,7 +38,7 @@ const FormEdit = ({
   const showCategory = watch("hasCategory", false);
 
   const onSubmit = (data: Product) => {
-    debugger
+    
     console.log(data);
     setImageMode(true);
     const { title, description, boost, category, price, id } = data;
@@ -175,7 +175,7 @@ const FormEdit = ({
               className="btn btn-dark"
               value={"Actualizar"}
               onClick={handleSubmit(onSubmit)}
-              disabled={!isDirty}
+              // disabled={!isDirty}
             />
             <p style={{ fontSize: "12px", color: "#ccc" }}>
               *Si solo deseas agregar, editar o eliminar fotos, puedes darle

@@ -21,6 +21,7 @@ import routes from "../routers/routes";
 
 interface ProductContext {
   products: Product[];
+  setProducts: Dispatch<SetStateAction<Product []>>;
   getProducts: () => Promise<void>;
   createProduct: (product: Product) => Promise<void>;
   updateProducts: (updatedFields: Product, id: string) => Promise<void>;
@@ -57,24 +58,24 @@ export const ProductContextProvider = ({ children }) => {
   //
   const [user, setUser] = useState<User>();
 
-  const loginWithMagicLink = async (email: string) => {
-    // aca nunca deberiaa llegar si esta logueado
-    setLoading(true);
-    let ok = false;
+  // const loginWithMagicLink = async (email: string) => {
+  //   // aca nunca deberiaa llegar si esta logueado
+  //   setLoading(true);
+  //   let ok = false;
 
-    try {
-      const { error, user } = await supabase.auth.signIn({ email });
+  //   try {
+  //     const { error, user } = await supabase.auth.signIn({ email });
 
-      if (error) {
-        throw error;
-      }
-      ok = true;
-    } catch (error: any) {
-    } finally {
-      setLoading(false);
-    }
-    return ok;
-  };
+  //     if (error) {
+  //       throw error;
+  //     }
+  //     ok = true;
+  //   } catch (error: any) {
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   return ok;
+  // };
 
   const logout = async () => {
     console.log(user);
@@ -99,7 +100,7 @@ export const ProductContextProvider = ({ children }) => {
       const res = await addDoc(collectionRef, product);
       product.id = res.id;
 
-      setProducts([...products, product]);
+      // setProducts([...products, product]);
 
       console.log("response create product: ", res);
     } catch (error) {
@@ -123,6 +124,7 @@ export const ProductContextProvider = ({ children }) => {
       });
 
       setProducts(productsUser);
+      console.log("products: " + productsUser)
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
@@ -135,18 +137,18 @@ export const ProductContextProvider = ({ children }) => {
     console.log("campos", updatedFields);
     try {
       const docRef = doc(db, "products", id.toString());
-      const res = updateDoc(docRef, {
-        updatedFields,
+      const res = await updateDoc(docRef, {
+        ...updatedFields,
       });
       console.log("product updated", res);
 
-      let pos = products.findIndex((p) => p.id === id);
+      // let pos = products.findIndex((p) => p.id === id);
 
-      const newList = [...products];
+      // const newList = [...products];
 
-      newList[pos] = { ...newList[pos], ...updatedFields };
+      // newList[pos] = { ...newList[pos], ...updatedFields };
       
-      setProducts(() => newList);
+      // setProducts(() => newList);
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
@@ -236,7 +238,7 @@ export const ProductContextProvider = ({ children }) => {
       deleteProduct,
       loading,
       setLoading,
-
+      setProducts,
       // loginWithMagicLink,
       logout,
       productSelected,
