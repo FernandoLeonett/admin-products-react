@@ -10,6 +10,7 @@ import { validateEmail } from "../../util/util";
 import {
   atraparInicioSesion,
   enviarEnlaceLogin,
+  getUserByEmail,
 } from "../../firebase/services";
 
 const Login = () => {
@@ -34,7 +35,12 @@ const Login = () => {
       return;
     }
 
+
     try {
+      const ok = await getUserByEmail(email);
+      if(!ok){
+        throw new Error("usuario no registrado");
+      }
       enviarEnlaceLogin(email);
       window.localStorage.setItem("correo", email);
       setSending(true);
@@ -50,7 +56,8 @@ const Login = () => {
       });
       console.log(email);
     } catch (res) {
-      if (!res) {
+      // if (!res) {
+        console.log(res);
         toast.error(
           "No se encuentra el registro, contáctese con el administrador",
           {
@@ -63,13 +70,14 @@ const Login = () => {
             progress: undefined,
           }
         );
-      }
+      // }
     }
   };
 
-  // useEffect(() => {
-  // atraparInicioSesion(window.location.href);
-  // }, []);
+   useEffect(() => {
+     //correr funcion que atrape el inicio de sesión
+     atraparInicioSesion(window.location.href);
+   }, []);
 
   return (
     <div className="container-fluid ">

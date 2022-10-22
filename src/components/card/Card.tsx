@@ -42,6 +42,10 @@ const selectedImage = image[img]
     openModal();
   };
 
+const imageError = (e) =>{
+  e.target.src = "/noImg.png"
+}
+
   return (
     <>
       <DeLeteProductModal
@@ -65,7 +69,7 @@ const selectedImage = image[img]
                 }}
                 onError ={
 
-                  (e)=>console.log("Image error",e)
+                  imageError
                 }
                 // src="/noImg.png"
                 src={getUrl(image[img])}

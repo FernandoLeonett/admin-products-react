@@ -1,5 +1,11 @@
 import { async } from "@firebase/util";
-import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "firebase/auth";
+import {
+  fetchSignInMethodsForEmail,
+  isSignInWithEmailLink,
+  sendSignInLinkToEmail,
+  signInWithEmailLink,
+  signOut,
+} from "firebase/auth";
 import {
   collection,
   addDoc,
@@ -12,8 +18,27 @@ import { doc, getDoc } from "firebase/firestore";
 import { ref, getStorage, uploadBytes, deleteObject } from "firebase/storage";
 import Product from "../interfaces/Product";
 import { auth, db, storage } from "./credentials";
+import { getAuth } from "firebase/auth";
 
-
+export async function getUserByEmail(email: string) {
+  const res = await fetchSignInMethodsForEmail(auth, email);
+  if (res.length == 0) {
+    console.log("no hay usuario");
+    return false;
+  } else {
+    console.log("no hay usuario");
+    return true;
+  }
+}
+//   getAuth()
+//   .getUserByEmail(email)
+//     .then((userRecord) => {
+//       // See the UserRecord reference doc for the contents of userRecord.
+//       console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+//     })
+//     .catch((error) => {
+//       console.log("Error fetching user data:", error);
+//     });
 
 export async function saveData(product: Product) {
   try {
@@ -44,19 +69,19 @@ export async function uploadData(
   id: string
 ) {
   // Object.values(imageUpload).forEach(async (file: File) => {
-    if (file == null) return;
+  if (file == null) return;
 
-    // console.log("esto es cada file", file)
-    const imageRef = ref(storage, `${email}/${productTitle}/${file.name}${id}`);
+  // console.log("esto es cada file", file)
+  const imageRef = ref(storage, `${email}/${productTitle}/${file.name}${id}`);
 
-    try {
-      const res = await uploadBytes(imageRef, file);
-      console.log("upload data",res)
+  try {
+    const res = await uploadBytes(imageRef, file);
+    console.log("upload data", res);
 
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
   // });
 }
 
@@ -117,13 +142,13 @@ export function atraparInicioSesion(url) {
     console.log("no es un enlace de inicio de sesión");
   }
 }
-export  function cerrarSesion() {
+export function cerrarSesion() {
   signOut(auth);
 }
 export function enviarEnlaceLogin(correo) {
   const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
-    url: "http://localhost:3000/welcome",
+    url: "http://localhost:3000/login",
 
     handleCodeInApp: true,
     // iOS: {
@@ -144,5 +169,3 @@ export function enviarEnlaceLogin(correo) {
       console.log("error", error);
     });
 }
-
-
