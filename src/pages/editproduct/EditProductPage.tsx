@@ -15,7 +15,7 @@ import Spinner from "../../components/spinner/Spinner";
 import setupWidget from "../../util/configWidget";
 import { toast } from "react-toastify";
 import FormEdit from "../../components/FormComponent/FormEdit";
-import { updateProducts, uploadData } from "../../firebase/services";
+import { uploadData } from "../../firebase/services";
 import { v4 } from "uuid";
 import ImageFireBase from "../../interfaces/ImageFIreBase";
 
@@ -30,7 +30,7 @@ const EditPage = () => {
   }
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
-  const {  products, loading, setLoading, user } = useProducts();
+  const { products, loading, setLoading, user, updateProducts } = useProducts();
   const [imageMode, setImageMode] = useState(false);
   const [deleteimg, setDeleteimg] = useState<ImageFireBase>(null);
   const [updatedImage, setUpdatedImage] = useState(false);

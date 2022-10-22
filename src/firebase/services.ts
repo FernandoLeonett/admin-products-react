@@ -100,7 +100,7 @@ export async function deleteImageFireBase(
 //   }
 // };
 
-export default function atraparInicioSesion(url) {
+export function atraparInicioSesion(url) {
   if (isSignInWithEmailLink(auth, url)) {
     const correoRegistro = window.localStorage.getItem("correo");
 
@@ -122,7 +122,7 @@ export  function cerrarSesion() {
 export function enviarEnlaceLogin(correo) {
   const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
-    url: "http://localhost:3000/login-url",
+    url: "http://localhost:3000/welcome",
 
     handleCodeInApp: true,
     // iOS: {

@@ -20,7 +20,7 @@ interface props {
   getValues: UseFormGetValues<Product>;
   setImageMode: Dispatch<SetStateAction<boolean>>;
   watch: UseFormWatch<Product>;
-  isDirty: boolean
+  isDirty: boolean;
 }
 
 const FormEdit = ({
@@ -33,24 +33,25 @@ const FormEdit = ({
   setImageMode,
   watch,
 }: props) => {
-  const {updateProducts} =useProducts()
+  const { updateProducts } = useProducts();
 
   const showCategory = watch("hasCategory", false);
 
-  const onSubmit =  (data:Product) => {
-    console.log(data)
+  const onSubmit = (data: Product) => {
+    debugger
+    console.log(data);
     setImageMode(true);
     const { title, description, boost, category, price, id } = data;
-    updateProducts({
-      title,
-      description,
-      boost,
-      category,
-      price
-
-    },id)
-  
-
+    updateProducts(
+      {
+        title,
+        description,
+        boost,
+        category,
+        price,
+      },
+      id
+    );
   };
 
   return (

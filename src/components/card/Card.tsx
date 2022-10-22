@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import routes from "../../routers/routes";
-import { Image } from "cloudinary-react";
-import { CLOUD_NAME } from "../../util/util";
-import { WidgetLoader } from "../cloudinary";
+// import { Image } from "cloudinary-react";
+// import { CLOUD_NAME } from "../../util/util";
+// import { WidgetLoader } from "../cloudinary";
 import DeLeteProductModal from "../modal/DeleteProductModa";
 import useModal from "../../hooks/useModal";
+import { generateUrlsImage } from "../../util/util";
 
 interface props {
   product: Product;
@@ -19,6 +20,7 @@ const Card = ({ product }: props) => {
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
   const [isOpenModal, openModal, closeModal] = useModal(false);
+const selectedImage = image[img]
 
   const changeImg = (n: number) => {
     if (img == 0 && n == -1) {
@@ -53,20 +55,15 @@ const Card = ({ product }: props) => {
           {/* <div style={{ height: 128 }}> */}
           <>
             {Boolean(product.image.length) ? (
-              <Image
-                publicId={image[img]}
-                cloudName={CLOUD_NAME}
+              <img
                 className="card-img-top img-fluid"
                 style={{
                   height: 128,
-                  // width: "fit-content"
                   objectFit: "cover",
-                  // objectPosition: "80%"
-
-                  // aspectRatio: 7 / 9
-
-                  // objectPosition: "center center",
                 }}
+                src="/noImg.png"
+                // src={generateUrlsImage(product.image[img])}
+                // alt={title}
               />
             ) : (
               <img

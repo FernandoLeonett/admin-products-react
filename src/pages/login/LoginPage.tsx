@@ -7,6 +7,10 @@ import "./Login.css";
 import { toast, ToastContainer } from "react-toastify";
 import Swal from "sweetalert2";
 import { validateEmail } from "../../util/util";
+import {
+  atraparInicioSesion,
+  enviarEnlaceLogin,
+} from "../../firebase/services";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,43 +33,42 @@ const Login = () => {
 
       return;
     }
-    const res = await loginWithMagicLink(email);
 
-    if (!res) {
-      toast.error(
-        "No se encuentra el registro, contáctese con el administrador",
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
+    try {
+      enviarEnlaceLogin(email);
+      window.localStorage.setItem("correo", email);
+      setSending(true);
 
-      return;
+      Swal.fire({
+        text: "Mail enviado correctamente, verifica tu casilla de correo 📧",
+        icon: "success",
+        confirmButtonText: "OK",
+        buttonsStyling: false,
+        customClass: {
+          confirmButton: "btn btn-dark",
+        },
+      });
+      console.log(email);
+    } catch (res) {
+      if (!res) {
+        toast.error(
+          "No se encuentra el registro, contáctese con el administrador",
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+      }
     }
-
-    setSending(true);
-    Swal.fire({
-      text: "Mail enviado correctamente, verifica tu casilla de correo 📧",
-      icon: "success",
-      confirmButtonText: "OK",
-      buttonsStyling: false,
-      customClass: {
-        confirmButton: "btn btn-dark",
-      },
-    });
-    console.log(email);
   };
 
   // useEffect(() => {
-  //   supabase.auth.onAuthStateChange((event, session) => {
-  //     console.log(event, session);
-  //     if (session) navigate(routes.home);
-  //   });
+  // atraparInicioSesion(window.location.href);
   // }, []);
 
   return (

@@ -24,6 +24,7 @@ const AppRouter = () => {
 
       <Route path={routes.home} element={<PublicRoute />}>
         <Route path={routes.login} element={<LoginPage />} />
+        <Route path={routes.welcome} element={<WelcomePage />} />
 
       </Route>
       <Route path={"*"} element={<h1>not found</h1>} />

@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "./client/supabase";
 import Layout from "./components/layout/Layout";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/credentials";
 
 // interface IBeforeInstallPromptEvent extends Event {
 //   readonly platforms: string[];
@@ -90,6 +92,10 @@ import Layout from "./components/layout/Layout";
 function App() {
   // const { isReady, promptToInstall, hasFinishedInstallation } =
   //   useAddToHomeScreenPrompt();
+
+  const { user, setUser } = useProducts();
+
+ 
 
   return (
     <ProductContextProvider>

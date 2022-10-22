@@ -1,14 +1,22 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import { onAuthStateChanged, User } from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { supabase } from "../client/supabase";
 
-import { db } from "../firebase/credentials";
-import { deleteImageFireBase } from "../firebase/services";
+import { auth, db } from "../firebase/credentials";
+import { cerrarSesion, deleteImageFireBase } from "../firebase/services";
 import Product from "../interfaces/Product";
-import User from "../interfaces/User";
+// import User from "../interfaces/User";
 import routes from "../routers/routes";
 
 interface ProductContext {
@@ -41,14 +49,13 @@ export const ProductContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [primerInicio, setPrimerInicio] = useState();
 
   // const [user, setUser] = useState(null)
   const [productSelected, setProductSelected] = useState(null);
 
   //
   const [user, setUser] = useState<User>();
-
-  
 
   const loginWithMagicLink = async (email: string) => {
     // aca nunca deberiaa llegar si esta logueado
@@ -71,16 +78,10 @@ export const ProductContextProvider = ({ children }) => {
 
   const logout = async () => {
     console.log(user);
-
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        throw error;
-      }
-
-      console.log("sesion cerrada");
+      cerrarSesion();
       navigate(routes.login);
 
       setUser(null);
@@ -94,14 +95,12 @@ export const ProductContextProvider = ({ children }) => {
   const createProduct = async (product: Product) => {
     setLoading(true);
     try {
-
-
       const collectionRef = collection(db, "products");
       const res = await addDoc(collectionRef, product);
-      
+      product.id = res.id;
+
       setProducts([...products, product]);
 
- 
       console.log("response create product: ", res);
     } catch (error) {
       alert(error);
@@ -115,15 +114,13 @@ export const ProductContextProvider = ({ children }) => {
 
     const productsSnahsop = await getDocs(collection(db, "products"));
 
-
     try {
-      const productsUser =  productsSnahsop.docs.map((p) => {
+      const productsUser = productsSnahsop.docs.map((p) => {
         let product = p.data();
         product.id = p.id;
 
         return product;
       });
-  
 
       setProducts(productsUser);
     } catch (error) {
@@ -135,19 +132,20 @@ export const ProductContextProvider = ({ children }) => {
 
   const updateProducts = async (updatedFields: Product, id: string) => {
     setLoading(true);
+    console.log("campos", updatedFields);
     try {
       const docRef = doc(db, "products", id.toString());
-      const res = await updateDoc(docRef, {
+      const res = updateDoc(docRef, {
         updatedFields,
       });
-      console.log("product updated",res)
+      console.log("product updated", res);
 
       let pos = products.findIndex((p) => p.id === id);
 
       const newList = [...products];
 
-      newList[pos] = {...newList[pos], ...updatedFields};
-
+      newList[pos] = { ...newList[pos], ...updatedFields };
+      
       setProducts(() => newList);
     } catch (error) {
       alert(error.error_description || error.message);
@@ -158,15 +156,14 @@ export const ProductContextProvider = ({ children }) => {
 
   const deleteProduct = async (product: Product) => {
     try {
-   
       setLoading(true);
 
       const docRef = doc(db, "products", product.id);
       const res = await deleteDoc(docRef);
       product.image.forEach((i) => {
-        deleteImageFireBase(i.email,i.productTitle,i.fileName, i.id, i.dime);
+        deleteImageFireBase(i.email, i.productTitle, i.fileName, i.id, i.dime);
       });
-      console.log("product deleted", res)
+      console.log("product deleted", res);
 
       setProducts(products.filter((Product) => Product.id !== product.id));
     } catch (error) {
@@ -186,81 +183,86 @@ export const ProductContextProvider = ({ children }) => {
 
   // }, [user?.id]);
 
+  // useEffect(() => {
+  //   const { data: authListener } = supabase.auth.onAuthStateChange(async () =>
+  //     checkUser()
+  //   );
+
+  //   const checkUser = async () => {
+  //     const user = supabase.auth.user();
+
+  //     if (user) {
+  //       setUser({
+  //         email: user.email,
+  //         id: user.id,
+  //       });
+  //       navigate("/", { replace: true });
+  //     } else {
+  //       navigate("/login", { replace: true });
+  //     }
+  //   };
+  //   checkUser();
+  //   console.log('user', user)
+
+  //   return () => {
+  //     authListener?.unsubscribe();
+  //   };
+  // }, []);
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     getProducts();
+
+  //   }
+
+  // }, [user?.id]);
+
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(async () =>
-      checkUser()
-    );
-
-    const checkUser = async () => {
-      const user = supabase.auth.user();
-
-      if (user) {
-        setUser({
-          email: user.email,
-          id: user.id,
-        });
-        navigate("/", { replace: true });
+    onAuthStateChanged(auth, (usuarioFirebase) => {
+      if (usuarioFirebase) {
+        setUser(usuarioFirebase);
       } else {
-        navigate("/login", { replace: true });
+        setUser(null);
       }
-    };
-    checkUser();
-    console.log('user', user)
+    });
+  }, [])
+  
 
-    return () => {
-      authListener?.unsubscribe();
-    };
-  }, []);
-  useEffect(() => {
-    if (user?.id) {
-      getProducts();
+  const value = useMemo(
+    () => ({
+      products,
+      getProducts,
+      createProduct,
+      updateProducts,
+      deleteProduct,
+      loading,
+      setLoading,
 
-    }
+      // loginWithMagicLink,
+      logout,
+      productSelected,
+      setProductSelected,
+      user,
+      setUser,
+    }),
+    [
+      products,
+      getProducts,
+      createProduct,
+      updateProducts,
+      deleteProduct,
+      loading,
+      setLoading,
 
-
-
-
-
-
-
-  }, [user?.id]);
-
-  const value = useMemo(() => ({
-    products,
-    getProducts,
-    createProduct,
-    updateProducts,
-    deleteProduct,
-    loading,
-    setLoading,
-
-    // loginWithMagicLink,
-    // logout,
-    productSelected,
-    setProductSelected,
-    user,
-    setUser,
-  }), [products,
-    getProducts,
-    createProduct,
-    updateProducts,
-    deleteProduct,
-    loading,
-    setLoading,
-
-    // loginWithMagicLink,
-    logout,
-    productSelected,
-    setProductSelected,
-    user,
-    setUser]);
-
+      // loginWithMagicLink,
+      logout,
+      productSelected,
+      setProductSelected,
+      user,
+      setUser,
+    ]
+  );
 
   return (
-    <ProductContext.Provider
-      value={value}
-    >
-      {children}
-    </ProductContext.Provider>
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
   );
 };
