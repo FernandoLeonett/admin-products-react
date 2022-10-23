@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCcoSODl8H4Xq9ABdICP59ztS3UEzwrmNQ",
-  authDomain: "admin-gregory-shop.firebaseapp.com",
-  projectId: "admin-gregory-shop",
-  storageBucket: "admin-gregory-shop.appspot.com",
-  messagingSenderId: "16457513315",
-  appId: "1:16457513315:web:f5de80afbeb15984257b56",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 // Initialize Firebase
