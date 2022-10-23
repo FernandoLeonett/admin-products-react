@@ -173,8 +173,15 @@ const FormEdit = ({
             <input
               type="submit"
               className="btn btn-dark"
-              value={"Actualizar"}
+              value={"Actualizar Datos del Producto"}
               onClick={handleSubmit(onSubmit)}
+              disabled={!isDirty}
+            />
+            <input
+              type="button"
+              className="btn btn-dark"
+              value={"Editar Imágenes"}
+              onClick={()=>setImageMode(true)}
               // disabled={!isDirty}
             />
             <p style={{ fontSize: "12px", color: "#ccc" }}>

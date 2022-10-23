@@ -5,7 +5,11 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  getFirestore,
+  query,
+  snapshotEqual,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { createContext, useContext, useState } from "react";
@@ -21,7 +25,7 @@ import routes from "../routers/routes";
 
 interface ProductContext {
   products: Product[];
-  setProducts: Dispatch<SetStateAction<Product []>>;
+  setProducts: Dispatch<SetStateAction<Product[]>>;
   getProducts: () => Promise<void>;
   createProduct: (product: Product) => Promise<void>;
   updateProducts: (updatedFields: Product, id: string) => Promise<void>;
@@ -113,18 +117,30 @@ export const ProductContextProvider = ({ children }) => {
   const getProducts = async () => {
     setLoading(true);
 
-    const productsSnahsop = await getDocs(collection(db, "products"));
+    // const productsSnahsop = await getDocs(collection(db, "products"));
 
     try {
-      const productsUser = productsSnahsop.docs.map((p) => {
-        let product = p.data();
-        product.id = p.id;
-
-        return product;
+      const q = query(
+        collection(db, "products"),
+        where("user", "==", user.email)
+      );
+      getDocs(q).then((snapshot) => {
+        if (snapshot.size === 0) {
+          console.log("no hay datos");
+        }
+        setProducts(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        );
       });
+      // const productsUser = productsSnahsop.docs.map((p) => {
+      //   let product = p.data();
+      //   product.id = p.id;
 
-      setProducts(productsUser);
-      console.log("products: " + productsUser)
+      //   return product;
+      // });
+
+      // setProducts(productsUser);
+      // console.log("products: " + productsUser)
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
@@ -147,7 +163,7 @@ export const ProductContextProvider = ({ children }) => {
       // const newList = [...products];
 
       // newList[pos] = { ...newList[pos], ...updatedFields };
-      
+
       // setProducts(() => newList);
     } catch (error) {
       alert(error.error_description || error.message);
@@ -226,8 +242,7 @@ export const ProductContextProvider = ({ children }) => {
         setUser(null);
       }
     });
-  }, [])
-  
+  }, []);
 
   const value = useMemo(
     () => ({
