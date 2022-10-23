@@ -4,7 +4,13 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 
 import "./Edit.css";
-import { bucketName, CLOUD_NAME, generateUrlsImage, getUrl, validateAllType } from "../../util/util";
+import {
+  bucketName,
+  CLOUD_NAME,
+  generateUrlsImage,
+  getUrl,
+  validateAllType,
+} from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
@@ -23,7 +29,6 @@ interface ParamProduct {
   state: { product: Product };
 }
 
-
 const EditPage = () => {
   const param = useLocation() as ParamProduct;
   if (!param.state) {
@@ -37,19 +42,15 @@ const EditPage = () => {
   const [updatedImage, setUpdatedImage] = useState(false);
 
   function deleteOneImage(file: ImageFireBase) {
-    console.log(file)
-
-
+    console.log(file);
 
     openModal();
     setDeleteimg(file);
-
   }
 
   const onLoadWidget = () => {
     setLoading(false);
   };
-
 
   const {
     register,
@@ -96,31 +97,29 @@ const EditPage = () => {
   };
 
   const addImageEdit = async (e) => {
-    const files: File[] = e.target.files
-    console.log("files ", files.length)
-
+    const files: File[] = e.target.files;
+    console.log("files ", files.length);
 
     if (files.length > 4 - getValues("image").length) {
-      alert("el producto puede tener hasta 4 imágenes")
-      return
+      alert("el producto puede tener hasta 4 imágenes");
+      return;
     }
     if (!validateAllType(Object.values(files))) {
-      alert("Formato no permitido para una o varias imagenes")
+      alert("Formato no permitido para una o varias imagenes");
 
-      return
+      return;
     }
 
     // uploadData(files, user.email, getValues("title"), id)
 
-
-// urls para firebase
-    const urls: ImageFireBase[] = []
-    const emergecyImages = []
+    // urls para firebase
+    const urls: ImageFireBase[] = [];
 
     const currentImages = getValues("image");
 
     Object.values(files).forEach((file: File) => {
-       const id = v4()
+      const id = v4();
+      console.log("id limpiado", id);
       urls.push({
         bucketName: bucketName,
         dime: "600x600",
@@ -128,41 +127,22 @@ const EditPage = () => {
         fileName: file.name,
         id: id,
         productTitle: getValues("title"),
-      })
+      });
 
+      uploadData(file, user.email, getValues("title"), id);
+    });
+    console.log("urls", urls);
 
+    const updateImages = [...currentImages, ...urls];
 
-      uploadData(file, user.email, getValues("title"), id)
+    await updateProducts(
+      {
+        image: updateImages,
+      },
+      getValues("id")
+    );
 
-    }
-    
-    
-    )
-
-
-
-
-
-    const updateImages = [...currentImages, ...urls]
-
-
-
-
-    await updateProducts({
-
-      image: updateImages,
-    }, getValues("id"))
-
-
-
-
-
-
-    setValue("image", updateImages)
-
-
-
-
+    setValue("image", updateImages);
 
     // const localImg = [...getValues("image")
     // myWidget(
@@ -177,13 +157,20 @@ const EditPage = () => {
     // );
   };
 
-  const errorImage =(e, k) => {
-    console.log("elemento",e.target)
-    console.log("second parameter", k)
-    e.target.src = "/noImg.png"
+  const errorImage = (e, k) => {
+    // localStorage.setItem("flag", JSON.stringify("1"));
+    e.target.src = "/optimizandoImagen.gif";
+    console.log("error image")
+  };
 
-
-  }
+  // useEffect(() => {
+  //   if (JSON.parse(localStorage.getItem("flag")) === "1") {
+  //     setImageMode(true);
+  //     localStorage.removeItem("flag");
+  //   } else {
+  //     setImageMode(false);
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   setUpdatedImage(true)
@@ -214,11 +201,11 @@ const EditPage = () => {
           errors={errors}
           getValues={getValues}
           setImageMode={setImageMode}
-          watch={watch} isDirty={isDirty} />
+          watch={watch}
+          isDirty={isDirty}
+        />
       ) : (
         <>
-
-
           <>
             {loading ? (
               <Spinner />
@@ -274,30 +261,23 @@ const EditPage = () => {
                   // disabled={getValues("image").length >= 4}
                   accept="png, jpeg,  jpg, webp"
                   multiple
-
                   onChange={addImageEdit}
                   type="file"
-                  className="btn btn-outline-primary w-auto "
-                // value="Agregar Imágenes"
+                  className="btn btn-outline-secondary mb-3"
+                  // value="Agregar Imágenes"
                 />
                 <div className="row d-flex justify-content-center">
-                  <><p>{JSON.stringify(deleteimg)}</p>
+                  <>
                     <div className="col-xs-12   text-center pb-3">
-
-
                       {Boolean(getValues("image").length) ? (
                         getValues("image").map((file, k) => (
                           <Fragment key={k}>
-
-
                             <img
-                         
                               alt={getValues("title")}
-                              title={getValues("title")}
+                              title={file.fileName}
                               src={getUrl(file)}
                               onClick={() => deleteOneImage(file)}
-                              onError ={(e) =>errorImage(e, k)}
-
+                              onError={(e) => errorImage(e, k)}
                               className="imagen-datos-producto"
                               style={{
                                 height: "160px",
@@ -318,7 +298,6 @@ const EditPage = () => {
                       ) : (
                         <h3>Este producto no tiene fotos aún 📷</h3>
                       )}
-
                     </div>
                   </>
                 </div>

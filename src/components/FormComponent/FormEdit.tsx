@@ -169,25 +169,28 @@ const FormEdit = ({
             {errors?.price && (
               <p style={{ color: "red" }}>El precio debe ser un número</p>
             )}
-
-            <input
-              type="submit"
-              className="btn btn-dark"
-              value={"Actualizar Datos del Producto"}
-              onClick={handleSubmit(onSubmit)}
-              disabled={!isDirty}
-            />
-            <input
-              type="button"
-              className="btn btn-dark"
-              value={"Editar Imágenes"}
-              onClick={()=>setImageMode(true)}
-              // disabled={!isDirty}
-            />
-            <p style={{ fontSize: "12px", color: "#ccc" }}>
+            <div className="container-fluid">
+              <div className="row mb-4 d-flex justify-content-sm-between">
+                <input
+                  type="submit"
+                  value={"Actualizar Datos"}
+                  onClick={handleSubmit(onSubmit)}
+                  disabled={!isDirty}
+                  className="btn btn-dark col-12 col-sm-6 button-form-edit"
+                />
+                <input
+                  type="button"
+                  value={"Actualizar Imágenes"}
+                  onClick={() => setImageMode(true)}
+                  className="btn btn-dark col-12 col-sm-6 button-form-edit"
+                  // disabled={!isDirty}
+                />
+              </div>
+            </div>
+            {/* <p style={{ fontSize: "12px", color: "#ccc" }}>
               *Si solo deseas agregar, editar o eliminar fotos, puedes darle
               click al botón
-            </p>
+            </p> */}
           </form>
         </div>
       </div>

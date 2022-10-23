@@ -68,6 +68,7 @@ export async function uploadData(
   productTitle: string,
   id: string
 ) {
+  console.log("id recibilo", id);
   // Object.values(imageUpload).forEach(async (file: File) => {
   if (file == null) return;
 

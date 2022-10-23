@@ -60,33 +60,30 @@ const imageError = (e) =>{
           <>
             {Boolean(product.image.length) ? (
               <>
-              <p>Tiene algo</p>
-              <img
-                className="card-img-top img-fluid"
-                style={{
-                  height: 128,
-                  objectFit: "cover",
-                }}
-                onError ={
-
-                  imageError
-                }
-                // src="/noImg.png"
-                src={getUrl(image[img])}
-                alt={title}
-              />
+                <img
+                  className="card-img-top img-fluid"
+                  style={{
+                    height: 128,
+                    objectFit: "cover",
+                  }}
+                  onError={imageError}
+                  // src="/noImg.png"
+                  src={getUrl(image[img])}
+                  alt={title}
+                />
               </>
             ) : (
-              <><p>No tiene imagen</p>
-              <img
-                src="/noImg.png"
-                className="card-img-top img-fluid"
-                style={{
-                  height: 128,
-                  objectFit: "cover",
-                }}
-                alt={"sin imagen"}
-              />
+              <>
+                <p>No tiene imagen</p>
+                <img
+                  src="/noImg.png"
+                  className="card-img-top img-fluid"
+                  style={{
+                    height: 128,
+                    objectFit: "cover",
+                  }}
+                  alt={"sin imagen"}
+                />
               </>
             )}
           </>
@@ -103,6 +100,9 @@ const imageError = (e) =>{
             </p>
             <p className="card-text mb-0">
               <small className="text-muted">{category}</small>
+            </p>
+            <p className="card-text mb-0">
+              <small className="text-muted">{image.length} imágen/s</small>
             </p>
             <p className="card-text mb-0">
               <small style={{ color: boost ? "#28a745" : "#dc3545" }}>
