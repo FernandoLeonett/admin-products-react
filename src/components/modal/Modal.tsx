@@ -21,7 +21,7 @@ export default function Modal({
   title = "El Producto ha sido agregado",
   question = "¿Desea continuar agregando?",
   acceptValue = "Aceptar",
-  cancelValue = "Cancelar Borrar Imagen",
+  cancelValue = "Cancelar",
   btnClassNameAccept = "btn btn-outline-primary",
   btnClassNameCancel = "btn btn-outline-secondary",
   extraButton,

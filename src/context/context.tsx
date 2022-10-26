@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../client/supabase";
 
 import { auth, db } from "../firebase/credentials";
-import { cerrarSesion, deleteImageFireBase } from "../firebase/services";
+import { cerrarSesion, deletestring } from "../firebase/services";
 import Product from "../interfaces/Product";
 // import User from "../interfaces/User";
 import routes from "../routers/routes";
@@ -108,7 +108,7 @@ export const ProductContextProvider = ({ children }) => {
 
       console.log("response create product: ", res);
     } catch (error) {
-      alert(error);
+      // alert(error);
     } finally {
       setLoading(false);
     }
@@ -142,7 +142,7 @@ export const ProductContextProvider = ({ children }) => {
       // setProducts(productsUser);
       // console.log("products: " + productsUser)
     } catch (error) {
-      alert(error.error_description || error.message);
+      // alert(error.error_description || error.message);
     } finally {
       setLoading(false);
     }
@@ -166,7 +166,7 @@ export const ProductContextProvider = ({ children }) => {
 
       // setProducts(() => newList);
     } catch (error) {
-      alert(error.error_description || error.message);
+      // alert(error.error_description || error.message);
     } finally {
       setLoading(false);
     }
@@ -179,7 +179,7 @@ export const ProductContextProvider = ({ children }) => {
       const docRef = doc(db, "products", product.id);
       const res = await deleteDoc(docRef);
       product.image.forEach((i) => {
-        deleteImageFireBase(i.email, i.productTitle, i.fileName, i.id, i.dime);
+        deletestring(i, user.email, product.title);
       });
       console.log("product deleted", res);
 

@@ -6,9 +6,10 @@ import Spinner from "../../components/spinner/Spinner";
 
 import ButtonUp from "../../components/buttonUp/ButtonUp";
 import "./HomePage.css";
+import { copyResponse } from "workbox-core";
 
 const HomePage = () => {
-  const { getProducts, loading, products, user, setProducts } = useProducts();
+  const { getProducts, loading, products, user, setProducts, updateProducts } = useProducts();
   const productosDestacados = products.filter((p) => p.boost);
 
   useEffect(() => {
@@ -18,11 +19,26 @@ const HomePage = () => {
 
   //   getProducts();
   // }, []);
+  // const fnPrueba = () =>{
+
+  //   products.forEach((p) => {
+  //     const urls = [];
+
+  //     p.image.forEach((i) => {
+  //       urls.push(getUrl(i));
+  //     });
+      
+
+  //     updateProducts({ image: urls }, p.id);
+  //   });
+
+  // }
 
   return (
     <>
+    {/* <button onClick={fnPrueba}>prueba</button> */}
       <div
-        style={{ zIndex: 5, position: "fixed", top: "13rem", left: "0.5rem" }}
+        style={{ zIndex: 5, position: "fixed", top: "50vh", left: "0.5rem" }}
       >
         <p>
           <button
@@ -79,7 +95,7 @@ const HomePage = () => {
             //   <div className="row">
             <div className="col-12">
               {/* <div className="col-12 mt-5 d-flex justify-content-center align-items-center"> */}
-              <h1>No tienes productos en tu tienda 😬</h1>
+              <h1>No tienes productos en tu tienda</h1>
             </div>
             //</div>
             //</div>

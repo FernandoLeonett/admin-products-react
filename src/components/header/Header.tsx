@@ -29,7 +29,7 @@ const Header = () => {
       // Limpiar el defferedPrompt para que pueda ser eliminado por el recolector de basura
       // deferredPrompt = null;
       // De manera opcional, enviar el evento de analíticos para indicar una instalación exitosa
-      alert("PWA was installed");
+      // alert("PWA was installed");
     });
   }, []);
 

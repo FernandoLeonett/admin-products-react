@@ -84,11 +84,11 @@ const Login = () => {
       <div className="row ">
         <div className="col-xs-12 offset-md-3 col-md-6 offset-md-3">
           <form className="logIn" onSubmit={handleSubmit}>
-            <div className="row encabezadoLogin">
+            {/* <div className="row encabezadoLogin">
               <img src="/logo.png" className="col-xs-12 rounded-circle" />
-            </div>
+            </div> */}
             <div className="form-group">
-              <label htmlFor="txtEmail">Correo</label>
+              <label htmlFor="txtEmail" className="mb-3">Correo electrónico</label>
               <input
                 value={email}
                 name="email"

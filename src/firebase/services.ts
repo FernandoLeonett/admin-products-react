@@ -19,6 +19,7 @@ import { ref, getStorage, uploadBytes, deleteObject } from "firebase/storage";
 import Product from "../interfaces/Product";
 import { auth, db, storage } from "./credentials";
 import { getAuth } from "firebase/auth";
+import { superReplaceAny } from "../util/util";
 
 export async function getUserByEmail(email: string) {
   const res = await fetchSignInMethodsForEmail(auth, email);
@@ -86,14 +87,31 @@ export async function uploadData(
   // });
 }
 
-export async function deleteImageFireBase(
-  email: string,
-  title: string,
-  fileName: string,
-  id: string,
-  dime: string
-) {
-  const refer = ref(storage, `${email}/${title}/${fileName}${id}_${dime}`);
+export async function deletestring(
+  url, email, title
+  // email: string,
+  // title: string,
+  // fileName: string,
+  // id: string,
+  // dime: string
+){
+  const pos1 = url.indexOf("%2F");
+  const pos2 = url.indexOf("?");
+  let imageName = url.substring(pos1 + 3, pos2);
+  console.log("url", url, "email", email, "title", title, "imageName", imageName );
+
+// let pathLeft = `${email}%2F${title}%2F`;
+// pathLeft = superReplaceAny(pathLeft, "@", "%40");
+// console.log("sin arroba", pathLeft)
+// pathLeft = superReplaceAny(pathLeft, " ", "%20");
+// console.log("sin espacios", pathLeft);
+  // email.replaceAll("@", "%40")
+  // let ruta = `${pathLeft}${imageName}`;
+  // const refer = ref(storage, ruta);
+  const ruta = imageName.replaceAll("%2F", "/")
+  const refer = ref(storage, `${email}/${ruta}`);
+  // const refer = ref(storage, `${email}/${title}/${fileName}${id}_${dime}`);
+  // console.log("ruta", ruta);
 
   try {
     const res = await deleteObject(refer);

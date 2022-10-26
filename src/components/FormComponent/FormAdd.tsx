@@ -28,7 +28,6 @@ import setupWidget from "../../util/configWidget";
 import {
   bucketName,
   generateUrlsImage,
-  getUrl,
   MAX_FILES,
   validateAllType,
 } from "../../util/util";
@@ -38,11 +37,7 @@ import { getFirestore } from "firebase/firestore";
 
 import User from "../../interfaces/User";
 import "./FormComponent.css";
-import ImageFireBse from "../../interfaces/ImageFIreBase";
 import { storage } from "../../firebase/credentials";
-
-
-
 
 interface props {
   register: UseFormRegister<Product>;
@@ -67,39 +62,15 @@ const FormAdd = ({
   watch,
 }: props) => {
   const { createProduct, products, loading, setLoading, user } = useProducts();
-  const showCategory = watch("hasCategory", false);
-
   const [imageUpload, setImageUpload] = useState<File[]>([]);
-  // const [imageUrls, setImageUrls] = useState([]);
+  const [showCategory, setShowCategory] = useState(false);
   const [localUrls, setLocalUrls] = useState([]);
   const cont = useRef(0);
 
+ const toggleEnabledInputCategory = () => {
+   setShowCategory((prev) => !prev);
+ };
 
-
-  // const oncloseWdiget = (result) => {
-  //   if (Boolean(getValues("image").length)) {
-  //     const product: Product = {
-  //       title: getValues("title"),
-  //       description: getValues("description"),
-  //       image: getValues("image"),
-  //       boost: getValues("boost"),
-  //       price: getValues("price"),
-  //       category: getValues("category"),
-  //     };
-  //     createProduct(product);
-  //     openModal();
-  //   } else {
-  //     Swal.fire({
-  //       text: "El producto debe tener al menos una imagen",
-  //       icon: "error",
-  //       confirmButtonText: "OK",
-  //       buttonsStyling: false,
-  //       customClass: {
-  //         confirmButton: "btn btn-dark",
-  //       },
-  //     });
-  //   }
-  // };
 
   const onSuccess = (result) => {
     console.log("success");
@@ -128,52 +99,57 @@ const FormAdd = ({
     }
 
     if (imageUpload.length === 0) {
-      alert("debes seleccionar al menos una foto para el producto");
+      toast.warn("El producto debe tener al menos una foto", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
 
     if (imageUpload.length > 4) {
-      alert("el producto puede tener hasta 4 imágenes");
+      toast.warn("El producto puede tener hasta cuatro imágenes", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     if (!validateAllType(Object.values(imageUpload))) {
-      alert("formato no permitido para una o varias imagenes");
+      toast.warn("Formato no permitido para una o varias imágenes", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
 
       return;
     }
 
-
-    const urls: ImageFireBse [] =[]
-
-  
-   Object.values(imageUpload).forEach((i:File)=>{
-    const id = v4()
-
-    
-     uploadData(i, user.email, getValues("title"), id)
-     urls.push({
-       bucketName: bucketName,
-       dime:"600x600",
-       email: user.email,
-       fileName: i.name,
-       id: id,
-       productTitle:getValues("title"),
-     })
-    }
-    ) 
-    setLocalUrls([])
-    data.image = urls
+    const urls = generateUrlsImage(imageUpload,bucketName,user.email,getValues("title"));
+    setLocalUrls([]);
+    data.image = urls;
     console.log("data", data);
 
-;
-createProduct(data)
+    createProduct(data);
 
     openModal();
   };
 
-
-
- 
   const fileHandler = (event) => {
     setImageUpload(event.target.files);
   };
@@ -262,7 +238,7 @@ createProduct(data)
             </div>
             {errors?.title && (
               <p style={{ color: "red" }}>
-                el titulo no debe contener caracteres especiales
+                el título no debe contener caracteres especiales
               </p>
             )}
 
@@ -274,7 +250,8 @@ createProduct(data)
                     className="form-check-input"
                     type="checkbox"
                     // id="flexCheckIndeterminate"
-                    {...register("hasCategory")}
+                    // {...register("hasCategory")}
+                    onChange={toggleEnabledInputCategory}
                   />
                   <label
                     style={{
@@ -345,7 +322,7 @@ createProduct(data)
               />
             </div>
             {errors?.price && (
-              <p style={{ color: "red" }}>El precio debe ser un número</p>
+              <p style={{ color: "red" }}>el precio debe ser un número</p>
             )}
 
             <input

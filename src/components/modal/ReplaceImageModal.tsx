@@ -7,14 +7,13 @@ import Modal from "./Modal";
 
 import { toast } from "react-toastify";
 import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
-import ImageFireBase from "../../interfaces/ImageFIreBase";
-import { deleteImageFireBase } from "../../firebase/services";
+
+import { deletestring } from "../../firebase/services";
 
 interface props {
   closeModal: () => void;
   isOpenModal: () => void;
-
-  imgId: ImageFireBase;
+  imgId: string;
   getValues: UseFormGetValues<Product>;
   setValue: UseFormSetValue<Product>;
 }
@@ -22,7 +21,6 @@ interface props {
 export default function ReplaceImageModal({
   closeModal,
   isOpenModal,
-
   imgId,
   getValues,
   setValue,
@@ -89,11 +87,12 @@ export default function ReplaceImageModal({
     console.log('imgId', imgId)
     // const localImg = getValues("image").filter((i) => i !== imgId);
     // console.log("local", localImg);
-
     // await deleteImage(imgId);
- deleteImageFireBase(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
- console.log("me han borrado")
-    const localImg = getValues("image").filter((i:ImageFireBase) => i.id !== imgId.id);
+
+//  deletestring(imgId.email,imgId.productTitle,imgId.fileName, imgId.id, imgId.dime)
+ deletestring(imgId, user.email, getValues("title"))
+//  console.log("me han borrado")
+    const localImg = getValues("image").filter((i:string) => i !== imgId);
     console.log("quedaron", localImg)
     updateProducts({
     image:localImg,
@@ -115,7 +114,7 @@ export default function ReplaceImageModal({
     // setLoading(false);
     setValue("image", localImg);
     closeModal();
-    toast.warn("🗑 Imagen Eliminada", {
+    toast.error("🗑 Imagen eliminada", {
       position: "top-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -139,7 +138,7 @@ export default function ReplaceImageModal({
       btnClassNameAccept={"btn btn-outline-danger"}
       btnClassNameCancel={"btn btn-outline-secondary"}
       title={"La imagen será eliminada"}
-      question={"Confirme que  desea eliminar la imagen de forma permanente"}
+      question={"Confirme que desea eliminar la imagen de forma permanente"}
       acceptValue={"Eliminar imagen"}
 
     // extraButton={

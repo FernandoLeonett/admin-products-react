@@ -1,7 +1,8 @@
-import ImageFireBase from "../interfaces/ImageFIreBase";
-import a from "../interfaces/ImageFIreBase";
 import Product from "../interfaces/Product";
 import User from "../interfaces/User";
+import ImageFireBase from "../interfaces/ImageFIreBase";
+import { uploadData } from "../firebase/services";
+import { v4 } from "uuid";
 
 export const getPublicIdFromPath = (path: string) => {
   const separateBySlash = path.split("/");
@@ -58,56 +59,78 @@ export function validateAllType(types) {
   return ok;
 }
 
- export function getUrl(
-  { fileName,
-   bucketName,
-   id,
-   email,
-   productTitle,
-   dime = "600x600"}:ImageFireBase
- ) {
+//  export function getUrl(
+//   { fileName,
+//    bucketName,
+//    id,
+//    email,
+//    productTitle,
+//    dime = "600x600"}:string
+//  ) {
  
 
-   if (fileName.indexOf(" ") !== -1) {
-     fileName = fileName.replaceAll(" ", "%20");
-   }
+//    if (fileName.indexOf(" ") !== -1) {
+//      fileName = fileName.replaceAll(" ", "%20");
+//    }
 
-   let url = `https://firebasestorage.googleapis.com/v0/b/${bucketName}.appspot.com/o/${email}%2F${productTitle}%2F${fileName}${id}_${dime}?alt=media`;
+//    let url = `https://firebasestorage.googleapis.com/v0/b/${bucketName}.appspot.com/o/${email}%2F${productTitle}%2F${fileName}${id}_${dime}?alt=media`;
 
-   if (url.indexOf(" ") !== -1) {
-     url = url.replaceAll(" ", "%20");
-   }
-   if (url.indexOf("@") !== -1) {
-     url = url.replaceAll(" ", " %40");
-   }
+//    if (url.indexOf(" ") !== -1) {
+//      url = url.replaceAll(" ", "%20");
+//    }
+//    if (url.indexOf("@") !== -1) {
+//      url = url.replaceAll(" ", " %40");
+//    }
 
-   return url;
- }
+//    return url;
+//  }
 
 
  export const bucketName = "admin-gregory-shop"
 
 
  export function generateUrlsImage(
-   imageUpload: File,
+   imageUpload: File[],
    bucketName: string,
    email: string,
    productTitle: string,
-   id: string,
-
    dime = "600x600"
  ) {
-   const urls: ImageFireBase[] = [];
+   const urls: string[] = [];
+   const id = v4();
 
    Object.values(imageUpload).forEach((file: File) => {
-     urls.push({
-       bucketName,
-       dime,
-       email,
-       fileName: file.name,
-       id: id,
-       productTitle,
-     });
+     urls.push(`https://firebasestorage.googleapis.com/v0/b/${bucketName}.appspot.com/o/${email}%2F${productTitle}%2F${file.name}${id}_${dime}?alt=media`);
+     uploadData(file, email, productTitle,id);
    });
    return urls
  }
+
+
+ export const superReplaceAny = (
+   pText: string,
+   oldChart: string,
+   newChart: string
+ ) => {
+   let texto = "";
+
+   for (let i = 0; i < pText.length; i++) {
+     const a = pText[i];
+
+     if (a == oldChart) {
+       texto += newChart;
+     } else {
+       texto += a;
+     }
+   }
+
+   return texto;
+ };
+
+ export const getTitleUrl = (url) => {
+  const pos1 = url.lastIndexOf("%2F");
+  const pos2 = url.lastIndexOf(".");
+  const title = url.substring(pos1 + 3, pos2);
+  return title
+ }
+

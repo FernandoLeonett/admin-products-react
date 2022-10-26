@@ -8,7 +8,7 @@ import {
   bucketName,
   CLOUD_NAME,
   generateUrlsImage,
-  getUrl,
+  getTitleUrl,
   validateAllType,
 } from "../../util/util";
 import myWidget from "../../components/cloudinary/MyWidget";
@@ -23,7 +23,6 @@ import { toast } from "react-toastify";
 import FormEdit from "../../components/FormComponent/FormEdit";
 import { uploadData } from "../../firebase/services";
 import { v4 } from "uuid";
-import ImageFireBase from "../../interfaces/ImageFIreBase";
 
 interface ParamProduct {
   state: { product: Product };
@@ -38,10 +37,11 @@ const EditPage = () => {
 
   const { products, loading, setLoading, user, updateProducts } = useProducts();
   const [imageMode, setImageMode] = useState(false);
-  const [deleteimg, setDeleteimg] = useState<ImageFireBase>(null);
+  const [deleteimg, setDeleteimg] = useState<string>(null);
   const [updatedImage, setUpdatedImage] = useState(false);
+  const[fileName, setFileName] = useState<string[]>([]);
 
-  function deleteOneImage(file: ImageFireBase) {
+  function deleteOneImage(file: string) {
     console.log(file);
 
     openModal();
@@ -101,36 +101,40 @@ const EditPage = () => {
     console.log("files ", files.length);
 
     if (files.length > 4 - getValues("image").length) {
-      alert("el producto puede tener hasta 4 imágenes");
+      toast.warn("El producto puede tener hasta cuatro imágenes", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     if (!validateAllType(Object.values(files))) {
-      alert("Formato no permitido para una o varias imagenes");
-
+      toast.warn("Formato no permitido para una o varias imágenes", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
 
     // uploadData(files, user.email, getValues("title"), id)
 
     // urls para firebase
-    const urls: ImageFireBase[] = [];
+    // const urls: string[] = [];
 
     const currentImages = getValues("image");
-
-    Object.values(files).forEach((file: File) => {
-      const id = v4();
-      console.log("id limpiado", id);
-      urls.push({
-        bucketName: bucketName,
-        dime: "600x600",
-        email: user.email,
-        fileName: file.name,
-        id: id,
-        productTitle: getValues("title"),
-      });
-
-      uploadData(file, user.email, getValues("title"), id);
-    });
+    const urls = generateUrlsImage(files, bucketName, user.email, getValues("title"));
+    
     console.log("urls", urls);
 
     const updateImages = [...currentImages, ...urls];
@@ -160,7 +164,7 @@ const EditPage = () => {
   const errorImage = (e, k) => {
     // localStorage.setItem("flag", JSON.stringify("1"));
     e.target.src = "/optimizandoImagen.gif";
-    console.log("error image")
+    console.log("error image");
   };
 
   // useEffect(() => {
@@ -195,6 +199,8 @@ const EditPage = () => {
     <>
       {!imageMode ? (
         <FormEdit
+        // setFileName={setFileName}
+        defaultValue={param.state.product}
           handleSubmit={handleSubmit}
           register={register}
           products={products}
@@ -254,7 +260,7 @@ const EditPage = () => {
                   Actualiza tus imágenes
                 </p>
                 <p className="m-0" style={{ fontSize: 12, color: "#ccc" }}>
-                  clickea sobre la imágen para ver más opciones
+                  clickea sobre la imagen para ver más opciones
                 </p>
 
                 <input
@@ -274,8 +280,8 @@ const EditPage = () => {
                           <Fragment key={k}>
                             <img
                               alt={getValues("title")}
-                              title={file.fileName}
-                              src={getUrl(file)}
+                              title={getTitleUrl(file)}
+                              src={file}
                               onClick={() => deleteOneImage(file)}
                               onError={(e) => errorImage(e, k)}
                               className="imagen-datos-producto"

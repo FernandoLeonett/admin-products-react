@@ -8,7 +8,7 @@ import routes from "../../routers/routes";
 // import { WidgetLoader } from "../cloudinary";
 import DeLeteProductModal from "../modal/DeleteProductModa";
 import useModal from "../../hooks/useModal";
-import { generateUrlsImage, getUrl } from "../../util/util";
+import { generateUrlsImage } from "../../util/util";
 
 interface props {
   product: Product;
@@ -20,7 +20,7 @@ const Card = ({ product }: props) => {
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
   const [isOpenModal, openModal, closeModal] = useModal(false);
-const selectedImage = image[img]
+  const selectedImage = image[img];
 
   const changeImg = (n: number) => {
     if (img == 0 && n == -1) {
@@ -42,9 +42,9 @@ const selectedImage = image[img]
     openModal();
   };
 
-const imageError = (e) =>{
-  e.target.src = "/noImg.png"
-}
+  const imageError = (e) => {
+    e.target.src = "/recargarPagina.gif";
+  };
 
   return (
     <>
@@ -68,13 +68,12 @@ const imageError = (e) =>{
                   }}
                   onError={imageError}
                   // src="/noImg.png"
-                  src={getUrl(image[img])}
+                  src={image[img]}
                   alt={title}
                 />
               </>
             ) : (
               <>
-                <p>No tiene imagen</p>
                 <img
                   src="/noImg.png"
                   className="card-img-top img-fluid"
@@ -102,7 +101,7 @@ const imageError = (e) =>{
               <small className="text-muted">{category}</small>
             </p>
             <p className="card-text mb-0">
-              <small className="text-muted">{image.length} imágen/s</small>
+              <small className="text-muted">{image.length} imagen/s</small>
             </p>
             <p className="card-text mb-0">
               <small style={{ color: boost ? "#28a745" : "#dc3545" }}>
