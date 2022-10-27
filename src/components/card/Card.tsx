@@ -1,14 +1,10 @@
-import React, { memo, useState } from "react";
+import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import routes from "../../routers/routes";
-// import { Image } from "cloudinary-react";
-// import { CLOUD_NAME } from "../../util/util";
-// import { WidgetLoader } from "../cloudinary";
 import DeLeteProductModal from "../modal/DeleteProductModa";
 import useModal from "../../hooks/useModal";
-import { generateUrlsImage } from "../../util/util";
 
 interface props {
   product: Product;
@@ -16,11 +12,9 @@ interface props {
 
 const Card = ({ product }: props) => {
   const { title, description, price, image, category, boost } = product;
-  const { deleteProduct } = useProducts();
   const navigate = useNavigate();
   const [img, setImg] = useState(0);
   const [isOpenModal, openModal, closeModal] = useModal(false);
-  const selectedImage = image[img];
 
   const changeImg = (n: number) => {
     if (img == 0 && n == -1) {
@@ -38,7 +32,7 @@ const Card = ({ product }: props) => {
       state: { product: product },
     });
   };
-  const deletProductCard = (product: Product) => {
+  const deletProductCard = () => {
     openModal();
   };
 
@@ -140,7 +134,7 @@ const Card = ({ product }: props) => {
                   </svg>
                 </button>
                 <button
-                  onClick={() => deletProductCard(product)}
+                  onClick={() => deletProductCard()}
                   type="button"
                   className="btn btn-sm btn-outline-danger mt-0"
                 >

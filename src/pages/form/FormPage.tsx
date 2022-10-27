@@ -11,7 +11,6 @@ import ModalAdd from "../../components/modal/AddModal";
 
 import Spinner from "../../components/spinner/Spinner";
 import FormAdd from "../../components/FormComponent/FormAdd";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 
 const FormPage = () => {

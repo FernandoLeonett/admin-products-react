@@ -1,14 +1,9 @@
-import { BrowserRouter, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
 import { ProductContextProvider, useProducts } from "./context/context";
 import AppRouter from "./routers/AppRouter";
 import "react-toastify/dist/ReactToastify.min.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "./client/supabase";
 import Layout from "./components/layout/Layout";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/credentials";
 
 // interface IBeforeInstallPromptEvent extends Event {
 //   readonly platforms: string[];
@@ -94,8 +89,6 @@ function App() {
   //   useAddToHomeScreenPrompt();
 
   const { user, setUser } = useProducts();
-
- 
 
   return (
     <ProductContextProvider>

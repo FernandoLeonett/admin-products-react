@@ -1,10 +1,4 @@
-import { useState } from "react";
-import { UseFormGetValues, UseFormSetValue } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useProducts } from "../../context/context";
-import useModal from "../../hooks/useModal";
-import ModalProps from "../../interfaces/ModalProps";
-import Product from "../../interfaces/Product";
 import routes from "../../routers/routes";
 import Modal from "./Modal";
 

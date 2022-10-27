@@ -3,26 +3,20 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import Card from "../../components/card/Card";
 import Spinner from "../../components/spinner/Spinner";
-
 import ButtonUp from "../../components/buttonUp/ButtonUp";
 import "./HomePage.css";
-import { copyResponse } from "workbox-core";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../firebase/credentials";
 
 const HomePage = () => {
-  const { getProducts, loading, products, user, setProducts, updateProducts } =
-    useProducts();
+  const { getProducts, loading, products, user, setProducts } = useProducts();
   const productosDestacados = products.filter((p) => p.boost);
 
   useEffect(() => {
-    console.log(user);
     getProducts();
   }, [setProducts]);
 
   //   getProducts();
   // }, []);
-  
+
   // const fnPrueba = async () => {
   //   console.log("apretado", products.length);
   //    products.forEach(async (p) => {
@@ -96,14 +90,9 @@ const HomePage = () => {
               <ButtonUp />
             </>
           ) : (
-            // <div className="container">
-            //   <div className="row">
             <div className="col-12">
-              {/* <div className="col-12 mt-5 d-flex justify-content-center align-items-center"> */}
               <h1>No tienes productos en tu tienda</h1>
             </div>
-            //</div>
-            //</div>
           )}
         </div>
       </div>

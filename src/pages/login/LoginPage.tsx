@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 import { useProducts } from "../../context/context";
-import routes from "../../routers/routes";
 import "./Login.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { validateEmail } from "../../util/util";
 import {
@@ -16,7 +14,7 @@ import {
 const Login = () => {
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
-  const { loginWithMagicLink, loading } = useProducts();
+  const { loading } = useProducts();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

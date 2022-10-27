@@ -4,12 +4,9 @@ import PrivateRoute from "./PrivateRoute";
 import routes from "./routes";
 
 import PublicRoute from "./PublicRoutes";
-import React from "react";
-import { ProductContextProvider } from "../context/context";
 import HomePage from "../pages/home/HomePage";
 import LoginPage from "../pages/login/LoginPage";
 import FormPage from "../pages/form/FormPage";
-import WelcomePage from "../pages/welcome/WelcomePage";
 import EditProductPage from "../pages/editproduct/EditProductPage";
 
 const AppRouter = () => {

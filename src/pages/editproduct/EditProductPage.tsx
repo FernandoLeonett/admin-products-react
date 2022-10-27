@@ -1,4 +1,4 @@
-import { Fragment, SetStateAction, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
@@ -6,23 +6,17 @@ import Product from "../../interfaces/Product";
 import "./Edit.css";
 import {
   bucketName,
-  CLOUD_NAME,
   generateUrlsImage,
   getTitleUrl,
   validateAllType,
 } from "../../util/util";
-import myWidget from "../../components/cloudinary/MyWidget";
 import { useForm } from "react-hook-form";
 import routes from "../../routers/routes";
 import ReplaceImageModal from "../../components/modal/ReplaceImageModal";
 import useModal from "../../hooks/useModal";
-import { WidgetLoader } from "../../components/cloudinary";
 import Spinner from "../../components/spinner/Spinner";
-import setupWidget from "../../util/configWidget";
 import { toast } from "react-toastify";
 import FormEdit from "../../components/FormComponent/FormEdit";
-import { uploadData } from "../../firebase/services";
-import { v4 } from "uuid";
 
 interface ParamProduct {
   state: { product: Product };

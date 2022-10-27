@@ -5,22 +5,15 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  getFirestore,
   query,
-  snapshotEqual,
   updateDoc,
-  where,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { supabase } from "../client/supabase";
-
 import { auth, db } from "../firebase/credentials";
 import { cerrarSesion, deletestring } from "../firebase/services";
 import Product from "../interfaces/Product";
-// import User from "../interfaces/User";
 import routes from "../routers/routes";
 
 interface ProductContext {

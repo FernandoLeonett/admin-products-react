@@ -1,3 +1,4 @@
+import { landingPageUrl } from "../../util/util";
 import "./Footer.css";
 
 const Footer = () => {
@@ -5,7 +6,7 @@ const Footer = () => {
     <div className="container-fluid ">
       <div className="row">
         <div className="col-12 d-flex justify-content-around align-items-center footer">
-          <a href="https://ladingpage-cyan.vercel.app/" target="blank">
+          <a href={landingPageUrl} target="blank">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="3rem"

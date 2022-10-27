@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import {
   fetchSignInMethodsForEmail,
   isSignInWithEmailLink,
@@ -9,17 +8,10 @@ import {
 import {
   collection,
   addDoc,
-  getDocs,
-  getFirestore,
-  updateDoc,
-  deleteDoc,
 } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
-import { ref, getStorage, uploadBytes, deleteObject } from "firebase/storage";
+import { ref, uploadBytes, deleteObject } from "firebase/storage";
 import Product from "../interfaces/Product";
 import { auth, db, storage } from "./credentials";
-import { getAuth } from "firebase/auth";
-import { superReplaceAny } from "../util/util";
 
 export async function getUserByEmail(email: string) {
   const res = await fetchSignInMethodsForEmail(auth, email);

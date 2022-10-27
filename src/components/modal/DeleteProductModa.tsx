@@ -1,11 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useProducts } from "../../context/context";
-import useModal from "../../hooks/useModal";
-import ModalProps from "../../interfaces/ModalProps";
 import Product from "../../interfaces/Product";
-import routes from "../../routers/routes";
 import Modal from "./Modal";
 
 interface props {

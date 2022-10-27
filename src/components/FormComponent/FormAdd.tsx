@@ -1,16 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  listAll,
-  deleteObject,
-  getStorage,
-  UploadResult,
-} from "firebase/storage";
-
-import { v4 } from "uuid";
-import {
   FieldErrorsImpl,
   UseFormGetValues,
   UseFormHandleSubmit,
@@ -20,24 +9,15 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import { toast } from "react-toastify";
-import Swal from "sweetalert2";
-import schema from "yup/lib/schema";
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import setupWidget from "../../util/configWidget";
 import {
   bucketName,
   generateUrlsImage,
-  MAX_FILES,
   validateAllType,
 } from "../../util/util";
-import myWidget from "../cloudinary/MyWidget";
-import { saveData, uploadData } from "../../firebase/services";
-import { getFirestore } from "firebase/firestore";
 
-import User from "../../interfaces/User";
 import "./FormComponent.css";
-import { storage } from "../../firebase/credentials";
 
 interface props {
   register: UseFormRegister<Product>;

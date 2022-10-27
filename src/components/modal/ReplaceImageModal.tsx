@@ -1,8 +1,5 @@
 import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
-import setupWidget from "../../util/configWidget";
-import myWidget from "../cloudinary/MyWidget";
-
 import Modal from "./Modal";
 
 import { toast } from "react-toastify";
