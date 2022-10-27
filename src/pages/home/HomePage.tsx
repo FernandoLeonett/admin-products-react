@@ -7,36 +7,41 @@ import Spinner from "../../components/spinner/Spinner";
 import ButtonUp from "../../components/buttonUp/ButtonUp";
 import "./HomePage.css";
 import { copyResponse } from "workbox-core";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../../firebase/credentials";
 
 const HomePage = () => {
-  const { getProducts, loading, products, user, setProducts, updateProducts } = useProducts();
+  const { getProducts, loading, products, user, setProducts, updateProducts } =
+    useProducts();
   const productosDestacados = products.filter((p) => p.boost);
 
   useEffect(() => {
     console.log(user);
-    getProducts()
-  }, [setProducts])
+    getProducts();
+  }, [setProducts]);
 
   //   getProducts();
   // }, []);
-  // const fnPrueba = () =>{
-
-  //   products.forEach((p) => {
-  //     const urls = [];
-
-  //     p.image.forEach((i) => {
-  //       urls.push(getUrl(i));
-  //     });
-      
-
-  //     updateProducts({ image: urls }, p.id);
-  //   });
-
-  // }
+  
+  // const fnPrueba = async () => {
+  //   console.log("apretado", products.length);
+  //    products.forEach(async (p) => {
+  //     const {user:u, ...resto}= p;
+  //      try {
+  //        const collectionRef = collection(db, user.email);
+  //        const res = await addDoc(collectionRef, resto);
+  //        p.id = res.id;
+  //        console.log("response create product: ", res);
+  //      } catch (error) {
+  //        alert(error);
+  //      } finally {
+  //      }
+  //    });
+  // };
 
   return (
     <>
-    {/* <button onClick={fnPrueba}>prueba</button> */}
+      {/* <button onClick={fnPrueba} style={{cursor:"pointer"}}>prueba</button> */}
       <div
         style={{ zIndex: 5, position: "fixed", top: "50vh", left: "0.5rem" }}
       >

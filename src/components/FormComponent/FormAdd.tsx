@@ -145,7 +145,7 @@ const FormAdd = ({
     data.image = urls;
     console.log("data", data);
 
-    createProduct(data);
+    createProduct(data, user.email);
 
     openModal();
   };
@@ -316,13 +316,13 @@ const FormAdd = ({
               <input
                 type={"number"}
                 {...register("price", {
-                  required: "el precio es requerido",
+                  required: "el precio es requerido", valueAsNumber:true, min:1
                 })}
                 className="form-control"
               />
             </div>
             {errors?.price && (
-              <p style={{ color: "red" }}>el precio debe ser un número</p>
+              <p style={{ color: "red" }}>precio no válido</p>
             )}
 
             <input

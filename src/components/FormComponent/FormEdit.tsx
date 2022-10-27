@@ -177,16 +177,16 @@ const FormEdit = ({
               <div className="form-group">
                 <label htmlFor="numPrecio">Precio:</label>
                 <input
-                  type={"number"}
-                  {...register("price", {
-                    required: "el precio es requerido",
-                  })}
-                  className="form-control"
-                />
-              </div>
-              {errors?.price && (
-                <p style={{ color: "red" }}>El precio debe ser un número</p>
-              )}
+                type={"number"}
+                {...register("price", {
+                  required: "el precio es requerido", valueAsNumber:true, min:1
+                })}
+                className="form-control"
+              />
+            </div>
+            {errors?.price && (
+              <p style={{ color: "red" }}>precio no válido</p>
+            )}
               <div className="container-fluid">
                 <div className="row mb-4 d-flex justify-content-sm-between">
                   <input

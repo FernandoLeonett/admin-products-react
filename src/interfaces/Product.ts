@@ -7,6 +7,6 @@ export default interface Product {
   price?: number;
   category?: string;
   id?: string;
-  hasCategory?: boolean;
-  user?: string;
+  // hasCategory?: boolean;
+  // user?: string;
 }

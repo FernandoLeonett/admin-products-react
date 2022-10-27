@@ -34,7 +34,7 @@ const FormPage = () => {
       category: "Otros",
       description: "",
       image: [],
-      user:user.email
+      // user:user.email
       
     }
   });

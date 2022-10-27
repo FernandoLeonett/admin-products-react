@@ -27,7 +27,7 @@ interface ProductContext {
   products: Product[];
   setProducts: Dispatch<SetStateAction<Product[]>>;
   getProducts: () => Promise<void>;
-  createProduct: (product: Product) => Promise<void>;
+  createProduct: (product: Product, email: string) => Promise<void>;
   updateProducts: (updatedFields: Product, id: string) => Promise<void>;
   deleteProduct: (product: Product) => Promise<void>;
   loading: boolean;
@@ -97,18 +97,16 @@ export const ProductContextProvider = ({ children }) => {
     }
   };
 
-  const createProduct = async (product: Product) => {
+  const createProduct = async (product: Product, email: string) => {
+    console.log("create product user", user)
     setLoading(true);
     try {
-      const collectionRef = collection(db, "products");
+      const collectionRef = collection(db, email);
       const res = await addDoc(collectionRef, product);
       product.id = res.id;
-
-      // setProducts([...products, product]);
-
       console.log("response create product: ", res);
     } catch (error) {
-      // alert(error);
+      alert(error);
     } finally {
       setLoading(false);
     }
@@ -117,12 +115,10 @@ export const ProductContextProvider = ({ children }) => {
   const getProducts = async () => {
     setLoading(true);
 
-    // const productsSnahsop = await getDocs(collection(db, "products"));
-
     try {
       const q = query(
-        collection(db, "products"),
-        where("user", "==", user.email)
+        collection(db, user.email),
+        // where("user", "==", user.email)
       );
       getDocs(q).then((snapshot) => {
         if (snapshot.size === 0) {
@@ -152,7 +148,7 @@ export const ProductContextProvider = ({ children }) => {
     setLoading(true);
     console.log("campos", updatedFields);
     try {
-      const docRef = doc(db, "products", id.toString());
+      const docRef = doc(db, user.email, id.toString());
       const res = await updateDoc(docRef, {
         ...updatedFields,
       });
@@ -176,7 +172,7 @@ export const ProductContextProvider = ({ children }) => {
     try {
       setLoading(true);
 
-      const docRef = doc(db, "products", product.id);
+      const docRef = doc(db, user.email, product.id);
       const res = await deleteDoc(docRef);
       product.image.forEach((i) => {
         deletestring(i, user.email, product.title);
