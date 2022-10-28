@@ -11,11 +11,8 @@ const HomePage = () => {
   const productosDestacados = products.filter((p) => p.boost);
 
   useEffect(() => {
-    getProducts();
+    getProducts(user);
   }, [setProducts]);
-
-  //   getProducts();
-  // }, []);
 
   // const fnPrueba = async () => {
   //   console.log("apretado", products.length);

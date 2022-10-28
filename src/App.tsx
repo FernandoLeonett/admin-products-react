@@ -94,7 +94,6 @@ function App() {
     <ProductContextProvider>
       <Layout>
         <AppRouter />
-
         <ToastContainer />
       </Layout>
     </ProductContextProvider>

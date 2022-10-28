@@ -4,8 +4,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDocs,
-  query,
   updateDoc,
 } from "firebase/firestore";
 import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
@@ -19,13 +17,12 @@ import routes from "../routers/routes";
 interface ProductContext {
   products: Product[];
   setProducts: Dispatch<SetStateAction<Product[]>>;
-  getProducts: () => Promise<void>;
+  getProducts: (user: User) => Promise<void>;
   createProduct: (product: Product, email: string) => Promise<void>;
   updateProducts: (updatedFields: Product, id: string) => Promise<void>;
   deleteProduct: (product: Product) => Promise<void>;
   loading: boolean;
   setLoading: Dispatch<SetStateAction<boolean>>;
-
   loginWithMagicLink: (email: string) => Promise<boolean>;
   logout: () => Promise<void>;
   productSelected: Product | undefined;
@@ -47,35 +44,10 @@ export const ProductContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [primerInicio, setPrimerInicio] = useState();
-
-  // const [user, setUser] = useState(null)
   const [productSelected, setProductSelected] = useState(null);
-
-  //
   const [user, setUser] = useState<User>();
 
-  // const loginWithMagicLink = async (email: string) => {
-  //   // aca nunca deberiaa llegar si esta logueado
-  //   setLoading(true);
-  //   let ok = false;
-
-  //   try {
-  //     const { error, user } = await supabase.auth.signIn({ email });
-
-  //     if (error) {
-  //       throw error;
-  //     }
-  //     ok = true;
-  //   } catch (error: any) {
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  //   return ok;
-  // };
-
   const logout = async () => {
-    console.log(user);
     setLoading(true);
 
     try {
@@ -91,13 +63,11 @@ export const ProductContextProvider = ({ children }) => {
   };
 
   const createProduct = async (product: Product, email: string) => {
-    console.log("create product user", user)
     setLoading(true);
     try {
       const collectionRef = collection(db, email);
       const res = await addDoc(collectionRef, product);
       product.id = res.id;
-      console.log("response create product: ", res);
     } catch (error) {
       alert(error);
     } finally {
@@ -105,33 +75,17 @@ export const ProductContextProvider = ({ children }) => {
     }
   };
 
-  const getProducts = async () => {
+  const getProducts = async (user: User) => {
     setLoading(true);
-
     try {
-      const q = query(
-        collection(db, user.email),
-        // where("user", "==", user.email)
+      const response = await fetch(
+        "https://us-central1-admin-gregory-shop.cloudfunctions.net/app/api/products/" +
+          user.email
       );
-      getDocs(q).then((snapshot) => {
-        if (snapshot.size === 0) {
-          console.log("no hay datos");
-        }
-        setProducts(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        );
-      });
-      // const productsUser = productsSnahsop.docs.map((p) => {
-      //   let product = p.data();
-      //   product.id = p.id;
-
-      //   return product;
-      // });
-
-      // setProducts(productsUser);
-      // console.log("products: " + productsUser)
+      const data = await response.json();
+      setProducts(data.data);
     } catch (error) {
-      // alert(error.error_description || error.message);
+      alert(error.error_description || error.message);
     } finally {
       setLoading(false);
     }
@@ -146,16 +100,8 @@ export const ProductContextProvider = ({ children }) => {
         ...updatedFields,
       });
       console.log("product updated", res);
-
-      // let pos = products.findIndex((p) => p.id === id);
-
-      // const newList = [...products];
-
-      // newList[pos] = { ...newList[pos], ...updatedFields };
-
-      // setProducts(() => newList);
     } catch (error) {
-      // alert(error.error_description || error.message);
+      alert(error.error_description || error.message);
     } finally {
       setLoading(false);
     }
@@ -164,7 +110,6 @@ export const ProductContextProvider = ({ children }) => {
   const deleteProduct = async (product: Product) => {
     try {
       setLoading(true);
-
       const docRef = doc(db, user.email, product.id);
       const res = await deleteDoc(docRef);
       product.image.forEach((i) => {
@@ -178,55 +123,12 @@ export const ProductContextProvider = ({ children }) => {
       setLoading(false);
     }
   };
-  // useLayoutEffect(() => {
-  //     const user = supabase.auth.user();
-  //     if (user?.id) {
-  //         setUser({
-  //             id: user.id,
-
-  //         });
-
-  //     }
-
-  // }, [user?.id]);
-
-  // useEffect(() => {
-  //   const { data: authListener } = supabase.auth.onAuthStateChange(async () =>
-  //     checkUser()
-  //   );
-
-  //   const checkUser = async () => {
-  //     const user = supabase.auth.user();
-
-  //     if (user) {
-  //       setUser({
-  //         email: user.email,
-  //         id: user.id,
-  //       });
-  //       navigate("/", { replace: true });
-  //     } else {
-  //       navigate("/login", { replace: true });
-  //     }
-  //   };
-  //   checkUser();
-  //   console.log('user', user)
-
-  //   return () => {
-  //     authListener?.unsubscribe();
-  //   };
-  // }, []);
-  // useEffect(() => {
-  //   if (user?.id) {
-  //     getProducts();
-
-  //   }
-
-  // }, [user?.id]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (usuarioFirebase) => {
       if (usuarioFirebase) {
         setUser(usuarioFirebase);
+        getProducts(usuarioFirebase);
       } else {
         setUser(null);
       }
@@ -243,7 +145,6 @@ export const ProductContextProvider = ({ children }) => {
       loading,
       setLoading,
       setProducts,
-      // loginWithMagicLink,
       logout,
       productSelected,
       setProductSelected,
@@ -258,8 +159,6 @@ export const ProductContextProvider = ({ children }) => {
       deleteProduct,
       loading,
       setLoading,
-
-      // loginWithMagicLink,
       logout,
       productSelected,
       setProductSelected,
