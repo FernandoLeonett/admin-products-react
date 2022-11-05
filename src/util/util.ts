@@ -103,4 +103,4 @@ export function validateAllType(types) {
   return title
  }
 
- export const landingPageUrl = "https://landingpage-six-zeta.vercel.app/";
+ export const landingPageUrl = "https://tiendasgregory.com/";

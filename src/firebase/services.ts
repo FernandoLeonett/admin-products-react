@@ -159,7 +159,7 @@ export function cerrarSesion() {
 export function enviarEnlaceLogin(correo) {
   const actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
-    url: "http://localhost:3000/login",
+    url: "https://app.tiendasgregory.com/login",
 
     handleCodeInApp: true,
     // iOS: {
