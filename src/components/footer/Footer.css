@@ -7,3 +7,7 @@
   color: #ffffff;
   cursor: pointer;
 }
+
+.iconFooter:hover {
+  color: #03FA6E;
+}
