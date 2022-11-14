@@ -105,3 +105,4 @@ export function validateAllType(types) {
 
  export const landingPageUrl = "https://tiendasgregory.com/";
  export const instagram = "https://www.instagram.com/tiendasgregory/";
+ export const facebook = "https://www.facebook.com/tiendasgregory/";

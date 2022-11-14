@@ -2,13 +2,8 @@ import { useProducts } from "../../context/context";
 import Product from "../../interfaces/Product";
 import { useForm } from "react-hook-form";
 import "./Form.css";
-
-
-
 import useModal from "../../hooks/useModal";
-
 import ModalAdd from "../../components/modal/AddModal";
-
 import Spinner from "../../components/spinner/Spinner";
 import FormAdd from "../../components/FormComponent/FormAdd";
 
